@@ -1,9 +1,9 @@
 Welcome to chatty 
-# 💬 Chatbot Project
+Chatbot Project
 
 A simple console-based chatbot built using C#. The chatbot allows users to interact with predefined topics related to online safety and cybersecurity.
 
-## 📌 Features
+ Features
 
 - Interactive console menu
 - Topics include:
@@ -13,13 +13,12 @@ A simple console-based chatbot built using C#. The chatbot allows users to inter
 - User-friendly loop system (continue or exit anytime)
 - Personalized goodbye message
 - Simple and lightweight C# console application
-
-## 🛠️ Technologies Used
+Technologies Used
 
 - C#
 - .NET Console Application
 
-## 🚀 How It Works
+How It Works
 
 1. The program greets the user.
 2. A menu of cybersecurity topics is displayed.
