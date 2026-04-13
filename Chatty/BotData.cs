@@ -13,41 +13,40 @@ namespace Chatty
         public void getChatData(User user) 
         {
 
-
+            //Main app logic
             Console.Write("How are You " + user.Name + "? :");
-            String UserReply = Console.ReadLine();
+           
 
+            //Threading will help give the app chatting feel
             Console.WriteLine("Typing...");
             Thread.Sleep(2000);
 
             //ChatBot User Cyber Conversation
 
-            Console.WriteLine("How can we assist you " + user.Name + "?");
-            
-            
-
+       
             bool isRunning = true;
             
             while (isRunning) 
             {
-                String UserResponse = Console.ReadLine();
+                //String UserResponse = Console.ReadLine();
+                String UserReply = Console.ReadLine();
 
                 //We user IsNullOrWhiteSpace incase user enters backspaces/spaces/tabs
-                if (string.IsNullOrWhiteSpace(UserResponse))
+             
+                if (string.IsNullOrWhiteSpace(UserReply))
                 {
                     Console.WriteLine(" Response cannot be empty: Enter your Response");
-                   continue;
-                   
-                   
+                    continue;
                 }
 
                 //We use StringComparison as it is case-insenstive
-                if (UserResponse.Contains("password", StringComparison.OrdinalIgnoreCase))
+                if (UserReply.Contains("You", StringComparison.OrdinalIgnoreCase) || UserReply.Contains("Fine", StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.WriteLine("Password must be a mix of alphaNumeric character, new share your password ");
-                    UserResponse = Console.ReadLine();
-                    //Thread.Sleep(1000);
-                    // Console.WriteLine("Typing");
+                    Console.WriteLine("I'm Fine, What is your Purpose " + user.Name + "?");
+                    UserReply = Console.ReadLine();
+                    Thread.Sleep(1000);
+                    Console.WriteLine("Typing");
+
                 }
                 string LetsContinue;
                 do
@@ -63,10 +62,10 @@ namespace Chatty
                 {
                     Console.WriteLine();
                 }
-                if (UserResponse.Contains("phishing", StringComparison.OrdinalIgnoreCase))
+                if (UserReply.Contains("phishing", StringComparison.OrdinalIgnoreCase))
                 {
                     Console.WriteLine("Do not Open unknown email links");
-                    UserResponse = Console.ReadLine();
+                    UserReply = Console.ReadLine();
                     continue;
                 }
                 break;
@@ -74,8 +73,7 @@ namespace Chatty
             }
 
 
-            Console.WriteLine("Whats your purpose");
-            Console.WriteLine("What can i ask you about");
+           
 
             //Password Safety, Phishing, Safe browsing
 
