@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Media;
 using System.Text;
+using System.Threading;
 
 namespace Chatty
 {
@@ -31,11 +32,7 @@ XX    XX  XXXXXX    XXXXXXXXXX XXXXXXXXX   XXXXXXXX       XXXXXXX  ";
             Console.WriteLine(logo);
             SoundPlayer player = new SoundPlayer(@"C:\Users\Sugar\source\repos\Chatty\Chatty\Welcome Message.wav");
             //player.PlaySync();
-
-
-            Console.WriteLine("\n");
-            Console.WriteLine("Typing...");
-            Thread.Sleep(2000);
+         
             Console.WriteLine("\n");
             Console.WriteLine(greeting);
             Console.WriteLine("\n");
