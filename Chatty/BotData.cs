@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
@@ -7,12 +8,87 @@ namespace Chatty
 {
     internal class BotData
     {
+        //Constructors 
         public BotData()
         {
 
         }
-        private string GetValidInput()
+
+        public void ChatIntro(User user)
+
         {
+          
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("-----------INTRODUCTION--------------");
+            Console.WriteLine("\n");
+            Console.ResetColor();
+            
+         SetUserName(user);
+
+            //Main app logic
+            Console.WriteLine("Typing...");
+            Thread.Sleep(2000);
+            Console.WriteLine($"How are you {user.Name}?");
+            String UserReply = GetValidInput(IsValidUserName,
+                    "Invalid name. Letters only (2–30 characters).");
+            Console.WriteLine($"You Said:{UserReply}" );
+
+            //Threading will help give the app chatting feel
+            Console.WriteLine("Typing...");
+            Thread.Sleep(2000);
+            Console.WriteLine("Im glad to hear that, im also good");
+            Thread.Sleep(2000);
+
+
+            //ChatBot User Cyber Conversation
+
+            bool isRunning = true;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("-----------MAIN CHAT CONVERSATIONS--------------");
+            while (isRunning)
+
+            {
+
+                Console.WriteLine(" What is your purpose " + user.Name + "?");
+                UserReply = GetValidInput(IsValidUserName,
+                    "Invalid name. Letters only (2–30 characters).");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("You Said: " + UserReply);
+
+
+
+
+                string option;
+
+                do
+                {
+                    Console.WriteLine("What can I ask you?\n"
+                        + "1. Password safety\n"
+                        + "2. Safe Browsing\n"
+                        + "3. Phishing\n");
+
+                    Console.WriteLine("Do you want to search another topic " + user.Name + "? (Press y to continue or any key to quit)");
+
+                    option = Console.ReadLine();
+
+                } while (option?.Equals("y", StringComparison.OrdinalIgnoreCase) == true);
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Goodbye " + user.Name + " Have a nice day");
+                Console.ResetColor();
+                isRunning = false;
+
+
+            }
+
+
+
+        }
+
+        //helper method to help handle invalid inputs
+        private string GetValidInput(Func<string, bool> validator, string errorMessage)
+        {
+
             while (true)
 
             {
@@ -26,6 +102,7 @@ namespace Chatty
             
 
         }
+        //helper method to help handle invalid inputs
         private bool ValidUserInputs(string input)
         {
 
@@ -34,6 +111,7 @@ namespace Chatty
                 return false;
             input = input.Trim();
 
+                //this will help user type meaningful message 
             if (input.Length < 2 || input.Length > 100) { 
 
                 return false;
@@ -45,81 +123,53 @@ namespace Chatty
 
 }
 
-        public void getChatData(User user) 
+        //this method will ensure dont not add  invalid characters and the username length is reasonable
+        private bool IsValidUserName(string input)
         {
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
 
-            
-            //Main app logic
-            Console.WriteLine("How are You " + user.Name + "? :");
-            String UserReply = GetValidInput();
-            //Console.WriteLine("How are You " + user.Name + "? :");
-            //Threading will help give the app chatting feel
-            Console.WriteLine("Typing...");
-            Thread.Sleep(2000);
-            Console.WriteLine("Im glad to hear that, im also good");
-            Thread.Sleep(2000);
-          
+            input = input.Trim();
 
-            //ChatBot User Cyber Conversation
+            if (input.Length < 2 || input.Length > 30)
+                return false;
 
-
-
-
-            bool isRunning = true;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("-----------MAIN CHAT CONVERSATIONS--------------");
-            while (isRunning)
-                
-            {   
-               
-                Console.WriteLine(" What is your purpose " +user.Name +"?");
-                UserReply = GetValidInput();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("You Said: " + UserReply);
-
-
-                //We use StringComparison as it is case-insenstive
-                //if (UserReply.Contains("You", StringComparison.OrdinalIgnoreCase) || UserReply.Contains("Fine", StringComparison.OrdinalIgnoreCase))
-                //{ 
-                //    Console.WriteLine("Im glad to hear that, im also good");
-                //    Thread.Sleep(2000);
-                //    Console.WriteLine("Typing");
-                //    continue;
-                //}
-
-                String Continue;
-                do
-                {
-                    Console.WriteLine("What can i ask You? " + "\n"
-                        
-                        + "1.Password safety " +"\n"
-                        + "2.Safe Browsing" +"\n"
-                        + "3.Phishing" + "\n"
-
-
-                    );
-                    
-                    Console.WriteLine("Do you want to want to search another topic "+user.Name + "?\": Press y to continue or any key to Quit");
-                    
-                  Continue = Console.ReadLine();
-
-                } while (Continue.Contains("y"));
-                 
-                if (Continue != "y")
-                {
-                    Console.WriteLine("Goodbye " +user.Name +" Have a nice day");
-                    isRunning = false;
-                }
-             
-
+            foreach (char c in input)
+            {
+                if (!char.IsLetter(c) && c != ' ')
+                    return false;
             }
 
-
-
+            return true;
         }
 
+        //method to get user to enter valid name
+        private string GetValidUserName()
+        {
+            while (true)
+            {
+                Console.Write("Enter your name: ");
+                string input = Console.ReadLine();
 
+                if (IsValidUserName(input))
+                    return input.Trim();
+                //format error with red color to alert the user
+                Console.ForegroundColor = ConsoleColor.Red;
+                
+                Console.WriteLine("Invalid name. Use letters only (2–30 characters).");
+                Console.ResetColor();
+            }
+        }
+        private void SetUserName(User user)
+        {
+            Console.Write("Enter your name: ");
 
+            user.Name = GetValidInput(
+                IsValidUserName,
+                "Invalid name. Letters only (2–30 characters)."
+            );
+        }
 
     }
+
 }

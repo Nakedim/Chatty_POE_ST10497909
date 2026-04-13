@@ -15,13 +15,13 @@ namespace Chatty
         {
            
             BotData botData = new BotData();
-            GUI userInterFace = new GUI();
+            Media userInterFace = new Media();
             User user = new User();
             user.Name = "Nakedi";
 
             userInterFace.Name = "Chatty";
             userInterFace.PlaySound(user);
-            botData.getChatData(user);
+            botData.ChatIntro(user);
 
 
         }
