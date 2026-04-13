@@ -32,9 +32,11 @@ XX    XX  XXXXXX    XXXXXXXXXX XXXXXXXXX   XXXXXXXX       XXXXXXX  ";
             Console.WriteLine(logo);
             SoundPlayer player = new SoundPlayer(@"C:\Users\Sugar\source\repos\Chatty\Chatty\Welcome Message.wav");
             //player.PlaySync();
-         
+                    
             Console.WriteLine("\n");
             Console.WriteLine(greeting);
+            Console.WriteLine("\n");
+            Console.WriteLine("-----------INTRODUCTION--------------");
             Console.WriteLine("\n");
             Console.WriteLine("What your is Name");
             user.Name = Console.ReadLine();
