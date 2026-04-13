@@ -16,7 +16,7 @@ A simple console-based chatbot built using C#. The chatbot allows users to inter
 Technologies Used
 
 
-Screenshot:
+Screenshot for CI Workflow:
 
 
 
