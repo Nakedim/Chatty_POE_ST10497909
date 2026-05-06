@@ -1,34 +1,16 @@
-﻿
-using System.Media;
-using System;
-using Chatty;
+﻿using System;
+using System.Windows.Forms;
 
 namespace Chatty
-
 {
-    class Program
-       
-
-
-      {
-        public static void Main(string[] args)
+    internal static class Program
+    {
+        [STAThread]
+        static void Main()
         {
-           
-            BotData botData = new BotData();
-            Media userInterFace = new Media();
-            User user = new User();
-            user.Name = "Nakedi";
-
-            userInterFace.Name = "Chatty";
-            userInterFace.PlaySound(user);
-            botData.ChatIntro(user);
-
-
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
         }
-
- 
-
-      }
-
     }
-
+}
