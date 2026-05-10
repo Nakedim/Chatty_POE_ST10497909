@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Chatty
 {
@@ -17,13 +18,13 @@ namespace Chatty
         public void ChatIntro(User user)
 
         {
-          
+
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("-----------INTRODUCTION--------------");
             Console.WriteLine("\n");
             Console.ResetColor();
-            
-         SetUserName(user);
+
+            SetUserName(user);
 
             //Main app logic
             Console.WriteLine("Typing...");
@@ -31,7 +32,7 @@ namespace Chatty
             Console.WriteLine($"How are you {user.Name}?");
             String UserReply = GetValidInput(IsValidUserName,
                     "Invalid name. Letters only (2–30 characters).");
-            Console.WriteLine($"You Said:{UserReply}" );
+            Console.WriteLine($"You Said:{UserReply}");
 
             //Threading will help give the app chatting feel
             Console.WriteLine("Typing...");
@@ -55,10 +56,8 @@ namespace Chatty
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("You Said: " + UserReply);
 
-
-
-
                 string option;
+
 
                 do
                 {
@@ -80,11 +79,11 @@ namespace Chatty
 
 
             }
-
+        
 
 
         }
-
+        
         //helper method to help handle invalid inputs
         private string GetValidInput(Func<string, bool> validator, string errorMessage)
         {
