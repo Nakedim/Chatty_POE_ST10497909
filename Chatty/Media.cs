@@ -15,6 +15,10 @@ namespace Chatty
  \____\__, |_.__/ \___|_|  |____/ \___|\___|\__,_|_|  |_|\__|\__, |   /_/   \_\ .__/| .__/ 
       |___/                                                  |___/            |_|   |_|    ";
 
+
+
+
+
         private static string greeting = @"XX    XX            XX         XX          XXXXXXXXX     XXXXXXXXX 
 XX    XX  XXXXXX    XX         XX         XXXX    XXX   XX       XX
 XX   XXX  XX        XX         XXX       X XX      XX   X         X
