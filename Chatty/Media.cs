@@ -33,13 +33,13 @@ XX    XX  XXXXXX    XXXXXXXXXX XXXXXXXXX   XXXXXXXX       XXXXXXX  ";
 
         public  void PlaySound(User user)
         {
-            Console.WriteLine(logo);
+            MessageBox.Show(logo);
             SoundPlayer player = new SoundPlayer(@"C:\Users\Sugar\source\repos\Chatty\Chatty\Welcome Message.wav");
             player.PlaySync();
 
-            Console.WriteLine("\n");
-            Console.WriteLine(greeting);
-            Console.WriteLine("\n");
+            MessageBox.Show("\n");
+            MessageBox.Show(greeting);
+            MessageBox.Show("\n");
             
           
         }

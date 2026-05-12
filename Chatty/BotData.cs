@@ -20,24 +20,24 @@ namespace Chatty
         {
 
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("-----------INTRODUCTION--------------");
-            Console.WriteLine("\n");
+            MessageBox.Show("-----------INTRODUCTION--------------");
+            MessageBox.Show("\n");
             Console.ResetColor();
 
             SetUserName(user);
 
             //Main app logic
-            Console.WriteLine("Typing...");
+            MessageBox.Show("Typing...");
             Thread.Sleep(2000);
-            Console.WriteLine($"How are you {user.Name}?");
+            MessageBox.Show($"How are you {user.Name}?");
             String UserReply = GetValidInput(IsValidUserName,
                     "Invalid name. Letters only (2–30 characters).");
-            Console.WriteLine($"You Said:{UserReply}");
+            MessageBox.Show($"You Said:{UserReply}");
 
             //Threading will help give the app chatting feel
-            Console.WriteLine("Typing...");
+            MessageBox.Show("Typing...");
             Thread.Sleep(2000);
-            Console.WriteLine("Im glad to hear that, im also good");
+            MessageBox.Show("Im glad to hear that, im also good");
             Thread.Sleep(2000);
 
 
@@ -45,35 +45,35 @@ namespace Chatty
 
             bool isRunning = true;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("-----------MAIN CHAT CONVERSATIONS--------------");
+            MessageBox.Show("-----------MAIN CHAT CONVERSATIONS--------------");
             while (isRunning)
 
             {
 
-                Console.WriteLine(" What is your purpose " + user.Name + "?");
+                MessageBox.Show(" What is your purpose " + user.Name + "?");
                 UserReply = GetValidInput(IsValidUserName,
                     "Invalid name. Letters only (2–30 characters).");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("You Said: " + UserReply);
+                MessageBox.Show("You Said: " + UserReply);
 
                 string option;
 
 
                 do
                 {
-                    Console.WriteLine("What can I ask you?\n"
+                    MessageBox.Show("What can I ask you?\n"
                         + "1. Password safety\n"
                         + "2. Safe Browsing\n"
                         + "3. Phishing\n");
 
-                    Console.WriteLine("Do you want to search another topic " + user.Name + "? (Press y to continue or any key to quit)");
+                    MessageBox.Show("Do you want to search another topic " + user.Name + "? (Press y to continue or any key to quit)");
 
                     option = Console.ReadLine();
 
                 } while (option?.Equals("y", StringComparison.OrdinalIgnoreCase) == true);
 
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Goodbye " + user.Name + " Have a nice day");
+                MessageBox.Show("Goodbye " + user.Name + " Have a nice day");
                 Console.ResetColor();
                 isRunning = false;
 
@@ -96,7 +96,7 @@ namespace Chatty
                 {
                     return input.Trim();
                 }
-               Console.WriteLine("Enter valid input");
+               MessageBox.Show("Enter valid input");
             }
             
 
@@ -155,14 +155,14 @@ namespace Chatty
                 //format error with red color to alert the user
                 Console.ForegroundColor = ConsoleColor.Red;
                 
-                Console.WriteLine("Invalid name. Use letters only (2–30 characters).");
+                MessageBox.Show("Invalid name. Use letters only (2–30 characters).");
                 Console.ResetColor();
             }
         }
         private void SetUserName(User user)
         {
-            Console.Write("Enter your name: ");
-
+           
+            MessageBox.Show("Enter your name: ");
             user.Name = GetValidInput(
                 IsValidUserName,
                 "Invalid name. Letters only (2–30 characters)."
