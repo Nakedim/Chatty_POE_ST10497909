@@ -56,14 +56,14 @@ namespace Chatty
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            ShowWelcome(this, EventArgs.Empty);
+           
 
             try
             {
                 SoundPlayer player = new SoundPlayer("Welcome Message.wav");
                 player.Play();
 
-
+               //ShowWelcome(this, EventArgs.Empty);
 
             }
             catch
@@ -90,11 +90,15 @@ namespace Chatty
 
         private void ShowWelcome(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Welcome to the CyberSecurity App", "Welcome Message"
+            DialogResult result = MessageBox.Show("Welcome to the CyberSecurity App", "What is your Name"
                 , MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (result == DialogResult.No)
             {
                 Application.Exit();
+            }
+            if (result == DialogResult.Yes)
+            {
+                string name = Interaction.InputBox("Enter your Name");
             }
 
 
