@@ -42,12 +42,11 @@ namespace CyberChat
 
 
        //Chat conversation
+       //handles the button event
         private void Send_Click(object sender, RoutedEventArgs e)
         {
 
-            
-           
-           
+          
             string userMessage = MessageInput.Text;
 
             //User Message
@@ -95,6 +94,7 @@ namespace CyberChat
 
       
 
+        //handle the enter key in case user enter to send msg 
         private void MessageInput_TextChanged(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter) 
@@ -106,6 +106,24 @@ namespace CyberChat
 
             }
 
+        }
+
+        private readonly string PHolder;
+        private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (MessageInput.Text == PHolder)
+            {
+                MessageInput.Text = "";
+                MessageInput.Foreground = Brushes.Black;
+            }
+        }
+        private void AnimateCursorLostFocus(object sender, RoutedEventArgs e) 
+        {     //restore the place if the user leave the box
+            if (string.IsNullOrEmpty(MessageInput.Text)) 
+            {
+                MessageInput.Text = PHolder;
+                MessageInput.Foreground = Brushes.Gray;
+            }
         }
     }
 }

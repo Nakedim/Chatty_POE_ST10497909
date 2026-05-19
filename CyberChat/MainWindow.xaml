@@ -26,7 +26,16 @@
             <TextBox Name="MessageInput"
                      Width="500"
                      Height="40"
-                     Margin="0,0,10,0" KeyDown ="MessageInput_TextChanged"/>
+                     Margin="0,0,10,0" 
+                     KeyDown ="MessageInput_TextChanged"
+                     Text="Type your Message: "
+                     Foreground="Gray"
+                     GotFocus="AnimateCursorGotFocus"
+                     LostFocus="AnimateCursorLostFocus"
+                     
+                     
+                     
+                     />
 
             <!-- Send Button -->
             <Button Name="Send"
