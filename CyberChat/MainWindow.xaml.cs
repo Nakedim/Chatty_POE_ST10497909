@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Chatty;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,13 +17,37 @@ namespace CyberChat
     /// </summary>
     public partial class MainWindow : Window
     {
+        User currentUser = new User();
+        Media md = new Media();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            //Intros
+            //The method will load immediate after mainApp have loaded
+            Loaded += MainWindow_Loaded;
+
+
+
         }
 
+        
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+               
+            md.PlaySound(currentUser);
+            AppLogo.Text = md.logo;
+        }
+
+
+       //Chat conversation
         private void Send_Click(object sender, RoutedEventArgs e)
         {
+
+            
+           
+           
             string userMessage = MessageInput.Text;
 
             //User Message
@@ -36,14 +61,18 @@ namespace CyberChat
             //
 
             MessageInput.Clear();
+            MessageInput.Focus();
 
             
         }
 
+       
         private string BotReplies(string message)
         {
+
+            
             message = message.ToLower().Trim();
-            string thread = "Typing";
+            
 
             if (string.IsNullOrWhiteSpace(message))
             {
@@ -51,9 +80,7 @@ namespace CyberChat
             }
             if (message.Contains("hello"))
             {
-                
-                Thread.Sleep(1800);
-                threadMimick();
+              
                 return "hi";
             }
             else if (message.Contains("morning"))
@@ -66,9 +93,19 @@ namespace CyberChat
             }
         }
 
-        private string threadMimick()
+      
+
+        private void MessageInput_TextChanged(object sender, KeyEventArgs e)
         {
-            return "typing";
+            if (e.Key == Key.Enter) 
+            {
+                Send_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+                MessageInput.Clear();
+                MessageInput.Focus();
+
+            }
+
         }
     }
 }
