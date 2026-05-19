@@ -23,7 +23,7 @@ namespace CyberChat
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            string userMessage = MessageBox.Text;
+            string userMessage = MessageInput.Text;
 
             //User Message
 
@@ -31,26 +31,30 @@ namespace CyberChat
 
             //Bot replies
             string botReply = BotReplies(userMessage);
-            ChatBotArea.Items.Add("CyberChatBot: " + BotReplies(""));
+            ChatBotArea.Items.Add("CyberChatBot: " + BotReplies("Hello everyone"));
 
             //
 
-            
+            MessageInput.Clear();
 
             
         }
 
         private string BotReplies(string message)
         {
-            message = message.Trim();
+            message = message.ToLower().Trim();
 
             if (message.Contains("hello"))
             {
                 return "hi";
             }
+            else if (message.Contains("morning"))
+            {
+                return "Good Morning";
+            }
             else
             {
-                return "enter greetings";
+                return "i didnt get get that please rephrase";
             }
         }
 
