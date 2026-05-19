@@ -8,7 +8,7 @@ namespace Chatty
 {
     internal class Media
     {
-        private static String logo = @"  ____      _               ____                       _ _                _                
+        public  String logo = @"  ____      _               ____                       _ _                _                
  / ___|   _| |__   ___ _ __/ ___|  ___  ___ _   _ _ __(_) |_ _   _       / \   _ __  _ __  
 | |  | | | | '_ \ / _ \ '__\___ \ / _ \/ __| | | | '__| | __| | | |     / _ \ | '_ \| '_ \ 
 | |__| |_| | |_) |  __/ |   ___) |  __/ (__| |_| | |  | | |_| |_| |    / ___ \| |_) | |_) |
@@ -19,7 +19,7 @@ namespace Chatty
 
 
 
-        private static string greeting = @"XX    XX            XX         XX          XXXXXXXXX     XXXXXXXXX 
+        public static string greeting = @"XX    XX            XX         XX          XXXXXXXXX     XXXXXXXXX 
 XX    XX  XXXXXX    XX         XX         XXXX    XXX   XX       XX
 XX   XXX  XX        XX         XXX       X XX      XX   X         X
 XXXXXXXX  XX        XX         XXX      XXXX       XXX  X         X
@@ -33,13 +33,11 @@ XX    XX  XXXXXX    XXXXXXXXXX XXXXXXXXX   XXXXXXXX       XXXXXXX  ";
 
         public  void PlaySound(User user)
         {
-            System.Windows.MessageBox.Show(logo);
+           
             SoundPlayer player = new SoundPlayer(@"C:\Users\Sugar\source\repos\Chatty\Chatty\Welcome Message.wav");
             player.PlaySync();
 
-            System.Windows.MessageBox.Show("\n");
-            System.Windows.MessageBox.Show(greeting);
-            System.Windows.MessageBox.Show("\n");
+          
             
           
         }
