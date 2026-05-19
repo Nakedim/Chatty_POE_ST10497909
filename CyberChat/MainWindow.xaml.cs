@@ -1,0 +1,59 @@
+﻿using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace CyberChat
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void Send_Click(object sender, RoutedEventArgs e)
+        {
+            string userMessage = MessageBox.Text;
+
+            //User Message
+
+            ChatBotArea.Items.Add("You: " +userMessage);
+
+            //Bot replies
+            string botReply = BotReplies(userMessage);
+            ChatBotArea.Items.Add("CyberChatBot: " + BotReplies(""));
+
+            //
+
+            
+
+            
+        }
+
+        private string BotReplies(string message)
+        {
+            message = message.Trim();
+
+            if (message.Contains("hello"))
+            {
+                return "hi";
+            }
+            else
+            {
+                return "enter greetings";
+            }
+        }
+
+
+    }
+}

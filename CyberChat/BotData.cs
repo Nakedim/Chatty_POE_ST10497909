@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
+
 
 namespace Chatty
 {
@@ -20,43 +20,24 @@ namespace Chatty
         {
 
             Console.ForegroundColor = ConsoleColor.Magenta;
-<<<<<<< HEAD
-            Console.WriteLine("-----------INTRODUCTION--------------");
-            Console.WriteLine("\n");
-=======
-            MessageBox.Show("-----------INTRODUCTION--------------");
-            MessageBox.Show("\n");
->>>>>>> eeb40eb (Add project files.)
+            System.Windows.MessageBox.Show("-----------INTRODUCTION--------------");
+            System.Windows.MessageBox.Show("\n");
             Console.ResetColor();
 
             SetUserName(user);
 
             //Main app logic
-<<<<<<< HEAD
-            Console.WriteLine("Typing...");
+            System.Windows.MessageBox.Show("Typing...");
             Thread.Sleep(2000);
-            Console.WriteLine($"How are you {user.Name}?");
+            System.Windows.MessageBox.Show($"How are you {user.Name}?");
             String UserReply = GetValidInput(IsValidUserName,
                     "Invalid name. Letters only (2–30 characters).");
-            Console.WriteLine($"You Said:{UserReply}");
+            System.Windows.MessageBox.Show($"You Said:{UserReply}");
 
             //Threading will help give the app chatting feel
-            Console.WriteLine("Typing...");
+            System.Windows.MessageBox.Show("Typing...");
             Thread.Sleep(2000);
-            Console.WriteLine("Im glad to hear that, im also good");
-=======
-            MessageBox.Show("Typing...");
-            Thread.Sleep(2000);
-            MessageBox.Show($"How are you {user.Name}?");
-            String UserReply = GetValidInput(IsValidUserName,
-                    "Invalid name. Letters only (2–30 characters).");
-            MessageBox.Show($"You Said:{UserReply}");
-
-            //Threading will help give the app chatting feel
-            MessageBox.Show("Typing...");
-            Thread.Sleep(2000);
-            MessageBox.Show("Im glad to hear that, im also good");
->>>>>>> eeb40eb (Add project files.)
+            System.Windows.MessageBox.Show("Im glad to hear that, im also good");
             Thread.Sleep(2000);
 
 
@@ -64,59 +45,35 @@ namespace Chatty
 
             bool isRunning = true;
             Console.ForegroundColor = ConsoleColor.Yellow;
-<<<<<<< HEAD
-            Console.WriteLine("-----------MAIN CHAT CONVERSATIONS--------------");
-=======
-            MessageBox.Show("-----------MAIN CHAT CONVERSATIONS--------------");
->>>>>>> eeb40eb (Add project files.)
+            System.Windows.MessageBox.Show("-----------MAIN CHAT CONVERSATIONS--------------");
             while (isRunning)
 
             {
 
-<<<<<<< HEAD
-                Console.WriteLine(" What is your purpose " + user.Name + "?");
+                System.Windows.MessageBox.Show(" What is your purpose " + user.Name + "?");
                 UserReply = GetValidInput(IsValidUserName,
                     "Invalid name. Letters only (2–30 characters).");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("You Said: " + UserReply);
-=======
-                MessageBox.Show(" What is your purpose " + user.Name + "?");
-                UserReply = GetValidInput(IsValidUserName,
-                    "Invalid name. Letters only (2–30 characters).");
-                Console.ForegroundColor = ConsoleColor.Green;
-                MessageBox.Show("You Said: " + UserReply);
->>>>>>> eeb40eb (Add project files.)
+                System.Windows.MessageBox.Show("You Said: " + UserReply);
 
                 string option;
 
 
                 do
                 {
-<<<<<<< HEAD
-                    Console.WriteLine("What can I ask you?\n"
-=======
-                    MessageBox.Show("What can I ask you?\n"
->>>>>>> eeb40eb (Add project files.)
+                    System.Windows.MessageBox.Show("What can I ask you?\n"
                         + "1. Password safety\n"
                         + "2. Safe Browsing\n"
                         + "3. Phishing\n");
 
-<<<<<<< HEAD
-                    Console.WriteLine("Do you want to search another topic " + user.Name + "? (Press y to continue or any key to quit)");
-=======
-                    MessageBox.Show("Do you want to search another topic " + user.Name + "? (Press y to continue or any key to quit)");
->>>>>>> eeb40eb (Add project files.)
+                    System.Windows.MessageBox.Show("Do you want to search another topic " + user.Name + "? (Press y to continue or any key to quit)");
 
                     option = Console.ReadLine();
 
                 } while (option?.Equals("y", StringComparison.OrdinalIgnoreCase) == true);
 
                 Console.ForegroundColor = ConsoleColor.Red;
-<<<<<<< HEAD
-                Console.WriteLine("Goodbye " + user.Name + " Have a nice day");
-=======
-                MessageBox.Show("Goodbye " + user.Name + " Have a nice day");
->>>>>>> eeb40eb (Add project files.)
+                System.Windows.MessageBox.Show("Goodbye " + user.Name + " Have a nice day");
                 Console.ResetColor();
                 isRunning = false;
 
@@ -139,11 +96,7 @@ namespace Chatty
                 {
                     return input.Trim();
                 }
-<<<<<<< HEAD
-               Console.WriteLine("Enter valid input");
-=======
-               MessageBox.Show("Enter valid input");
->>>>>>> eeb40eb (Add project files.)
+               System.Windows.MessageBox.Show("Enter valid input");
             }
             
 
@@ -202,23 +155,14 @@ namespace Chatty
                 //format error with red color to alert the user
                 Console.ForegroundColor = ConsoleColor.Red;
                 
-<<<<<<< HEAD
-                Console.WriteLine("Invalid name. Use letters only (2–30 characters).");
-=======
-                MessageBox.Show("Invalid name. Use letters only (2–30 characters).");
->>>>>>> eeb40eb (Add project files.)
+                System.Windows.MessageBox.Show("Invalid name. Use letters only (2–30 characters).");
                 Console.ResetColor();
             }
         }
         private void SetUserName(User user)
         {
-<<<<<<< HEAD
-            Console.Write("Enter your name: ");
-
-=======
            
-            MessageBox.Show("Enter your name: ");
->>>>>>> eeb40eb (Add project files.)
+            System.Windows.MessageBox.Show("Enter your name: ");
             user.Name = GetValidInput(
                 IsValidUserName,
                 "Invalid name. Letters only (2–30 characters)."

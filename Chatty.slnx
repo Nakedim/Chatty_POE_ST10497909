@@ -1,3 +1,7 @@
 <Solution>
   <Project Path="Chatty/Chatty.csproj" />
+<<<<<<< HEAD
+=======
+  <Project Path="CyberChat/CyberChat.csproj" Id="0301b578-8ce1-4880-9e59-e1bae035a504" />
+>>>>>>> eeb40eb (Add project files.)
 </Solution>

@@ -33,23 +33,13 @@ XX    XX  XXXXXX    XXXXXXXXXX XXXXXXXXX   XXXXXXXX       XXXXXXX  ";
 
         public  void PlaySound(User user)
         {
-<<<<<<< HEAD
-            Console.WriteLine(logo);
+            System.Windows.MessageBox.Show(logo);
             SoundPlayer player = new SoundPlayer(@"C:\Users\Sugar\source\repos\Chatty\Chatty\Welcome Message.wav");
             player.PlaySync();
 
-            Console.WriteLine("\n");
-            Console.WriteLine(greeting);
-            Console.WriteLine("\n");
-=======
-            MessageBox.Show(logo);
-            SoundPlayer player = new SoundPlayer(@"C:\Users\Sugar\source\repos\Chatty\Chatty\Welcome Message.wav");
-            player.PlaySync();
-
-            MessageBox.Show("\n");
-            MessageBox.Show(greeting);
-            MessageBox.Show("\n");
->>>>>>> eeb40eb (Add project files.)
+            System.Windows.MessageBox.Show("\n");
+            System.Windows.MessageBox.Show(greeting);
+            System.Windows.MessageBox.Show("\n");
             
           
         }
