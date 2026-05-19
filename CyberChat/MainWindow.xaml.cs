@@ -43,9 +43,17 @@ namespace CyberChat
         private string BotReplies(string message)
         {
             message = message.ToLower().Trim();
+            string thread = "Typing";
 
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                MessageBox.Show("Please enter your message");
+            }
             if (message.Contains("hello"))
             {
+                
+                Thread.Sleep(1800);
+                threadMimick();
                 return "hi";
             }
             else if (message.Contains("morning"))
@@ -58,6 +66,9 @@ namespace CyberChat
             }
         }
 
-
+        private string threadMimick()
+        {
+            return "typing";
+        }
     }
 }
