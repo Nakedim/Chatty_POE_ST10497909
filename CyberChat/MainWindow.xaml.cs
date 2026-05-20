@@ -97,8 +97,12 @@ namespace CyberChat
         //handle the enter key in case user enter to send msg 
         private void MessageInput_TextChanged(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) 
+            if (e.Key == Key.Return) 
             {
+                if (string.IsNullOrWhiteSpace(MessageInput.Text) && MessageInput !=)
+                {
+
+                }
                 Send_Click(this, new RoutedEventArgs());
                 e.Handled = true;
                 MessageInput.Clear();
