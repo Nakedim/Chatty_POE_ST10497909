@@ -13,7 +13,7 @@ namespace CyberChat
 
 
 
-        //private readonly Dictionary<string, Sentiment> BotSentiments = new();
+        private readonly Dictionary<string, Sentiment> SentimentList = new();
 
         public string SentimentsDector()
         {
