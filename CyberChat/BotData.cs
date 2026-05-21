@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using System.Windows;
 
 
 namespace Chatty
@@ -15,13 +16,12 @@ namespace Chatty
 
         }
 
-        public void ChatIntro(User user)
+        public void ChatIntro(MemoryStore user)
 
         {
 
             Console.ForegroundColor = ConsoleColor.Magenta;
-            System.Windows.MessageBox.Show("-----------INTRODUCTION--------------");
-            System.Windows.MessageBox.Show("\n");
+          
             Console.ResetColor();
 
             SetUserName(user);
@@ -85,7 +85,7 @@ namespace Chatty
         }
         
         //helper method to help handle invalid inputs
-        private string GetValidInput(Func<string, bool> validator, string errorMessage)
+        public string GetValidInput(Func<string, bool> validator, string errorMessage)
         {
 
             while (true)
@@ -102,7 +102,7 @@ namespace Chatty
 
         }
         //helper method to help handle invalid inputs
-        private bool ValidUserInputs(string input)
+        public bool ValidUserInputs(string input)
         {
 
             if (string.IsNullOrEmpty(input)) { 
@@ -123,7 +123,7 @@ namespace Chatty
 }
 
         //this method will ensure dont not add  invalid characters and the username length is reasonable
-        private bool IsValidUserName(string input)
+        public bool IsValidUserName(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
                 return false;
@@ -143,7 +143,7 @@ namespace Chatty
         }
 
         //method to get user to enter valid name
-        private string GetValidUserName()
+        public string GetValidUserName()
         {
             while (true)
             {
@@ -159,7 +159,7 @@ namespace Chatty
                 Console.ResetColor();
             }
         }
-        private void SetUserName(User user)
+        public void SetUserName(MemoryStore user)
         {
            
             System.Windows.MessageBox.Show("Enter your name: ");
