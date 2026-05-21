@@ -46,38 +46,45 @@ namespace CyberChat
 
         //Chat conversation
         //handles the button event
-
-       
+        private bool NameCaptured = false;
+        string UserName = "";
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            
 
 
-               string userMessage = MessageInput.Text;
-            string UserName = MessageInput.Text;
 
-            
+            string userMessage = MessageInput.Text.Trim();
            
 
-            if (MessageInput.Text==PHolder || string.IsNullOrEmpty(MessageInput.Text))
+            if (string.IsNullOrEmpty(UserName))
             {
+                UserName = userMessage;
                 MessageBox.Show("Please enter your message");
                 return;
             }
-            //User Message
-            BotQuestionText.Text = $"Hello, {UserName} How can i help you Today"; 
-            ChatBotArea.Items.Add(WinUser +": " +userMessage);
+            
+
+
+            if (!NameCaptured)
+            {
+                UserName = userMessage;
+                NameCaptured = true;
+                //User Message
+                BotQuestionText.Text = $"Hello, {UserName} How can i help you Today";
+                ChatBotArea.Items.Add("CyberChatBot: Nice to meet you " + UserName);
+            MessageInput.Clear();
+                return;
+
+            }
+
 
             //Bot replies
             string BotReply = BotReplies(userMessage);
-            ChatBotArea.Items.Add("CyberChatBot: " + BotReply);
+            ChatBotArea.Items.Add("CyberChatBot: Nice to meet you " + UserName);
 
-            //
 
-            MessageInput.Clear();
-            MessageInput.Focus();
 
-            
+
         }
 
        
@@ -109,7 +116,7 @@ namespace CyberChat
             if (message.Contains("questions"))
             {
                 advanceTopics(this, new RoutedEventArgs());
-                return ""   ;
+                return "Opening advanced security topics..";
             }
 
             else
