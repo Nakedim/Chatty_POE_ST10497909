@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Chatty;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,10 +20,14 @@ namespace CyberChat
         public MainWindow()
         {
             InitializeComponent();
+            
+
         }
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
+
+            
             string userMessage = MessageInput.Text;
 
             //User Message
@@ -49,6 +54,8 @@ namespace CyberChat
             {
                 MessageBox.Show("Please enter your message");
             }
+
+
             if (message.Contains("hello"))
             {
                 
