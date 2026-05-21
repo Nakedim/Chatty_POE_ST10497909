@@ -17,22 +17,22 @@ namespace CyberChat
     /// </summary>
     public partial class MainWindow : Window
     {
-        User currentUser = new User();
+        MemoryStore currentUser = new MemoryStore();
         Media md = new Media();
 
         public MainWindow()
         {
             InitializeComponent();
+            BotQuestionText.Text = "My name is CyberChat, what is your Name";
 
             //Intros
-            //The method will load immediate after mainApp have loaded
-            Loaded += MainWindow_Loaded;
-
-
+            //Loaded += MainWindow_Loaded;
+            // ChatLogic
+            // Chat logic methods goes here
 
         }
 
-        
+        // Intro, greeting, media (Sounds & logo) 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
                
@@ -41,21 +41,30 @@ namespace CyberChat
         }
 
 
-       //Chat conversation
-       //handles the button event
+        //Chat conversation
+        //handles the button event
+
+       
         private void Send_Click(object sender, RoutedEventArgs e)
         {
+            
 
-          
-            string userMessage = MessageInput.Text;
 
+               string userMessage = MessageInput.Text;
+            string UserName = MessageInput.Text;
+
+            if (MessageInput.Text==PHolder || string.IsNullOrEmpty(MessageInput.Text))
+            {
+                MessageBox.Show("Please enter your message");
+                return;
+            }
             //User Message
-
-            ChatBotArea.Items.Add("You: " +userMessage);
+            BotQuestionText.Text = $"Hello, {UserName} How can i help you Today"; 
+            ChatBotArea.Items.Add(WinUser +": " +userMessage);
 
             //Bot replies
-            string botReply = BotReplies(userMessage);
-            ChatBotArea.Items.Add("CyberChatBot: " + BotReplies("Hello everyone"));
+            string BotReply = BotReplies(userMessage);
+            ChatBotArea.Items.Add("CyberChatBot: " + BotReply);
 
             //
 
@@ -68,51 +77,55 @@ namespace CyberChat
        
         private string BotReplies(string message)
         {
-
+            Sentiments BotMood = new Sentiments();
+            
             
             message = message.ToLower().Trim();
+
             
 
             if (string.IsNullOrWhiteSpace(message))
             {
                 MessageBox.Show("Please enter your message");
+                return "";
             }
             if (message.Contains("hello"))
             {
-              
-                return "hi";
+                
+                return "hi" + WinUser;
             }
             else if (message.Contains("morning"))
             {
-                return "Good Morning";
+                return "Good Morning" +WinUser;
             }
             else
             {
-                return "i didnt get get that please rephrase";
+                return "i didnt get get that please rephrase" + WinUser;
             }
         }
 
-      
+
 
         //handle the enter key in case user enter to send msg 
-        private void MessageInput_TextChanged(object sender, KeyEventArgs e)
+        private readonly string PHolder = "Type Your Message...";
+        private readonly string WinUser = " " +Environment.UserName;
+        private void MessageInput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return) 
+            if (e.Key == Key.Return)
             {
-                if (string.IsNullOrWhiteSpace(MessageInput.Text) && MessageInput !=)
+                // Stop if textbox is empty OR showing placeholder
+                if (string.IsNullOrWhiteSpace(MessageInput.Text) ||
+                    MessageInput.Text == PHolder)
                 {
-
+                    return;
                 }
+
                 Send_Click(this, new RoutedEventArgs());
                 e.Handled = true;
-                MessageInput.Clear();
                 MessageInput.Focus();
-
             }
-
         }
 
-        private readonly string PHolder;
         private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
         {
             if (MessageInput.Text == PHolder)
@@ -128,6 +141,11 @@ namespace CyberChat
                 MessageInput.Text = PHolder;
                 MessageInput.Foreground = Brushes.Gray;
             }
+        }
+
+        private void TextBoxBotArea_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
         }
     }
 }

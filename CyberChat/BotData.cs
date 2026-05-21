@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using System.Windows;
 
 
 namespace Chatty
@@ -15,7 +16,7 @@ namespace Chatty
 
         }
 
-        public void ChatIntro(User user)
+        public void ChatIntro(MemoryStore user)
 
         {
 
@@ -158,7 +159,7 @@ namespace Chatty
                 Console.ResetColor();
             }
         }
-        public void SetUserName(User user)
+        public void SetUserName(MemoryStore user)
         {
            
             System.Windows.MessageBox.Show("Enter your name: ");

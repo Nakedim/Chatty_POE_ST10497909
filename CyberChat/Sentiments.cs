@@ -6,7 +6,25 @@ using System.Threading.Tasks;
 
 namespace CyberChat
 {
-    internal class Sentiments
+    public class Sentiments
     {
+
+        public enum Sentiment { Neutral, Worried, Curious, Frustrated, Happy }
+
+
+
+        //private readonly Dictionary<string, Sentiment> BotSentiments = new();
+
+        public string SentimentsDector()
+        {
+            string mgs = "";
+
+            if (mgs.Contains("happy")) 
+            {
+               
+            }
+            return mgs;
+        }
+        }
     }
-}
+
