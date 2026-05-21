@@ -107,11 +107,11 @@ namespace CyberChat
             if (message.Contains("hello"))
             {
                 
-                return "hi" + WinUser;
+                return "hi" + UserName;
             }
             else if (message.Contains("morning"))
             {
-                return "Good Morning" +WinUser;
+                return "Good Morning" +UserName;
             }
             if (message.Contains("questions"))
             {
@@ -121,7 +121,7 @@ namespace CyberChat
 
             else
             {
-                return "i didnt get get that please rephrase" + WinUser;
+                return "i didnt get get that please rephrase" + UserName;
             }
         }
 
@@ -129,7 +129,7 @@ namespace CyberChat
 
         //handle the enter key in case user enter to send msg 
         private readonly string PHolder = "Type Your Message...";
-        private readonly string WinUser = " " +Environment.UserName;
+     
         private void MessageInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CyberChat
 {
@@ -17,14 +18,17 @@ namespace CyberChat
 
         public string SentimentsDector()
         {
-            string mgs = "";
-
-            if (mgs.Contains("happy")) 
+            for (int i = 0; i < SentimentList.Count; i++)
             {
-               
+                if(SentimentList.Values.ElementAt(i) == Sentiment.Worried)
+                {
+                    MessageBox.Show("The user is worried. Please provide support and reassurance.");
+                }
+                return SentimentList.Keys.ElementAt(i);
             }
-            return mgs;
+            return "No sentiments detected.";
         }
+        
         }
     }
 
