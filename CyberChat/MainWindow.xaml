@@ -57,7 +57,10 @@
                    Margin="0,622,0,0"
                    TextWrapping="Wrap" 
                    VerticalAlignment="Top" Height="35" Width="381"/>
+<<<<<<< HEAD
             <TextBox TextWrapping="Wrap" Text="TextBox" Width="120" Height="43" RenderTransformOrigin="0.542,0.5"/>
+=======
+>>>>>>> ba8d0035b7afabbaf17d2501e8f5025168e7ffe6
         </StackPanel>
         
 
