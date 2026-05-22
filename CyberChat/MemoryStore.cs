@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Chatty
 {
-    internal class MemoryStore
+    public static class MemoryStore
     {
-        public string Name { get; set; }
+        public static string Name { get; set; }
+        public static string UserName { get; set; }
     }
 
 

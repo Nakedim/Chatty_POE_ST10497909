@@ -17,7 +17,7 @@ namespace CyberChat
     /// </summary>
     public partial class MainWindow : Window
     {
-        MemoryStore currentUser = new MemoryStore();
+        
         Media md = new Media();
 
         public MainWindow()
@@ -36,7 +36,7 @@ namespace CyberChat
         }
 
         // Intro, greeting, media (Sounds & logo) 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        public void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             //pause for testing
             //md.PlaySound(currentUser);
@@ -47,7 +47,7 @@ namespace CyberChat
         //Chat conversation
         //handles the button event
         private bool NameCaptured = false;
-        string UserName = "";
+        
         private void Send_Click(object sender, RoutedEventArgs e)
         {
 
@@ -56,9 +56,9 @@ namespace CyberChat
             string userMessage = MessageInput.Text.Trim();
            
 
-            if (string.IsNullOrEmpty(UserName))
+            if (string.IsNullOrEmpty(userMessage))
             {
-                UserName = userMessage;
+                MemoryStore.UserName = userMessage;
                 MessageBox.Show("Please enter your message");
                 return;
             }
@@ -67,23 +67,26 @@ namespace CyberChat
 
             if (!NameCaptured)
             {
-                UserName = userMessage;
+                MemoryStore.UserName = userMessage;
                 NameCaptured = true;
-                //User Message
-                BotQuestionText.Text = $"Hello, {UserName} How can i help you Today";
-                ChatBotArea.Items.Add("CyberChatBot: Nice to meet you " + UserName);
+                
+                BotQuestionText.Text = $"Hello, {MemoryStore.UserName} How can i help you Today";
+                ChatBotArea.Items.Add("CyberChatBot: Nice to meet you " + MemoryStore.UserName);
             MessageInput.Clear();
                 return;
 
             }
 
+            // Show user message
+            ChatBotArea.Items.Add(MemoryStore.UserName + ": " + userMessage);
 
-            //Bot replies
-            string BotReply = BotReplies(userMessage);
-            ChatBotArea.Items.Add("CyberChatBot: Nice to meet you " + UserName);
+            // Bot reply
+            string botReply = BotReplies(userMessage);
 
+            ChatBotArea.Items.Add("CyberChatBot: " + botReply);
 
-
+            // Clear input
+            MessageInput.Clear();
 
         }
 
@@ -107,21 +110,21 @@ namespace CyberChat
             if (message.Contains("hello"))
             {
                 
-                return "hi" + UserName;
+                return "hi" + MemoryStore.UserName;
             }
             else if (message.Contains("morning"))
             {
-                return "Good Morning" +UserName;
+                return "Good Morning" + MemoryStore.UserName;
             }
             if (message.Contains("questions"))
             {
                 advanceTopics(this, new RoutedEventArgs());
-                return "Opening advanced security topics..";
+                return "Opening advanced security topics...";
             }
 
             else
             {
-                return "i didnt get get that please rephrase" + UserName;
+                return "i didnt get get that please rephrase" + MemoryStore.UserName;
             }
         }
 
@@ -178,8 +181,8 @@ namespace CyberChat
             if (results == MessageBoxResult.Yes)
             {
              KeywordResponder kr = new KeywordResponder();
-        
-                kr.GetResponse("Password");
+                string response = kr.GetResponse("password");
+                kr.GetResponse("Password" +response);
             }
            
         }
