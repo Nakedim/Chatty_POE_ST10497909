@@ -23,15 +23,15 @@
                     Orientation="Horizontal">
 
             <!-- User Input -->
-            <TextBox Name="MessageInput"
+            <TextBox Name="MsgInput"
                      Width="500"
-                     Height="40"
+                     Height="35"
                      Margin="0,0,10,0"
                      Text="Type Your Message..."
-                     KeyDown ="MessageInput_KeyDown"
+                     KeyDown ="MsgInput_KeyDown"
                      Foreground="Gray"
                      GotFocus="AnimateCursorGotFocus"
-                     LostFocus="AnimateCursorLostFocus"
+                     LostFocus="AnimateCursorLostFocus" TextChanged="MsgInput_TextChanged"
                      
                      
                      
