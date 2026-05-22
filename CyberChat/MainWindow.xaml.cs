@@ -46,5 +46,36 @@ namespace CyberChat
         {
 
         }
+        private void MsgInput_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+        
+        string Placeholder = "Type your message here...";
+        private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (MsgInput.Text == Placeholder)
+            {
+                MsgInput.Text = "";
+                MsgInput.Foreground = Brushes.Black;
+            }
+        }
+        
+
+        private void Send_Click(object sender, RoutedEventArgs e) 
+        {
+        
+        }
+
+        private void AnimateCursorLostFocus(object sender, RoutedEventArgs e)
+        {
+            //restore the place if the user leave the box
+            if (string.IsNullOrEmpty(MsgInput.Text))
+            {
+                MsgInput.Text = Placeholder;
+                MsgInput.Foreground = Brushes.Gray;
+            }
+        }
+
     }
 }

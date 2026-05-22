@@ -31,7 +31,7 @@
                      KeyDown ="MsgInput_KeyDown"
                      Foreground="Gray"
                      GotFocus="AnimateCursorGotFocus"
-                     LostFocus="AnimateCursorLostFocus" TextChanged="MsgInput_TextChanged"
+                     LostFocus="AnimateCursorLostFocus" 
                      
                      
                      
