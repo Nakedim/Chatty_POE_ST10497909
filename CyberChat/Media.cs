@@ -29,8 +29,7 @@ XX    XXX XX        XX         XX        XXX       XX    XXX      X
 XX    XXX XXX       XXXXXXXXXX XX         XXXXXXXXXXX    XXXXXXXXXX
 XX    XX  XXXXXX    XXXXXXXXXX XXXXXXXXX   XXXXXXXX       XXXXXXX  ";
 
-        public string Name { get; set; }
-
+    
         public  void PlaySound()
         {
            

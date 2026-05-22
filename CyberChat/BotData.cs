@@ -16,7 +16,7 @@ namespace Chatty
 
         }
 
-        public void ChatIntro(MemoryStore user)
+        public void ChatIntro()
 
         {
 
@@ -24,12 +24,12 @@ namespace Chatty
           
             Console.ResetColor();
 
-            SetUserName(user);
+            SetUserName(MemoryStore.UserName);
 
             //Main app logic
             System.Windows.MessageBox.Show("Typing...");
             Thread.Sleep(2000);
-            System.Windows.MessageBox.Show($"How are you {user.Name}?");
+            System.Windows.MessageBox.Show($"How are you {MemoryStore.UserName}?");
             String UserReply = GetValidInput(IsValidUserName,
                     "Invalid name. Letters only (2–30 characters).");
             System.Windows.MessageBox.Show($"You Said:{UserReply}");
@@ -50,7 +50,7 @@ namespace Chatty
 
             {
 
-                System.Windows.MessageBox.Show(" What is your purpose " + user.Name + "?");
+                System.Windows.MessageBox.Show(" What is your purpose " + MemoryStore.UserName + "?");
                 UserReply = GetValidInput(IsValidUserName,
                     "Invalid name. Letters only (2–30 characters).");
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -66,14 +66,14 @@ namespace Chatty
                         + "2. Safe Browsing\n"
                         + "3. Phishing\n");
 
-                    System.Windows.MessageBox.Show("Do you want to search another topic " + user.Name + "? (Press y to continue or any key to quit)");
+                    System.Windows.MessageBox.Show("Do you want to search another topic " + MemoryStore.UserName + "? (Press y to continue or any key to quit)");
 
                     option = Console.ReadLine();
 
                 } while (option?.Equals("y", StringComparison.OrdinalIgnoreCase) == true);
 
                 Console.ForegroundColor = ConsoleColor.Red;
-                System.Windows.MessageBox.Show("Goodbye " + user.Name + " Have a nice day");
+                System.Windows.MessageBox.Show("Goodbye " + MemoryStore.UserName + " Have a nice day");
                 Console.ResetColor();
                 isRunning = false;
 
@@ -159,11 +159,11 @@ namespace Chatty
                 Console.ResetColor();
             }
         }
-        public void SetUserName(MemoryStore user)
+        public void SetUserName(string UserName)
         {
            
             System.Windows.MessageBox.Show("Enter your name: ");
-            user.Name = GetValidInput(
+            MemoryStore.UserName = GetValidInput(
                 IsValidUserName,
                 "Invalid name. Letters only (2–30 characters)."
             );
