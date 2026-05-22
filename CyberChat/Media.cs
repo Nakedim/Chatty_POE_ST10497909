@@ -31,7 +31,7 @@ XX    XX  XXXXXX    XXXXXXXXXX XXXXXXXXX   XXXXXXXX       XXXXXXX  ";
 
         public string Name { get; set; }
 
-        public  void PlaySound(MemoryStore user)
+        public  void PlaySound()
         {
            
             SoundPlayer player = new SoundPlayer(@"C:\Users\Sugar\source\repos\Chatty\Chatty\Welcome Message.wav");
