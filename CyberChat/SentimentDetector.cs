@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace CyberChat
 {
-    public class Sentiments
+    public class SentimentDetector
     {
 
         public enum Sentiment { Neutral, Worried, Curious, Frustrated, Happy }

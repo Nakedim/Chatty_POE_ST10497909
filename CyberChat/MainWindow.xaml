@@ -31,11 +31,7 @@
                      KeyDown ="MsgInput_KeyDown"
                      Foreground="Gray"
                      GotFocus="AnimateCursorGotFocus"
-                     LostFocus="AnimateCursorLostFocus" 
-                     
-                     
-                     
-                     />
+                     LostFocus="AnimateCursorLostFocus" />
 
             <!-- Send Button -->
             <Button Name="Send"
@@ -47,20 +43,22 @@
             
 
         </StackPanel>
+        <StackPanel Margin="0,0,0,99">
+            
+        </StackPanel>
         <Grid Margin="0,-78,0,82">
             <TextBlock Name="AppLogo" HorizontalAlignment="Left" Margin="56,75,0,0" TextWrapping="Wrap"
                        Text="" VerticalAlignment="Top" Height="95" Width="410"/>
         </Grid>
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-            <TextBlock Name="BotQuestionText" 
-                   HorizontalAlignment="Left"
-                   Margin="0,622,0,0"
-                   TextWrapping="Wrap" 
-                   VerticalAlignment="Top" Height="35" Width="381"/>
-        </StackPanel>
-        
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,99"/>
+        <TextBlock x:Name="BotQuestionText"
+            TextWrapping="Wrap" 
+            Foreground="White"
+            Background="Black"
+    Margin="0,610,10,44"/>
 
-               
+
+
 
     </Grid>
 </Window>

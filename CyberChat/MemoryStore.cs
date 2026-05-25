@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Chatty
 {
-    public static class MemoryStore
+    public class MemoryStore
     {
  
-        public static string UserName { get; set; }
-        public static string FavouriteTopic {  get; set; }
+        public string UserName { get; set; }
+        public string FavouriteTopic {  get; set; }
     }
 
 

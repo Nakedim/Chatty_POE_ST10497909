@@ -14,135 +14,71 @@ namespace CyberChat
     internal class ChatBot
     {
 
-        private bool NameCaptured = false;
-        private TextBox MsgInput;
-        private TextBlock BotQuestionText;
-        private ListBox ChatBotArea;
+        private KeywordResponder _keywords;
+        private SentimentDetector _sentiment;
+        private MemoryStore _memory;
 
-        public ChatBot(TextBox MsgInput)
+
+        private bool _awaitingName = true;
+        private string _lastTopic;
+        private string _username;
+
+        public ChatBot(TextBox MsgInput,
+                KeywordResponder keywordResponder,
+                SentimentDetector sentimentDetector,
+                MemoryStore memoryStore)
         {
-            MsgInput = MsgInput;
+            _keywords = keywordResponder;
+            _sentiment = sentimentDetector;
+            _memory = memoryStore;
         }
 
 
-        private void Send_Click(object sender, RoutedEventArgs e)
+        public string ProcessInput(string input)
         {
-
-
-
-            string userMessage = MsgInput.Text.Trim();
-
-
-            if (string.IsNullOrEmpty(userMessage))
+            
+           
+            input = input.Trim();
+            if (string.IsNullOrEmpty(input))
             {
-                MemoryStore.UserName = userMessage;
-                MessageBox.Show("Please enter your message");
-                return;
+             return "Enter your name" ;
+            }
+            if (_awaitingName) 
+            {
+                // Store the user's name in memory and return a personalized greeting from the input
+               
+                _username = input;
+                _memory.UserName = _username;
+                _awaitingName = false;
+               return $"Welcome, {_memory.UserName}! How can I assist you today?";
             }
 
-
-
-            if (!NameCaptured)
-            {
-                MemoryStore.UserName = userMessage;
-                NameCaptured = true;
-
-                BotQuestionText.Text = $"Hello, {MemoryStore.UserName} How can i help you Today, Type yes to process or any key to abort";
-
-                ChatBotArea.Items.Add("CyberChatBot: Nice to meet you " + MemoryStore.UserName);
-                MsgInput.Clear();
-                return;
-
+            return "Sorry, I didn't understand that. Can you please rephrase?";
+           
             }
-
-            // Show user message
-            ChatBotArea.Items.Add(MemoryStore.UserName + ": " + userMessage);
-
-            // Bot reply
-            string botReply = BotReplies(userMessage);
-
-            ChatBotArea.Items.Add("CyberChatBot: " + botReply);
-
-            // Clear input
-            MsgInput.Clear();
-
-        }
+           
+        
 
 
-        private string BotReplies(string message)
+        public string GetGreeting()
         {
-            Sentiments BotMood = new Sentiments();
-
-
-            message = message.ToLower().Trim();
-
-
-
-            if (string.IsNullOrWhiteSpace(message))
+            if (_awaitingName) 
             {
-                MessageBox.Show("Please enter your message");
-                return "";
-            }
-
-
-            if (message.Contains("hello"))
-            {
-
-                return "hi" + MemoryStore.UserName;
-            }
-            else if (message.Contains("morning"))
-            {
-                return "Good Morning" + MemoryStore.UserName;
-            }
-            else
-            {
-                return "i didnt get get that please rephrase" + MemoryStore.UserName;
-            }
-        }
-
-
-
-        //handle the enter key in case user enter to send msg 
-        private readonly string PHolder = "Type Your Message...";
-
-        private void MessageInput_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                // Stop if textbox is empty OR showing placeholder
-                if (string.IsNullOrWhiteSpace(MsgInput.Text) ||
-                    MsgInput.Text == PHolder)
+                _username = _memory.UserName;
+                if (string.IsNullOrEmpty(_username))
                 {
-                    return;
+                    return "Hello! What is your name?";
                 }
-
-                Send_Click(this, new RoutedEventArgs());
-                e.Handled = true;
-                MsgInput.Focus();
+                else
+                {
+                    _awaitingName = false;
+                    return $"Welcome back, {_username}! How can I assist you today?";
+                }
             }
+
+            return "enter your name to start chatting";
         }
 
-        private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
-        {
-            if (MsgInput.Text == PHolder)
-            {
-                MsgInput.Text = "";
-                MsgInput.Foreground = Brushes.Black;
-            }
-        }
-        private void AnimateCursorLostFocus(object sender, RoutedEventArgs e)
-        {     //restore the place if the user leave the box
-            if (string.IsNullOrEmpty(MsgInput.Text))
-            {
-                MsgInput.Text = PHolder;
-                MsgInput.Foreground = Brushes.Gray;
-            }
-        }
-
-        private void TextBoxBotArea_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
         public void advanceTopics(object sender, RoutedEventArgs e)
         {
@@ -158,5 +94,14 @@ namespace CyberChat
             }
 
         }
+
+
+        public void ResponseGenerator(string userInput)
+        {
+            
+            
+        }
+
+
     }
 }
