@@ -85,16 +85,14 @@ namespace CyberChat
             // FIX: Just stop if empty. Do not save an empty string to MemoryStore.
             if (string.IsNullOrEmpty(userMessage) || userMessage == Placeholder)
             {
-                MessageBox.Show("Please enter your message");
+                //MessageBox.Show("Please enter your message");
+                //color the message red
+                ChatBotArea.Items.Add("Please Enter your name on the provide box" + userMessage);
+
                 return;
             }
-
-            // FIRST TURN: Capture user name
-           
-
-                
-                ChatBotArea.Items.Add("CyberChatBot: Nice to meet you "+userMessage);
-                ChatBotArea.Items.Add("CyberChatbot: " + emotionReply);
+                //ChatBotArea.Items.Add(emotionReply+ ", CyberChatBot: Nice to meet you "+userMessage);
+                ////ChatBotArea.Items.Add("CyberChatbot: " + emotionReply);
 
                
 

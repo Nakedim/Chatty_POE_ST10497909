@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using static CyberChat.SentimentDetector;
@@ -18,7 +19,7 @@ namespace CyberChat
         private KeywordResponder _keywords;
         private SentimentDetector _sentiment;
         private MemoryStore _memory;
-
+        private SentimentDetector detector = new SentimentDetector();
 
 
         private bool _awaitingName = true;
@@ -36,10 +37,14 @@ namespace CyberChat
         }
 
 
+
+        KeywordResponder keyResponse = new KeywordResponder();
         public string ProcessInput(string input)
         {
-            
-           
+            // Analyze the user's input for sentiment and keywords, and generate an appropriate response based on the analysis and the chatbot's memory of the conversation
+            string userMessage = input;
+            Sentiments sentiments = detector.Detect(input);
+
             input = input.Trim();
             if (string.IsNullOrEmpty(input))
             {
@@ -52,9 +57,23 @@ namespace CyberChat
                 _username = input;
                 _memory.UserName = _username;
                 _awaitingName = false;
-               return $"Welcome, {_memory.UserName}! How can I assist you today?";
+                return $"Welcome, {_memory.UserName}! How can I assist you today?";
+                
             }
-
+            // Check for specific keywords in the user's input and generate responses based on those keywords
+            
+            if (input.Contains("What can i ask you"))
+            {
+                
+                input = input.Replace("What can i ask you", "").Trim();
+                return keyResponse.getAllKeywords();
+            }
+            if(input.Contains("password"))
+            {
+             
+                input = input.Replace("password", "").Trim();
+                return keyResponse.GetResponse("password");
+            }
             return "Sorry, I didn't understand that. Can you please rephrase?";
            
             }

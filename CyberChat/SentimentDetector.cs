@@ -34,12 +34,6 @@ namespace CyberChat
 
          };
 
-        public class SentimentDectector
-        {
-
-        }
-
-
         public Sentiments Detect(string input)
         {
             input = input.ToLower();

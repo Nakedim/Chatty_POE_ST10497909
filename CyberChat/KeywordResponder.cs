@@ -11,7 +11,7 @@ namespace CyberChat
     public class KeywordResponder
     {
 
-       
+
         private Random random = new Random();
 
         //ignore case sensitivity when matching keywords
@@ -28,9 +28,9 @@ namespace CyberChat
 
 
             };
-        
+
         }
-        Dictionary<string,List<string>> responses = new Dictionary<string, List<string>>()
+        Dictionary<string, List<string>> _responses = new Dictionary<string, List<string>>()
         {
             ["Password"] = new List<string>()
             {
@@ -50,14 +50,37 @@ namespace CyberChat
             ["Privacy"] = new List<string>()
             {
                 "Privacy refers to the right of individuals to keep their personal information and activities private and secure. It involves protecting sensitive data, such as financial information, health records, and online activities, from unauthorized access or disclosure. Privacy is an important aspect of digital security and is essential for"
+            },
+
+            ["Phishing"] = new List<string>()
+            {
+                "Phishing is a type of cyber attack that involves tricking individuals into providing sensitive information, such as passwords, credit card numbers, or social security numbers. Phishing attacks often come in the form of emails, text messages, or phone calls that appear to be from a legitimate source, such as a bank or a reputable company. It is important to be cautious and verify the authenticity of any communication before providing personal information."
             }
+
         };
+        //greetings
+        //The plan is to have a dictionary of greeting and response to use them in the logic rather using if statement/
+
+        private static readonly Dictionary<string, List<string>> GreetingResponses = new()
+    {
+        { "hello", ["Hi there!", "Hello!", "Greetings!"] },
+        { "how are you?", ["I'm doing well, thank you!", "I'm fine, how about you?", "I'm great, thanks for asking!"] },
+        { "what's your name?", ["I'm a chatbot.", "I don't have a name.", "You can call me Chatbot."] }
+    };
+
+        private static readonly Dictionary<string, List<string>> cyberKeywords = new()
+        {
+            ["What can i ask"] = new List<string>() { "Password", "Phishing", "Privacy", "Scam", "Malware" }
+        };
+
+
+
 
         public string GetResponse(string userInput)
         {
    
             var responses = Cyberjagon();
-            foreach (var keyword in responses.Keys)
+            foreach (var keyword in _responses.Keys)
             {
                 if (userInput.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
@@ -66,6 +89,40 @@ namespace CyberChat
             }
             return "I didn't understand that. Can you please rephrase?";
         }
+
+        //getGreeting method
+        public string getGreetingResponse(string userInput)
+        {
+            foreach(var keyword in GreetingResponses.Keys)
+            {
+                if (userInput.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    var possibleResponses = GreetingResponses[keyword];
+                    return possibleResponses[random.Next(possibleResponses.Count)];
+                }
+            }
+            return "Hello! How can I assist you today?";
+        }
+
+        //get all keywords methods
+        public string getAllKeywords()
+        {
+            string targetKeyword = "What can i ask";
+            if(string.IsNullOrWhiteSpace(targetKeyword))
+            {
+                return "Please enter a keyword to search for.";
+            }
+            if (cyberKeywords.ContainsKey(targetKeyword))
+            {
+                return $"You can ask about: {string.Join(", ", cyberKeywords[targetKeyword])}";
+            }
+            return "Sorry, I don't have information on that topic. Please try asking about something related to above mentioned keywords.";
+
+            //future implementation: we can make this method more dynamic by
+            //allowing the user to input any keyword and then search for it in the dictionary,
+            //instead of hardcoding the target keyword.
+        }
     }
+   
 
 }

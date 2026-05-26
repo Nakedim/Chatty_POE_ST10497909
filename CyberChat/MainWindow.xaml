@@ -39,23 +39,26 @@
                     Width="100"
                     Height="40"
                     Click="Send_Click"/>
-            
-            
+
+
 
         </StackPanel>
         <StackPanel Margin="0,0,0,99">
-            
+
         </StackPanel>
         <Grid Margin="0,-78,0,82">
             <TextBlock Name="AppLogo" HorizontalAlignment="Left" Margin="56,75,0,0" TextWrapping="Wrap"
                        Text="" VerticalAlignment="Top" Height="95" Width="410"/>
         </Grid>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,99"/>
-        <TextBlock x:Name="BotQuestionText"
-            TextWrapping="Wrap" 
-            Foreground="White"
-            Background="Black"
-    Margin="0,610,10,44"/>
+      
+        <TextBox HorizontalAlignment="Center" 
+                 Name="BotQuestionText"
+                 Margin="0,486,0,0" TextWrapping="Wrap"
+                 Text="TextBox" VerticalAlignment="Top"
+                 Foreground="white"
+                 Background="Black"
+                 Width="610" Height="58"/>
 
 
 
