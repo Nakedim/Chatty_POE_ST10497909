@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static CyberChat.SentimentDetector;
 
 namespace CyberChat
 {
@@ -20,6 +21,7 @@ namespace CyberChat
    
 
         ChatBot chatBot;
+        private SentimentDetector detector = new SentimentDetector();
         public MainWindow()
         {
             InitializeComponent();
@@ -46,6 +48,7 @@ namespace CyberChat
         // SendMessage(): read input, call _chatBot.ProcessInput(), display result
         // AppendBotMessage() / AppendUserMessage(): update ChatDisplay TextBlock
 
+       
         public void LoadAsciiArt()
         {
             BotQuestionText.Text = @"";
@@ -71,8 +74,13 @@ namespace CyberChat
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
+            
             string userMessage = MsgInput.Text.Trim();
             string Placeholder = "Type your message here...";
+
+            Sentiments sentiments = detector.Detect(userMessage);
+            string emotionReply = detector.GetSentimentsResponse(sentiments);
+            
 
             // FIX: Just stop if empty. Do not save an empty string to MemoryStore.
             if (string.IsNullOrEmpty(userMessage) || userMessage == Placeholder)
@@ -86,22 +94,24 @@ namespace CyberChat
 
                 
                 ChatBotArea.Items.Add("CyberChatBot: Nice to meet you "+userMessage);
+                ChatBotArea.Items.Add("CyberChatbot: " + emotionReply);
 
                
 
             string botReply = chatBot.ProcessInput(userMessage);
+           
             ChatBotArea.Items.Add("CyberChatBot: " + botReply);
             MsgInput.Clear();
             return;
             }
 
-
+        private readonly string Placeholder = "Type your message here...";
 
         private void MsgInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                if (string.IsNullOrWhiteSpace(MsgInput.Text) )
+                if (string.IsNullOrWhiteSpace(MsgInput.Text) || MsgInput.Text ==Placeholder)
                 {
                     return;
                 }
@@ -111,24 +121,27 @@ namespace CyberChat
                 MsgInput.Focus();
             }
         }
-         string Placeholder = "Type your message here...";
+         
         private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
-            
         {
-            if (MsgInput.Text == Placeholder)
+
+            if (MsgInput.Text.Trim() == Placeholder)
             {
                 MsgInput.Text = "";
                 MsgInput.Foreground = Brushes.Black;
+          
+
             }
         }
 
         private void AnimateCursorLostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(MsgInput.Text))
+            if (string.IsNullOrWhiteSpace(MsgInput.Text))
             {
                 MsgInput.Text = Placeholder;
                 MsgInput.Foreground = Brushes.Gray;
             }
+        
         }
 
 

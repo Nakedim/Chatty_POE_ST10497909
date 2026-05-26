@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using static CyberChat.SentimentDetector;
 
 namespace CyberChat
 {
@@ -17,6 +18,7 @@ namespace CyberChat
         private KeywordResponder _keywords;
         private SentimentDetector _sentiment;
         private MemoryStore _memory;
+
 
 
         private bool _awaitingName = true;
@@ -57,6 +59,11 @@ namespace CyberChat
            
             }
            
+        public string MessagesWithSentiments(string message)
+        {
+            
+            return "";
+        }
         
 
 
