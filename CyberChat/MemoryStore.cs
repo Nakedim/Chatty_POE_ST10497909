@@ -6,10 +6,13 @@ namespace Chatty
 {
     public class MemoryStore
     {
- 
-        public string UserName { get; set; }
-        public string FavouriteTopic {  get; set; }
+
+        public string UserName { get; set; } = string.Empty;
+        public string FavouriteTopic { get; set; }= string.Empty;
+    
+    public string GetPersonalisedOpener()
+        {
+            return "";
+        }
     }
-
-
 }

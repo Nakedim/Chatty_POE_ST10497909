@@ -17,7 +17,7 @@ namespace CyberChat
             Frustrated,
             Happy }
         
-        private readonly Dictionary<Sentiments,List<string> > SentimentList = 
+        private readonly Dictionary<Sentiments,List<string> > sentimentList = 
          new Dictionary<Sentiments, List<string>>()
          {
              {Sentiments.Worried,
@@ -38,7 +38,7 @@ namespace CyberChat
         {
             input = input.ToLower();
 
-            foreach(var sentiment in SentimentList)
+            foreach(var sentiment in sentimentList)
             {
                 foreach(string keyword in sentiment.Value)
                 {

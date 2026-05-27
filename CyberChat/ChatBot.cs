@@ -21,12 +21,18 @@ namespace CyberChat
         private MemoryStore _memory;
         private SentimentDetector detector = new SentimentDetector();
 
-
+        private SentimentDetector sentiments;
         private bool _awaitingName = true;
         private string _lastTopic;
         private string _username;
 
-        public ChatBot(TextBox MsgInput,
+        public string CurrentStatus{  
+            get; 
+            private set; 
+        }
+
+
+        public ChatBot(
                 KeywordResponder keywordResponder,
                 SentimentDetector sentimentDetector,
                 MemoryStore memoryStore)
@@ -34,65 +40,35 @@ namespace CyberChat
             _keywords = keywordResponder;
             _sentiment = sentimentDetector;
             _memory = memoryStore;
+            sentiments = sentimentDetector;
+            CurrentStatus = "Ask me About Cyber Security";
         }
-
-
-
         KeywordResponder keyResponse = new KeywordResponder();
         private readonly List<string> _cyberKeywords = new List<string>() { "Password", "Scam", "Malware", "Privacy", "Phishing" };
 
        
-        
         public string ProcessInput(string input)
         {
+            CurrentStatus = "processing....";
             // Analyze the user's input for sentiment and keywords, and generate an appropriate response based on the analysis and the chatbot's memory of the conversation
-            string userMessage = input;
-            Sentiments sentiments = detector.Detect(input);
+            SentimentDetector.Sentiments mood = sentiments.Detect(input);
 
-            input = input.Trim();
-            if (string.IsNullOrEmpty(input))
-            {
-             return "Enter your name" ;
-            }
-            if (_awaitingName) 
-            {
-                // Store the user's name in memory and return a personalized greeting from the input
-               
-                _username = input.ToString();
-                _memory.UserName = _username;
-                _awaitingName = false;
-                return $"Welcome, {_memory.UserName}! How can I assist you today?";
-                
-            }
-           
-
-            // Check if the input contains any of the cybersecurity keywords and return a response based on the keyword detected
-            if (KeywordResponder.cyberKeywords.Keys.Any(keyword => input.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
-              
-                )
-            { 
-                //input = input.Replace("What can i ask you", "").Trim();
-                return keyResponse.getAllKeywords();
-            }
-            //if (_cyberKeywords.Contains(input))
-            //{
-
-            //    input = input.Replace("password", "").Trim();
-            //    return keyResponse.GetResponse("password");
-            //}
-            return "Sorry, I didn't understand that. Can you please rephrase?";
+            string emotionReply = sentiments.GetSentimentsResponse(mood);
+            string keywordReply = _keywords.getGreetingResponse(input);
+            CurrentStatus = "Ask Cyber Security questions";
+                return emotionReply + "\n" + keywordReply;
            
             }
-           
-     
-        
+
+
+
 
 
         public string GetGreeting()
         {
             //input = input.Trim();
             //BotQuestionText.Text = input;
-            if (_awaitingName) 
+            if (_awaitingName)
             {
                 _username = _memory.UserName;
                 if (string.IsNullOrEmpty(_username))
@@ -102,7 +78,7 @@ namespace CyberChat
                 else
                 {
                     _awaitingName = false;
-                    
+
                     return $"Welcome back, {_username}! How can I assist you today?";
                 }
             }
@@ -111,7 +87,7 @@ namespace CyberChat
         }
 
 
-     
+
 
     }
 }
