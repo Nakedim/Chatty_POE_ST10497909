@@ -47,6 +47,7 @@ namespace CyberChat
         }
         public void voiceGreeting()
         {
+
             SoundPlayer player = new SoundPlayer("Welcome.wav");
             player.Play();
         }
@@ -66,25 +67,25 @@ namespace CyberChat
       private void SendMessage()
         {
             string UserMessage = MsgInput.Text.Trim();
-             UserMessage= MsgInput.Text.Trim();
-            if(string.IsNullOrWhiteSpace(UserMessage) || UserMessage == Placeholder)
+
+            if (string.IsNullOrWhiteSpace(UserMessage) || UserMessage == Placeholder)
             {
                 return;
+            }
 
-                //this will oonly run when the message field is not empty
+                //this will only run when the message field is not empty
                 AddUserMessage(UserMessage);
 
                 string botReply = chatBot.ProcessInput(UserMessage);
-
 
                 AddBotMessage(botReply);
                 setStatus(chatBot.CurrentStatus);
                 MsgInput.Clear();
             }
-        }
+        
         private void AddUserMessage(string input)
         {
-            SendMessage();
+           ChatBotArea.Items.Add("You: " + input);
         }
 
 

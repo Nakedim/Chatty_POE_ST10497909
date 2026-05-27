@@ -43,8 +43,7 @@ namespace CyberChat
             sentiments = sentimentDetector;
             CurrentStatus = "Ask me About Cyber Security";
         }
-        KeywordResponder keyResponse = new KeywordResponder();
-        private readonly List<string> _cyberKeywords = new List<string>() { "Password", "Scam", "Malware", "Privacy", "Phishing" };
+  
 
        
         public string ProcessInput(string input)
@@ -56,8 +55,23 @@ namespace CyberChat
             string emotionReply = sentiments.GetSentimentsResponse(mood);
             string keywordReply = _keywords.getGreetingResponse(input);
             CurrentStatus = "Ask Cyber Security questions";
-                return emotionReply + "\n" + keywordReply;
            
+            if (!string.IsNullOrEmpty(emotionReply))
+            {
+                return emotionReply;
+            }
+            string FinalResonse = "";
+            if (!string.IsNullOrEmpty(keywordReply))
+            {
+
+                return keywordReply;
+            }
+
+
+            else
+            {
+                return "im here to help with cyber security";
+            }
             }
 
 
