@@ -28,7 +28,7 @@ namespace CyberChat
             InitializeChatBot();
             LoadAsciiArt();
             voiceGreeting();
-            GetGreeting();
+            GetGreeting("");
            
         }
 
@@ -54,17 +54,30 @@ namespace CyberChat
             BotQuestionText.Text = @"";
         }
 
-        public void GetGreeting()
+        public void GetGreeting(string input)
         {
-         string greeting = chatBot.GetGreeting();
-        
-            BotQuestionText.Text = greeting;
+            // 1. Find the matched key from the dictionary keys
+            string matchedKey = KeywordResponder.BotQuestions.Keys
+                .FirstOrDefault(q => input.IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0);
 
-            // Call a method on your ChatBot class to get the greeting message
-            // For example: string greeting = _chatBot.GetGreeting();
-            // Then display it in the BotQuestionText TextBlock
-            // BotQuestionText.Text = greeting;
-        }   
+            // 2. Check if a match was successfully found
+            if (matchedKey != null)
+            {
+                // Get the list of responses tied to that key
+                List<string> associatedResponses = KeywordResponder.BotQuestions[matchedKey];
+
+                // Grab the first dynamic response text from the list
+                string dynamicResponse = associatedResponses.FirstOrDefault() ?? "No answer configured.";
+
+                // Update your black UI background text control with the dynamic response
+                BotQuestionText.Text = dynamicResponse;
+            }
+            else
+            {
+                // Fallback: If no keywords match, use your default greeting method
+                BotQuestionText.Text = chatBot.GetGreeting();
+            }
+        }
         public void voiceGreeting()
         {
             SoundPlayer player = new SoundPlayer("greeting.wav");

@@ -68,13 +68,17 @@ namespace CyberChat
         { "what's your name?", ["I'm a chatbot.", "I don't have a name.", "You can call me Chatbot."] }
     };
 
-        private static readonly Dictionary<string, List<string>> cyberKeywords = new()
+        public static Dictionary<string, List<string>> cyberKeywords = new()
         {
             ["What can i ask"] = new List<string>() { "Password", "Phishing", "Privacy", "Scam", "Malware" }
         };
 
+        public static Dictionary<string, List<string>> BotQuestions = new()
+        {
+            ["What is your Name"] = new List<string>() { "How are you", "Where you from" }
+        };
 
-
+      
 
         public string GetResponse(string userInput)
         {

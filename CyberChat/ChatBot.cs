@@ -39,6 +39,10 @@ namespace CyberChat
 
 
         KeywordResponder keyResponse = new KeywordResponder();
+        private readonly List<string> _cyberKeywords = new List<string>() { "Password", "Scam", "Malware", "Privacy", "Phishing" };
+
+       
+        
         public string ProcessInput(string input)
         {
             // Analyze the user's input for sentiment and keywords, and generate an appropriate response based on the analysis and the chatbot's memory of the conversation
@@ -54,40 +58,40 @@ namespace CyberChat
             {
                 // Store the user's name in memory and return a personalized greeting from the input
                
-                _username = input;
+                _username = input.ToString();
                 _memory.UserName = _username;
                 _awaitingName = false;
                 return $"Welcome, {_memory.UserName}! How can I assist you today?";
                 
             }
-            // Check for specific keywords in the user's input and generate responses based on those keywords
-            
-            if (input.Contains("What can i ask you"))
-            {
-                
-                input = input.Replace("What can i ask you", "").Trim();
+           
+
+            // Check if the input contains any of the cybersecurity keywords and return a response based on the keyword detected
+            if (KeywordResponder.cyberKeywords.Keys.Any(keyword => input.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+              
+                )
+            { 
+                //input = input.Replace("What can i ask you", "").Trim();
                 return keyResponse.getAllKeywords();
             }
-            if(input.Contains("password"))
-            {
-             
-                input = input.Replace("password", "").Trim();
-                return keyResponse.GetResponse("password");
-            }
+            //if (_cyberKeywords.Contains(input))
+            //{
+
+            //    input = input.Replace("password", "").Trim();
+            //    return keyResponse.GetResponse("password");
+            //}
             return "Sorry, I didn't understand that. Can you please rephrase?";
            
             }
            
-        public string MessagesWithSentiments(string message)
-        {
-            
-            return "";
-        }
+     
         
 
 
         public string GetGreeting()
         {
+            //input = input.Trim();
+            //BotQuestionText.Text = input;
             if (_awaitingName) 
             {
                 _username = _memory.UserName;
@@ -98,6 +102,7 @@ namespace CyberChat
                 else
                 {
                     _awaitingName = false;
+                    
                     return $"Welcome back, {_username}! How can I assist you today?";
                 }
             }
@@ -106,28 +111,7 @@ namespace CyberChat
         }
 
 
-        public void advanceTopics(object sender, RoutedEventArgs e)
-        {
-
-
-            MessageBoxResult results = MessageBox.Show("Do you want to learn more about security?", "Next Topic", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (results == MessageBoxResult.Yes)
-            {
-                KeywordResponder kr = new KeywordResponder();
-                string response = kr.GetResponse("password");
-                kr.GetResponse("Password" + response);
-            }
-
-        }
-
-
-        public void ResponseGenerator(string userInput)
-        {
-            
-            
-        }
-
+     
 
     }
 }
