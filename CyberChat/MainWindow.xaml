@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CyberChatBot"
         Height="650"
+        Background="Cyan"
         Width="650">
 
-    <Grid Margin="10">
+    <Grid Margin="10,10,10,10">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -43,22 +44,22 @@
 
 
         </StackPanel>
-        <StackPanel Margin="0,0,0,99">
-
+        <StackPanel Margin="0,151,0,99">
+            <TextBlock Name="AppLogo" HorizontalAlignment="Left" Margin="65,-133,0,0" 
+                      
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Top" Height="110" Width="495"/>
         </StackPanel>
-        <Grid Margin="0,-78,0,82">
-            <TextBlock Name="AppLogo" HorizontalAlignment="Left" Margin="56,75,0,0" TextWrapping="Wrap"
-                       Text="" VerticalAlignment="Top" Height="95" Width="410"/>
-        </Grid>
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,99"/>
-      
+
+        <StackPanel Orientation="Horizontal" Margin="0,125,0,67"/>
+
         <TextBox HorizontalAlignment="Center" 
                  Name="BotQuestionText"
-                 Margin="0,486,0,0" TextWrapping="Wrap"
+                 Margin="0,492,0,0" TextWrapping="Wrap"
                  Text="TextBox" VerticalAlignment="Top"
                  Foreground="white"
                  Background="Black"
-                 Width="610" Height="58"/>
+                 Width="610" Height="52"/>
 
 
 

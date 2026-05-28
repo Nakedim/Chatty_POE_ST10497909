@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chatty;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,23 +15,9 @@ namespace CyberChat
 
         private Random random = new Random();
 
-        //ignore case sensitivity when matching keywords
-
-        public Dictionary<string, string> Cyberjagon()
-        {
-            return new Dictionary<string, string>()
-            {
-                ["Password"] = "A password is a secret word or phrase that is used to gain access to something, such as an account or device. It is important to use strong and unique passwords to protect your personal information and prevent unauthorized access.",
-                ["Scam"] = "A scam is a fraudulent scheme or deception designed to trick people into giving away their money, personal information, or other valuable assets. Scams can take many forms, such as phishing emails, fake websites, or phone calls from impersonators. It is important to be cautious and skeptical of unsolicited offers or requests for sensitive information.",
-                ["Malware"] = "Malware is a type of software that is designed to harm or exploit computer systems. It can take many forms, such as viruses, worms, trojans, ransomware, and spyware. Malware can be used to steal personal information, damage files, or take control of a computer. It is important to use antivirus software and keep it up to date to protect against malware threats.",
-                ["Privacy"] = "Privacy refers to the right of individuals to keep their personal information and activities private and secure. It involves protecting sensitive data, such as financial information, health records, and online activities, from unauthorized access or disclosure. Privacy is an important aspect of digital security and is essential for maintaining trust in online interactions.",
-
-
-
-            };
-
-        }
-        Dictionary<string, List<string>> _responses = new Dictionary<string, List<string>>()
+        Dictionary<string, List<string>> _responses = 
+            
+            new Dictionary<string, List<string>>()
         {
             ["Password"] = new List<string>()
             {
@@ -68,7 +55,7 @@ namespace CyberChat
         { "what's your name?", ["I'm a chatbot.", "I don't have a name.", "You can call me Chatbot."] }
     };
 
-        public static Dictionary<string, List<string>> cyberKeywords = new()
+        public static Dictionary<string, List<string>> CyberKeywords = new()
         {
             ["What can i ask"] = new List<string>() { "Password", "Phishing", "Privacy", "Scam", "Malware" }
         };
@@ -78,53 +65,38 @@ namespace CyberChat
             ["What is your Name"] = new List<string>() { "How are you", "Where you from" }
         };
 
+        
       
 
-        public string GetResponse(string userInput)
+        public string GetResponse(string UserInput)
         {
-   
-            var responses = Cyberjagon();
-            foreach (var keyword in _responses.Keys)
+            UserInput = "What can i ask";
+            var responses = CyberKeywords;
+            if (string.IsNullOrWhiteSpace(UserInput))
             {
-                if (userInput.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                return null;
+            }
+            foreach(var key in responses.Keys)
+            {
+                if(UserInput.IndexOf(key, StringComparison.OrdinalIgnoreCase ) >=0)
                 {
-                    return responses[keyword];
+                    var options = responses[key];
+                    return options[random.Next(options.Count)];
                 }
             }
-            return "I didn't understand that. Can you please rephrase?";
-        }
 
-        //getGreeting method
-        public string getGreetingResponse(string userInput)
-        {
-            foreach(var keyword in GreetingResponses.Keys)
-            {
-                if (userInput.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    var possibleResponses = GreetingResponses[keyword];
-                    return possibleResponses[random.Next(possibleResponses.Count)];
-                }
-            }
-            return "Hello! How can I assist you today?";
+            return "what can i ask";
         }
-
         //get all keywords methods
-        public string getAllKeywords()
+        public List<string> getAllKeywords()
         {
-            string targetKeyword = "What can i ask";
-            if(string.IsNullOrWhiteSpace(targetKeyword))
-            {
-                return "Please enter a keyword to search for.";
-            }
-            if (cyberKeywords.ContainsKey(targetKeyword))
-            {
-                return $"You can ask about: {string.Join(", ", cyberKeywords[targetKeyword])}";
-            }
-            return "Sorry, I don't have information on that topic. Please try asking about something related to above mentioned keywords.";
 
-            //future implementation: we can make this method more dynamic by
-            //allowing the user to input any keyword and then search for it in the dictionary,
-            //instead of hardcoding the target keyword.
+            if(CyberKeywords == null)
+            {
+                return new List<string>();
+            }
+            return CyberKeywords.Keys.ToList();
+
         }
     }
    

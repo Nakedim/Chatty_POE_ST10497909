@@ -23,7 +23,7 @@ namespace CyberChat
              {Sentiments.Worried,
              new List<string> {"worried","scared","Afraid,","concerned","sad"}},
              {Sentiments.Neutral,
-             new List<string >{"fine","ok","well"}}, 
+             new List<string >{""}}, 
              {Sentiments.Curious,
              new List<string>{ "why", "what", "how","?"}},
              {Sentiments.Frustrated,
@@ -64,7 +64,7 @@ namespace CyberChat
             switch (mood)
             {
                 case Sentiments.Neutral:
-                    return "Ok";
+                    return null;
                 case Sentiments.Worried:
                     return "Sad to Hear that";
                 case Sentiments.Curious:

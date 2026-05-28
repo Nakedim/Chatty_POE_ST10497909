@@ -37,75 +37,61 @@ namespace CyberChat
                 SentimentDetector sentimentDetector,
                 MemoryStore memoryStore)
         {
-            _keywords = keywordResponder;
+            
             _sentiment = sentimentDetector;
             _memory = memoryStore;
             sentiments = sentimentDetector;
             CurrentStatus = "Ask me About Cyber Security";
         }
-  
 
-       
+
+
         public string ProcessInput(string input)
         {
             CurrentStatus = "processing....";
-           
+
             Sentiments mood = sentiments.Detect(input);
-            string response = sentiments.GetSentimentsResponse(mood);
-           
 
             string emotionReply = sentiments.GetSentimentsResponse(mood);
-            string keywordReply = _keywords.getGreetingResponse(input);
-
-
-            CurrentStatus = $"{keywordReply}\nDetected sentiment: {mood}";
-             string FinalResonse = "";
-
-            if (!string.IsNullOrEmpty(keywordReply))
+            if (string.IsNullOrWhiteSpace(input))
             {
-
-                FinalResonse += keywordReply + "";
-                if (mood ==SentimentDetector.Sentiments.Worried)
-                {
-                    FinalResonse += "I notice your worry. it will be sorted immediately";
-                }
-                else if (mood == SentimentDetector.Sentiments.Neutral)
-                {
-                    FinalResonse +="";
-                }
+                return "please rephrase";
+            
             }
 
-            if (!string.IsNullOrEmpty(emotionReply))
-            {
-                FinalResonse += emotionReply;
-            }
-            if(string.IsNullOrWhiteSpace(FinalResonse))
-            {
-                return "im here to help with cyber security";
-            }
-            return FinalResonse ;
-            }
-
-        public string GetGreeting()
-        {
-            //input = input.Trim();
-            //BotQuestionText.Text = input;
             if (_awaitingName)
             {
-                _username = _memory.UserName;
-                if (string.IsNullOrEmpty(_username))
-                {
-                    return $"Hello!, What is your name?";
-                }
-                else
-                {
-                    _awaitingName = false;
+                _memory.UserName = input;
+                _awaitingName = false;
+                CurrentStatus = $"Chatting with {input}";
 
-                    return $"Welcome back, {_username}! How can I assist you today?";
+                return $"Nice to Meet you{_memory.UserName}"
+                    +$"Choose the following topics: {_keywords}"
+                    ;
+            }
+            if (input.Contains("want"))
+            {
+                var keywords = _keywords.getAllKeywords();
+                foreach (string keyword in keywords)
+                {
+                    _memory.FavouriteTopic = keyword;
+
+                    return "Your fav keyword is " + keywords;
+                }
+
+                {
+
                 }
             }
 
             return "enter your name to start chatting";
+
+        }
+
+        public string GetGreeting(string input)
+        {
+
+            return "";
         }
 
 

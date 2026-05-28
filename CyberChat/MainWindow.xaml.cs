@@ -29,8 +29,8 @@ namespace CyberChat
             InitializeChatBot();
             LoadAsciiArt();
             voiceGreeting();
-            setStatus(chatBot.GetGreeting());
-           
+            setStatus(chatBot.GetGreeting(""));
+ 
         }
 
         private void InitializeChatBot()
@@ -43,7 +43,17 @@ namespace CyberChat
 
         public void LoadAsciiArt()
         {
-            BotQuestionText.Text = @"";
+            AppLogo.Text = @"   /$$$$$$            /$$                            /$$$$$$  /$$                   /$$     /$$$$$$$              /$$    
+ /$$__  $$          | $$                           /$$__  $$| $$                  | $$    | $$__  $$            | $$    
+| $$  \__/ /$$   /$$| $$$$$$$   /$$$$$$   /$$$$$$ | $$  \__/| $$$$$$$   /$$$$$$  /$$$$$$  | $$  \ $$  /$$$$$$  /$$$$$$  
+| $$      | $$  | $$| $$__  $$ /$$__  $$ /$$__  $$| $$      | $$__  $$ |____  $$|_  $$_/  | $$$$$$$  /$$__  $$|_  $$_/  
+| $$      | $$  | $$| $$  \ $$| $$$$$$$$| $$  \__/| $$      | $$  \ $$  /$$$$$$$  | $$    | $$__  $$| $$  \ $$  | $$    
+| $$    $$| $$  | $$| $$  | $$| $$_____/| $$      | $$    $$| $$  | $$ /$$__  $$  | $$ /$$| $$  \ $$| $$  | $$  | $$ /$$
+|  $$$$$$/|  $$$$$$$| $$$$$$$/|  $$$$$$$| $$      |  $$$$$$/| $$  | $$|  $$$$$$$  |  $$$$/| $$$$$$$/|  $$$$$$/  |  $$$$/
+ \______/  \____  $$|_______/  \_______/|__/       \______/ |__/  |__/ \_______/   \___/  |_______/  \______/    \___/  
+           /$$  | $$                                                                                                    
+          |  $$$$$$/                                                                                                    
+           \______/                                                                                                     ";
         }
         public void voiceGreeting()
         {
@@ -59,8 +69,11 @@ namespace CyberChat
             ChatBotArea.Items.Add("CyberChatBot: " + input);
         }
 
-        private void AddUserMessage(string input)
+        private void AddUserMessage(string input, string UserName)
         {
+            MemoryStore store = new MemoryStore();
+            store.UserName = UserName;
+
             ChatBotArea.Items.Add("You: " + input);
         }
 
@@ -77,10 +90,12 @@ namespace CyberChat
 
             if (string.IsNullOrWhiteSpace(UserMessage) || UserMessage == Placeholder)
             {
-                return;
+              
+                AddBotMessage("Enter your name to proceed");
+                             return;
             }
 
-                AddUserMessage(UserMessage);
+                AddUserMessage(UserMessage, "");
                 AddBotMessage(botReply);
                 setStatus(chatBot.CurrentStatus);
                 MsgInput.Clear();
