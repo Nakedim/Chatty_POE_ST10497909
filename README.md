@@ -15,7 +15,6 @@ A simple console-based chatbot built using C#. The chatbot allows users to inter
 - Simple and lightweight C# console application
 Technologies Used
 
-<<<<<<< HEAD
 
 Screenshot for CI Workflow:
 
@@ -27,8 +26,7 @@ Screenshot for CI Workflow:
 
 
 
-=======
->>>>>>> eeb40eb (Add project files.)
+
 - C#
 - .NET Console Application
 
