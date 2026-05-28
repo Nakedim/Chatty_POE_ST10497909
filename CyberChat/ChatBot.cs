@@ -49,34 +49,42 @@ namespace CyberChat
         public string ProcessInput(string input)
         {
             CurrentStatus = "processing....";
-            // Analyze the user's input for sentiment and keywords, and generate an appropriate response based on the analysis and the chatbot's memory of the conversation
-            SentimentDetector.Sentiments mood = sentiments.Detect(input);
+           
+            Sentiments mood = sentiments.Detect(input);
+            string response = sentiments.GetSentimentsResponse(mood);
+           
 
             string emotionReply = sentiments.GetSentimentsResponse(mood);
             string keywordReply = _keywords.getGreetingResponse(input);
-            CurrentStatus = "Ask Cyber Security questions";
-           
-            if (!string.IsNullOrEmpty(emotionReply))
-            {
-                return emotionReply;
-            }
-            string FinalResonse = "";
+
+
+            CurrentStatus = $"{keywordReply}\nDetected sentiment: {mood}";
+             string FinalResonse = "";
+
             if (!string.IsNullOrEmpty(keywordReply))
             {
 
-                return keywordReply;
+                FinalResonse += keywordReply + "";
+                if (mood ==SentimentDetector.Sentiments.Worried)
+                {
+                    FinalResonse += "I notice your worry. it will be sorted immediately";
+                }
+                else if (mood == SentimentDetector.Sentiments.Neutral)
+                {
+                    FinalResonse +="";
+                }
             }
 
-
-            else
+            if (!string.IsNullOrEmpty(emotionReply))
+            {
+                FinalResonse += emotionReply;
+            }
+            if(string.IsNullOrWhiteSpace(FinalResonse))
             {
                 return "im here to help with cyber security";
             }
+            return FinalResonse ;
             }
-
-
-
-
 
         public string GetGreeting()
         {
@@ -87,7 +95,7 @@ namespace CyberChat
                 _username = _memory.UserName;
                 if (string.IsNullOrEmpty(_username))
                 {
-                    return "Hello! What is your name?";
+                    return $"Hello!, What is your name?";
                 }
                 else
                 {

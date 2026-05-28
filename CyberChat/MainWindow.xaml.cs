@@ -53,11 +53,17 @@ namespace CyberChat
         }
 
         //helper methods
-        private void AddBotMessage(string message)
+        private void AddBotMessage(string input)
 
         {
-            ChatBotArea.Items.Add("CyberChatBot: " + message);
+            ChatBotArea.Items.Add("CyberChatBot: " + input);
         }
+
+        private void AddUserMessage(string input)
+        {
+            ChatBotArea.Items.Add("You: " + input);
+        }
+
 
         private void setStatus(string message)
         {
@@ -67,26 +73,20 @@ namespace CyberChat
       private void SendMessage()
         {
             string UserMessage = MsgInput.Text.Trim();
+            string botReply = chatBot.ProcessInput(UserMessage);
 
             if (string.IsNullOrWhiteSpace(UserMessage) || UserMessage == Placeholder)
             {
                 return;
             }
 
-                //this will only run when the message field is not empty
                 AddUserMessage(UserMessage);
-
-                string botReply = chatBot.ProcessInput(UserMessage);
-
                 AddBotMessage(botReply);
                 setStatus(chatBot.CurrentStatus);
                 MsgInput.Clear();
             }
         
-        private void AddUserMessage(string input)
-        {
-           ChatBotArea.Items.Add("You: " + input);
-        }
+       
 
 
         //Events methods

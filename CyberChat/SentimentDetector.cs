@@ -21,9 +21,9 @@ namespace CyberChat
          new Dictionary<Sentiments, List<string>>()
          {
              {Sentiments.Worried,
-             new List<string> {"worried","scared","Afraid"}},
+             new List<string> {"worried","scared","Afraid,","concerned","sad"}},
              {Sentiments.Neutral,
-             new List<string >{"fine","ok","well"}},
+             new List<string >{"fine","ok","well"}}, 
              {Sentiments.Curious,
              new List<string>{ "why", "what", "how","?"}},
              {Sentiments.Frustrated,
@@ -36,30 +36,35 @@ namespace CyberChat
 
         public Sentiments Detect(string input)
         {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return Sentiments.Neutral;
+            }
+
+
             input = input.ToLower();
 
             foreach(var sentiment in sentimentList)
             {
-                foreach(string keyword in sentiment.Value)
+                bool found = sentiment.Value.Any(key => input.Contains(key.ToLower()));
+                if (found)
                 {
-                    if (input.Contains(keyword))
-                    {
-                        return sentiment.Key;
-                    }
+                    return sentiment.Key;
                 }
+              
             }
-
             return Sentiments.Neutral;
+           
         }
 
         
         
-        public string GetSentimentsResponse(Sentiments sentiment)
+        public string GetSentimentsResponse(Sentiments mood)
         {
-            switch (sentiment)
+            switch (mood)
             {
                 case Sentiments.Neutral:
-                    return "Ohkay";
+                    return "Ok";
                 case Sentiments.Worried:
                     return "Sad to Hear that";
                 case Sentiments.Curious:
