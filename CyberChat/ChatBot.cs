@@ -1,101 +1,99 @@
 ﻿using Chatty;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Media;
 using static CyberChat.SentimentDetector;
 
 namespace CyberChat
 {
     internal class ChatBot
     {
-
         private KeywordResponder _keywords;
         private SentimentDetector _sentiment;
         private MemoryStore _memory;
-        private SentimentDetector detector = new SentimentDetector();
 
-        private SentimentDetector sentiments;
         private bool _awaitingName = true;
         private string _lastTopic;
         private string _username;
 
-        public string CurrentStatus{  
-            get; 
-            private set; 
-        }
-
+        public string CurrentStatus { get; private set; }
 
         public ChatBot(
-                KeywordResponder keywordResponder,
-                SentimentDetector sentimentDetector,
-                MemoryStore memoryStore)
+            KeywordResponder keywordResponder,
+            SentimentDetector sentimentDetector,
+            MemoryStore memoryStore)
         {
-            
+            _keywords = keywordResponder;
             _sentiment = sentimentDetector;
             _memory = memoryStore;
-            sentiments = sentimentDetector;
             CurrentStatus = "Ask me About Cyber Security";
         }
-
-
 
         public string ProcessInput(string input)
         {
             CurrentStatus = "processing....";
 
-            Sentiments mood = sentiments.Detect(input);
-
-            string emotionReply = sentiments.GetSentimentsResponse(mood);
             if (string.IsNullOrWhiteSpace(input))
             {
-                return "please rephrase";
-            
+                return "please type something";
             }
 
+            input = input.ToLower();
+            Sentiments mood = _sentiment.Detect(input);
+
+            // Order 1: Ask for name
             if (_awaitingName)
             {
                 _memory.UserName = input;
                 _awaitingName = false;
                 CurrentStatus = $"Chatting with {input}";
-
-                return $"Nice to Meet you{_memory.UserName}"
-                    +$"Choose the following topics: {_keywords}"
-                    ;
+                return $"Nice to meet you {_memory.UserName}! Ask me about cyber security.";
             }
-            if (input.Contains("want"))
+
+            // Order 2: "Tell me more"
+            if (input.Contains("tell me more") || input.Contains("explain more"))
             {
-                var keywords = _keywords.getAllKeywords();
-                foreach (string keyword in keywords)
+                if (!string.IsNullOrEmpty(_lastTopic))
                 {
-                    _memory.FavouriteTopic = keyword;
-
-                    return "Your fav keyword is " + keywords;
-                }
-
-                {
-
+                    return $"Here is the information about {_lastTopic}";
                 }
             }
 
-            return "enter your name to start chatting";
+            // Order 3: Sentiment response
+            if (mood != Sentiments.Neutral)
+            {
+                return _sentiment.GetSentimentsResponse(mood);
+            }
 
+            // Order 4: Small talk (moved before keyword detection)
+            if (input.Contains("how are you"))
+            {
+                return "I'm functioning correctly and ready to help.";
+            }
+            if (input.Contains("what can you do"))
+            {
+                return "I can help you with cybersecurity topics like phishing, scams, and password safety.";
+            }
+
+            // Order 5: Keyword response
+            string response = _keywords.GetResponse(input);
+            if (!string.IsNullOrEmpty(response))
+            {
+                _lastTopic = response;
+                return response;
+            }
+
+            // Order 6: Default fallback
+            return "Ask me about cybersecurity.";
         }
 
         public string GetGreeting(string input)
         {
-
-            return "";
+            input = input.ToLower();
+            if (input.Contains("hello") || input.Contains("hi"))
+            {
+                return $"Hello {_memory.UserName}, how can I assist you today?";
+            }
+            return string.Empty;
         }
-
-
-
-
     }
 }
