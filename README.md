@@ -25,7 +25,9 @@ Screenshot for CI Workflow:
 <img width="703" height="482" alt="image" src="https://github.com/user-attachments/assets/3c742c05-41d9-4bf3-92c3-6ed2b29f2a35" />
 
 
+The working app
 
+<img width="627" height="630" alt="ChatApp" src="https://github.com/user-attachments/assets/79c81e2d-25f0-42ba-b928-3229b8dfc874" />
 
 - C#
 - .NET Console Application
