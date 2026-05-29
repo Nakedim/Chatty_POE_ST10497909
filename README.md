@@ -15,7 +15,6 @@ A simple console-based chatbot built using C#. The chatbot allows users to inter
 - Simple and lightweight C# console application
 Technologies Used
 
-<<<<<<< HEAD
 
 Screenshot for CI Workflow:
 
@@ -26,9 +25,10 @@ Screenshot for CI Workflow:
 <img width="703" height="482" alt="image" src="https://github.com/user-attachments/assets/3c742c05-41d9-4bf3-92c3-6ed2b29f2a35" />
 
 
+The working app
 
-=======
->>>>>>> eeb40eb (Add project files.)
+<img width="627" height="630" alt="ChatApp" src="https://github.com/user-attachments/assets/79c81e2d-25f0-42ba-b928-3229b8dfc874" />
+
 - C#
 - .NET Console Application
 
@@ -39,3 +39,7 @@ How It Works
 3. The user selects or views topics.
 4. The user can choose to continue or exit.
 5. A goodbye message is displayed when the user quits.
+
+On the draft release we do have the youtube link: https://youtu.be/pRObSdPoODQ
+this is our CI screenshot<img width="1430" height="756" alt="CI Link" src="https://github.com/user-attachments/assets/97c910ff-a0e9-4dba-9431-6d37e69aab51" />
+
