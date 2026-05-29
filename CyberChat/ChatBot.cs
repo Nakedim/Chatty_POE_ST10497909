@@ -5,109 +5,130 @@ namespace CyberChat
 {
     public class ChatBot
     {
+        private readonly KeywordResponder _keywordResponder;
+        private readonly SentimentDetector _sentimentDetector;
+        private readonly MemoryStore _memoryStore;
 
-        private KeywordResponder _keywords;
-        private SentimentDetector _sentiment;
-        private MemoryStore _memory;
-        
-
-      
         private bool _awaitingName = true;
         private string _lastTopic = "";
 
-
-        public string CurrentStatus{  
-            get; 
-            private set; 
-        }
-
+        public string CurrentStatus { get; private set; }
 
         public ChatBot(
-                KeywordResponder keywordResponder,
-                SentimentDetector sentimentDetector,
-                MemoryStore memoryStore)
+            KeywordResponder keywordResponder,
+            SentimentDetector sentimentDetector,
+            MemoryStore memoryStore)
         {
-            _keywords = keywordResponder;
-            _sentiment = sentimentDetector;
-            _memory = memoryStore;
-            CurrentStatus = "Ask me About Cyber Security";
+            _keywordResponder = keywordResponder;
+            _sentimentDetector = sentimentDetector;
+            _memoryStore = memoryStore;
+
+            CurrentStatus = "Ask me about Cyber Security";
         }
-
-
 
         public string ProcessInput(string input)
         {
-            input = input.ToLower();
-            CurrentStatus = "processing....";
-           
-            Sentiments mood = _sentiment.Detect(input);
-            
+            // Validate input
             if (string.IsNullOrWhiteSpace(input))
             {
-                return "please type something";
-            
+                CurrentStatus = "Waiting for input";
+                return "Please type something.";
             }
-            //Order 1
+
+            string originalInput = input.Trim();
+            string normalizedInput = originalInput.ToLower();
+
+            CurrentStatus = "Processing...";
+
+            // Handle first-time username setup
             if (_awaitingName)
             {
-                _memory.UserName = input;
-                _awaitingName = false;
-                CurrentStatus = $"Chatting with {input}";
-
-                return $"Nice to Meet you {_memory.UserName}! How are you?.";
-                   
+                return HandleUserName(originalInput);
             }
-          
-            if (input.Contains("tell me more") 
-                || input.Contains("explain more"))
-            {
-              if(!string.IsNullOrEmpty(_lastTopic))
 
-                {
-                  return $"{_memory.UserName} Here is the information about {_lastTopic}";
+            // Detect user sentiment
+            Sentiments mood = _sentimentDetector.Detect(normalizedInput);
 
-                    //ivoke a dictionary
-                }
-        
-            }
-            //Order 3
-            mood = _sentiment.Detect(input);
-
-            //if it is not neutral, it should return null
             if (mood != Sentiments.Neutral)
             {
-                return _sentiment.GetSentimentsResponse(mood);
-                
+                CurrentStatus = "Responded to sentiment";
+                return _sentimentDetector.GetSentimentsResponse(mood);
             }
-            
-            //Order 4
 
-            if (input.IndexOf("how are you", StringComparison.OrdinalIgnoreCase) >= 0)
+            // Handle follow-up requests
+            if (IsFollowUpRequest(normalizedInput))
             {
-                return $"I'm functioning correctly and ready to help. {_memory.UserName}";
+                return HandleFollowUpRequest();
             }
-            if (input.IndexOf("what can you do", StringComparison.OrdinalIgnoreCase) >=0)
-            {
-                return $"i can help you with cyber security matters.{_memory.UserName}";
-            }
-            //Order 5
-            string response = _keywords.GetResponse(input);
 
-            if (!string.IsNullOrEmpty(response))
+            // Handle common chatbot questions
+            string basicResponse = HandleBasicQuestions(normalizedInput);
+
+            if (!string.IsNullOrEmpty(basicResponse))
             {
-                //store the last topic
-                _lastTopic = response;
-                return response;
+                CurrentStatus = "Answered basic question";
+                return basicResponse;
             }
-           
-            //Order 6
-            return $"ask me about  {_memory.UserName}";
+
+            // Handle keyword-based responses
+            string keywordResponse = _keywordResponder.GetResponse(normalizedInput);
+
+            if (!string.IsNullOrEmpty(keywordResponse))
+            {
+                // Store the actual topic user asked about
+                _lastTopic = originalInput;
+
+                CurrentStatus = "Topic discussed";
+                return keywordResponse;
+            }
+
+            // Default fallback response
+            CurrentStatus = "Awaiting next question";
+
+            return $"I'm not sure how to respond to that, {_memoryStore.UserName}. Ask me something about cyber security.";
         }
 
-   
+        private string HandleUserName(string userName)
+        {
+            _memoryStore.UserName = userName;
+            _awaitingName = false;
 
+            CurrentStatus = $"Chatting with {userName}";
 
+            return $"Nice to meet you {userName}! How are you?";
+        }
 
+        private bool IsFollowUpRequest(string input)
+        {
+            return input.Contains("tell me more") ||
+                   input.Contains("explain more");
+        }
 
+        private string HandleFollowUpRequest()
+        {
+            CurrentStatus = "Providing more information";
+
+            if (!string.IsNullOrEmpty(_lastTopic))
+            {
+                return $"{_memoryStore.UserName}, here is more information about {_lastTopic}.";
+            }
+
+            return "Please ask about a cyber security topic first.";
+        }
+
+        private string HandleBasicQuestions(string input)
+        {
+            if (input.Contains("how are you"))
+            {
+                return $"I'm functioning correctly and ready to help, {_memoryStore.UserName}.";
+            }
+
+            if (input.Contains("what can you do"))
+            {
+                return $"I can help you with cyber security awareness, password safety, phishing, malware, and online protection, {_memoryStore.UserName}.";
+            }
+
+            return string.Empty;
+        }
     }
 }
