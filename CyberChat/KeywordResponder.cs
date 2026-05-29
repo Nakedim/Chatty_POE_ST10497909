@@ -1,13 +1,4 @@
-﻿using Chatty;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Navigation;
-
-namespace CyberChat
+﻿namespace CyberChat
 {
     public class KeywordResponder
     {
@@ -59,19 +50,16 @@ namespace CyberChat
         {
             ["What can i ask"] = new List<string>() { "Password", "Phishing", "Privacy", "Scam", "Malware" }
         };
-
-        public static Dictionary<string, List<string>> BotQuestions = new()
-        {
-            ["What is your Name"] = new List<string>() { "How are you", "Where you from" }
-        };
+        
+     
 
         
       
 
         public string GetResponse(string UserInput)
         {
-            UserInput = "What can i ask";
-            var responses = CyberKeywords;
+       
+            var responses = _responses;
             if (string.IsNullOrWhiteSpace(UserInput))
             {
                 return null;
@@ -85,12 +73,11 @@ namespace CyberChat
                 }
             }
 
-            return "what can i ask";
+            return "";
         }
         //get all keywords methods
         public List<string> getAllKeywords()
         {
-
             if(CyberKeywords == null)
             {
                 return new List<string>();

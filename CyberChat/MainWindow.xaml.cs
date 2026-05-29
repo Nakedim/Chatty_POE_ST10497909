@@ -1,18 +1,8 @@
 ﻿using Chatty;
-using System.Diagnostics.Eventing.Reader;
 using System.Media;
-using System.Text;
 using System.Windows;
-
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static CyberChat.SentimentDetector;
 
 namespace CyberChat
 {
@@ -30,14 +20,17 @@ namespace CyberChat
             LoadAsciiArt();
             voiceGreeting();
             GetGreeting("");
- 
+            KeywordResponder kr = new KeywordResponder();
+            kr.getAllKeywords();
+
+
+
         }
 
         private void InitializeChatBot()
         {
 
-            ChatBotArea.Items.Add("CyberChatBot: Hello! I'm your Cyber Security assistant.");
-            ChatBotArea.Items.Add("CyberChatBot: What’s your name?");
+           
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
@@ -97,6 +90,8 @@ namespace CyberChat
 
         public string GetGreeting(string input)
         {
+            ChatBotArea.Items.Add("CyberChatBot: Hello! I'm your Cyber Security assistant.");
+            ChatBotArea.Items.Add("CyberChatBot: What’s your name?");
             if (input.Contains("hello") || input.Contains("hi"))
             {
                 return $"Hello ow can I assist you today?";
@@ -122,6 +117,7 @@ namespace CyberChat
                 e.Handled = true;
                 
             }
+            
         }
   
         private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
@@ -145,8 +141,6 @@ namespace CyberChat
             }
         
         }
-
-       
 
 
     }

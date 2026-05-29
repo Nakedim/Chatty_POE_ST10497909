@@ -1,19 +1,9 @@
 ﻿using Chatty;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Media;
 using static CyberChat.SentimentDetector;
 
 namespace CyberChat
 {
-    internal class ChatBot
+    public class ChatBot
     {
 
         private KeywordResponder _keywords;
@@ -23,8 +13,8 @@ namespace CyberChat
 
       
         private bool _awaitingName = true;
-        private string _lastTopic;
-        private string _username;
+        private string _lastTopic = "";
+
 
         public string CurrentStatus{  
             get; 
@@ -64,17 +54,19 @@ namespace CyberChat
                 _awaitingName = false;
                 CurrentStatus = $"Chatting with {input}";
 
-                return $"Nice to Meet you {_memory.UserName}! Ask me about cyber security.";
+                return $"Nice to Meet you {_memory.UserName}! How are you?.";
                    
             }
-            //Order 2
+          
             if (input.Contains("tell me more") 
                 || input.Contains("explain more"))
             {
               if(!string.IsNullOrEmpty(_lastTopic))
 
                 {
-                  return $"Here is the information about{_lastTopic}";
+                  return $"{_memory.UserName} Here is the information about {_lastTopic}";
+
+                    //ivoke a dictionary
                 }
         
             }
@@ -92,11 +84,11 @@ namespace CyberChat
 
             if (input.IndexOf("how are you", StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                return "I'm functioning correctly and ready to help.";
+                return $"I'm functioning correctly and ready to help. {_memory.UserName}";
             }
             if (input.IndexOf("what can you do", StringComparison.OrdinalIgnoreCase) >=0)
             {
-                return "i can help you with security.";
+                return $"i can help you with cyber security matters.{_memory.UserName}";
             }
             //Order 5
             string response = _keywords.GetResponse(input);
@@ -107,10 +99,9 @@ namespace CyberChat
                 _lastTopic = response;
                 return response;
             }
-
-
+           
             //Order 6
-            return "ask me about cybersecurity";
+            return $"ask me about  {_memory.UserName}";
         }
 
    
