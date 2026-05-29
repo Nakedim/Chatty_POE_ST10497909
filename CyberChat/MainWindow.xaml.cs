@@ -12,7 +12,8 @@ namespace CyberChat
            private ChatBot chatBot;
              private readonly string  Placeholder = 
             "Type your message here...";
-             
+        private MemoryStore _memory = new MemoryStore();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -20,8 +21,7 @@ namespace CyberChat
             LoadAsciiArt();
             voiceGreeting();
             GetGreeting("");
-            KeywordResponder kr = new KeywordResponder();
-            kr.getAllKeywords();
+          
 
 
 
@@ -142,6 +142,6 @@ namespace CyberChat
         
         }
 
-
+       
     }
 }

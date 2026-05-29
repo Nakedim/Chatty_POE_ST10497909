@@ -57,7 +57,7 @@
             switch (mood)
             {
                 case Sentiments.Neutral:
-                    return null;
+                    return "";
                 case Sentiments.Worried:
                     return "Sad to Hear that, dont worry i will help you";
                 case Sentiments.Curious:

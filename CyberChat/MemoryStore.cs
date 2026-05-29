@@ -8,36 +8,53 @@
         Dictionary<string, string> UserInfo = new Dictionary<string, string>();
 
 
-       public void Store(string UserName, string FavouriteTopic )
+        public void Store(string key, string value)
         {
-            if (string.IsNullOrWhiteSpace(UserName))
+            if (string.IsNullOrWhiteSpace(key) ||
+                string.IsNullOrWhiteSpace(value))
             {
                 return;
             }
-            switch (UserName.ToLower())
+
+            switch (key.ToLower())
             {
                 case "name":
                 case "username":
-                    UserName = FavouriteTopic;
+                    UserName = value;
                     break;
-                case "FavouriteTopic":
+
+                case "favouritetopic":
                 case "topic":
-                   FavouriteTopic = UserName;
+                    FavouriteTopic = value;
                     break;
+
                 default:
-                    UserInfo[UserName] = FavouriteTopic;
+                    UserInfo[key] = value;
                     break;
             }
-            
+
         }
-
-
         public string Recall(string key)
         {
-            return "";
-                ;
+            switch (key.ToLower())
+            {
+                case "name":
+                case "username":
+                    return UserName;
+
+                case "favouritetopic":
+                case "topic":
+                    return FavouriteTopic;
+
+                default:
+                    if (UserInfo.ContainsKey(key))
+                    {
+                        return UserInfo[key];
+                    }
+
+                    return "";
+            }
         }
-   
     public string GetPersonalisedOpener(string input)
         {
             input.ToLower().Trim();

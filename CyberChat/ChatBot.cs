@@ -40,13 +40,25 @@ namespace CyberChat
 
             CurrentStatus = "Processing...";
 
-            // Handle first-time username setup
+            // First interaction = ask for username
             if (_awaitingName)
             {
                 return HandleUserName(originalInput);
             }
 
-            // Detect user sentiment
+            // Store favourite topic
+            if (normalizedInput.Contains("my favourite topic is"))
+            {
+                return SaveFavouriteTopic(originalInput);
+            }
+
+            // Recall favourite topic
+            if (normalizedInput.Contains("what is my favourite topic"))
+            {
+                return RecallFavouriteTopic();
+            }
+
+            // Sentiment detection
             Sentiments mood = _sentimentDetector.Detect(normalizedInput);
 
             if (mood != Sentiments.Neutral)
@@ -55,13 +67,13 @@ namespace CyberChat
                 return _sentimentDetector.GetSentimentsResponse(mood);
             }
 
-            // Handle follow-up requests
+            // Follow-up requests
             if (IsFollowUpRequest(normalizedInput))
             {
                 return HandleFollowUpRequest();
             }
 
-            // Handle common chatbot questions
+            // Basic chatbot questions
             string basicResponse = HandleBasicQuestions(normalizedInput);
 
             if (!string.IsNullOrEmpty(basicResponse))
@@ -70,19 +82,18 @@ namespace CyberChat
                 return basicResponse;
             }
 
-            // Handle keyword-based responses
-            string keywordResponse = _keywordResponder.GetResponse(normalizedInput);
+            // Keyword responses
+            string keywordResponse =
+                _keywordResponder.GetResponse(normalizedInput);
 
             if (!string.IsNullOrEmpty(keywordResponse))
             {
-                // Store the actual topic user asked about
                 _lastTopic = originalInput;
 
                 CurrentStatus = "Topic discussed";
                 return keywordResponse;
             }
 
-            // Default fallback response
             CurrentStatus = "Awaiting next question";
 
             return $"I'm not sure how to respond to that, {_memoryStore.UserName}. Ask me something about cyber security.";
@@ -90,12 +101,43 @@ namespace CyberChat
 
         private string HandleUserName(string userName)
         {
-            _memoryStore.UserName = userName;
+            _memoryStore.Store("name", userName);
+
             _awaitingName = false;
 
             CurrentStatus = $"Chatting with {userName}";
 
             return $"Nice to meet you {userName}! How are you?";
+        }
+
+        private string SaveFavouriteTopic(string input)
+        {
+            string topic =
+                input.Replace("my favourite topic is", "",
+                StringComparison.OrdinalIgnoreCase).Trim();
+
+            if (string.IsNullOrWhiteSpace(topic))
+            {
+                return "Please tell me your favourite topic.";
+            }
+
+            _memoryStore.Store("topic", topic);
+
+            CurrentStatus = "Favourite topic saved";
+
+            return $"Got it {_memoryStore.UserName}! Your favourite topic is {topic}.";
+        }
+
+        private string RecallFavouriteTopic()
+        {
+            string topic = _memoryStore.Recall("topic");
+
+            if (string.IsNullOrEmpty(topic))
+            {
+                return "I do not know your favourite topic yet.";
+            }
+
+            return $"{_memoryStore.UserName}, your favourite topic is {topic}.";
         }
 
         private bool IsFollowUpRequest(string input)
