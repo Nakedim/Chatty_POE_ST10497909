@@ -6,7 +6,7 @@
         Background="Cyan"
         Width="650">
 
-    <Grid Margin="10,10,10,10">
+    <Grid Margin="10,10,10,7">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -24,10 +24,21 @@
                     Orientation="Horizontal" Margin="0,10,0,10" Grid.RowSpan="2">
 
             <!-- User Input -->
-            <TextBox Name="MsgInput"
+
+            <!-- Send Button -->
+            <!-- User Input -->
+
+            <!-- Send Button -->
+            <!-- User Input -->
+
+            <!-- Send Button -->
+            <!-- User Input -->
+
+            <!-- Send Button -->
+            <!-- User Input -->
+            <TextBox x:Name="MsgInput"
                      Width="500"
-                     Height="35"
-                     Margin="0,0,10,0"
+                     Height="36"
                      Text="Type your message here..."
                      KeyDown ="MsgInput_KeyDown"
                      Foreground="Gray"
@@ -35,10 +46,10 @@
                      LostFocus="AnimateCursorLostFocus" />
 
             <!-- Send Button -->
-            <Button Name="Send"
+            <Button x:Name="Send"
                     Content="Send"
-                    Width="100"
-                    Height="40"
+                    Width="130"
+                    Height="35"
                     Click="Send_Click"/>
 
 
@@ -52,14 +63,6 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,125,0,67"/>
-
-        <TextBox HorizontalAlignment="Center" 
-                 Name="BotQuestionText"
-                 Margin="0,492,0,0" TextWrapping="Wrap"
-                 Text="TextBox" VerticalAlignment="Top"
-                 Foreground="white"
-                 Background="Black"
-                 Width="610" Height="52"/>
 
 
 

@@ -29,13 +29,16 @@ namespace CyberChat
             InitializeChatBot();
             LoadAsciiArt();
             voiceGreeting();
-            setStatus(chatBot.GetGreeting(""));
+            GetGreeting("");
  
         }
 
         private void InitializeChatBot()
         {
-               chatBot = new ChatBot(
+
+            ChatBotArea.Items.Add("CyberChatBot: Hello! I'm your Cyber Security assistant.");
+            ChatBotArea.Items.Add("CyberChatBot: What’s your name?");
+            chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
                 new MemoryStore());
@@ -73,10 +76,7 @@ namespace CyberChat
         }
 
 
-        private void setStatus(string message)
-        {
-            BotQuestionText.Text = message;
-        }
+ 
        
       private void SendMessage()
         {
@@ -92,11 +92,17 @@ namespace CyberChat
 
                 AddUserMessage(UserMessage, "");
                 AddBotMessage(botReply);
-                setStatus(chatBot.CurrentStatus);
                 MsgInput.Clear();
             }
-        
-       
+
+        public string GetGreeting(string input)
+        {
+            if (input.Contains("hello") || input.Contains("hi"))
+            {
+                return $"Hello ow can I assist you today?";
+            }
+            return string.Empty;
+        }
 
 
         //Events methods
