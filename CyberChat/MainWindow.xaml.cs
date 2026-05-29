@@ -1,190 +1,147 @@
 ﻿using Chatty;
-using System.Text;
+using System.Media;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CyberChat
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        
-        Media md = new Media();
+   
+           private ChatBot chatBot;
+             private readonly string  Placeholder = 
+            "Type your message here...";
+        private MemoryStore _memory = new MemoryStore();
 
         public MainWindow()
         {
             InitializeComponent();
-            BotQuestionText.Text = "My name is CyberChat, what is your Name";
-
-            //Intros
-            Loaded += MainWindow_Loaded;
+            InitializeChatBot();
+            LoadAsciiArt();
+            voiceGreeting();
+            GetGreeting("");
           
-            // ChatLogic
-            // Chat logic methods goes here
 
 
 
         }
 
-        // Intro, greeting, media (Sounds & logo) 
-        public void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            //pause for testing
-            //md.PlaySound(currentUser);
-            AppLogo.Text = md.logo;
-        }
-
-
-        //Chat conversation
-        //handles the button event
-        private bool NameCaptured = false;
-        
-        private void Send_Click(object sender, RoutedEventArgs e)
+        private void InitializeChatBot()
         {
 
-
-
-            string userMessage = MessageInput.Text.Trim();
            
-
-            if (string.IsNullOrEmpty(userMessage))
-            {
-                MemoryStore.UserName = userMessage;
-                MessageBox.Show("Please enter your message");
-                return;
-            }
-            
-
-
-            if (!NameCaptured)
-            {
-                MemoryStore.UserName = userMessage;
-                NameCaptured = true;
-                
-                BotQuestionText.Text = $"Hello, {MemoryStore.UserName} How can i help you Today";
-                ChatBotArea.Items.Add("CyberChatBot: Nice to meet you " + MemoryStore.UserName);
-            MessageInput.Clear();
-                return;
-
-            }
-
-            // Show user message
-            ChatBotArea.Items.Add(MemoryStore.UserName + ": " + userMessage);
-
-            // Bot reply
-            string botReply = BotReplies(userMessage);
-
-            ChatBotArea.Items.Add("CyberChatBot: " + botReply);
-
-            // Clear input
-            MessageInput.Clear();
-
+            chatBot = new ChatBot(
+                new KeywordResponder(),
+                new SentimentDetector(),
+                new MemoryStore());
         }
 
-       
-        private string BotReplies(string message)
+        public void LoadAsciiArt()
         {
-            Sentiments BotMood = new Sentiments();
+            AppLogo.Text = @" __       __   ___  __   __            ___  __   __  ___ 
+/  ` \ / |__) |__  |__) /  ` |__|  /\   |  |__) /  \  |  
+\__,  |  |__) |___ |  \ \__, |  | /~~\  |  |__) \__/  |  
+                                                         ";    
             
-            
-            message = message.ToLower().Trim();
+        }
+        public void voiceGreeting()
+        {
 
-            
+            SoundPlayer player = new SoundPlayer("Welcome.wav");
+            player.Play();
+        }
 
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                MessageBox.Show("Please enter your message");
-                return "";
-            }
+        //helper methods
+        private void AddBotMessage(string input)
 
+        {
+            ChatBotArea.Items.Add("CyberChatBot: " + input);
+        }
 
-            if (message.Contains("hello"))
-            {
-                
-                return "hi" + MemoryStore.UserName;
-            }
-            else if (message.Contains("morning"))
-            {
-                return "Good Morning" + MemoryStore.UserName;
-            }
-            if (message.Contains("questions"))
-            {
-                advanceTopics(this, new RoutedEventArgs());
-                return "Opening advanced security topics...";
-            }
+        private void AddUserMessage(string input, string UserName)
+        {
+            MemoryStore store = new MemoryStore();
+            store.UserName = UserName;
 
-            else
-            {
-                return "i didnt get get that please rephrase" + MemoryStore.UserName;
-            }
+            ChatBotArea.Items.Add("You: " + input);
+            ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
         }
 
 
+ 
+       
+      private void SendMessage()
+        {
+            string UserMessage = MsgInput.Text.Trim();
+            string botReply = chatBot.ProcessInput(UserMessage);
 
-        //handle the enter key in case user enter to send msg 
-        private readonly string PHolder = "Type Your Message...";
-     
-        private void MessageInput_KeyDown(object sender, KeyEventArgs e)
+            if (string.IsNullOrWhiteSpace(UserMessage) || UserMessage == Placeholder)
+            {
+              
+                AddBotMessage("Enter your name to proceed");
+                             return;
+            }
+
+                AddUserMessage(UserMessage, "");
+                AddBotMessage(botReply);
+                MsgInput.Clear();
+            }
+
+        public string GetGreeting(string input)
+        {
+            ChatBotArea.Items.Add("CyberChatBot: Hello! I'm your Cyber Security assistant.");
+            ChatBotArea.Items.Add("CyberChatBot: What’s your name?");
+            if (input.Contains("hello") || input.Contains("hi"))
+            {
+                return $"Hello ow can I assist you today?";
+            }
+            return string.Empty;
+        }
+
+
+        //Events methods
+
+        private void Send_Click(object sender, RoutedEventArgs e)
+            {
+            SendMessage();
+            }
+
+
+        private void MsgInput_KeyDown(
+            object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                // Stop if textbox is empty OR showing placeholder
-                if (string.IsNullOrWhiteSpace(MessageInput.Text) ||
-                    MessageInput.Text == PHolder)
-                {
-                    return;
-                }
-
-                Send_Click(this, new RoutedEventArgs());
+                SendMessage();
                 e.Handled = true;
-                MessageInput.Focus();
+                
             }
-        }
-
-        private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
-        {
-            if (MessageInput.Text == PHolder)
-            {
-                MessageInput.Text = "";
-                MessageInput.Foreground = Brushes.Black;
-            }
-        }
-        private void AnimateCursorLostFocus(object sender, RoutedEventArgs e) 
-        {     //restore the place if the user leave the box
-            if (string.IsNullOrEmpty(MessageInput.Text)) 
-            {
-                MessageInput.Text = PHolder;
-                MessageInput.Foreground = Brushes.Gray;
-            }
-        }
-
-        private void TextBoxBotArea_TextChanged(object sender, TextChangedEventArgs e)
-        {
             
         }
-
-        public void advanceTopics(object sender, RoutedEventArgs e)
+  
+        private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Do you want to learn more about security?  ");
-           
-            MessageBoxResult results = MessageBox.Show("Do you want to learn more about security?", "Next Topic", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            if (results == MessageBoxResult.Yes)
+            if (MsgInput.Text.Trim() == Placeholder)
             {
-             KeywordResponder kr = new KeywordResponder();
-                string response = kr.GetResponse("password");
-                kr.GetResponse("Password" +response);
+                MsgInput.Text = "";
+                MsgInput.Foreground = Brushes.Black;
+          
+
             }
-           
         }
+
+        private void AnimateCursorLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(MsgInput.Text))
+            {
+                MsgInput.Text = Placeholder;
+                MsgInput.Foreground = Brushes.Gray;
+            }
+        
+        }
+
+       
     }
 }
