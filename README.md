@@ -39,3 +39,7 @@ How It Works
 3. The user selects or views topics.
 4. The user can choose to continue or exit.
 5. A goodbye message is displayed when the user quits.
+
+On the draft release we do have the youtube link: https://youtu.be/pRObSdPoODQ
+this is our CI screenshot<img width="1430" height="756" alt="CI Link" src="https://github.com/user-attachments/assets/97c910ff-a0e9-4dba-9431-6d37e69aab51" />
+
