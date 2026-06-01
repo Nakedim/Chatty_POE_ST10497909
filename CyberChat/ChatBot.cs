@@ -1,9 +1,9 @@
 ﻿using Chatty;
-using static CyberChat.SentimentDetector;
+
 
 namespace CyberChat
 {
-    public class ChatBot
+    public class ChatBot    
     {
         private readonly KeywordResponder _keywordResponder;
         private readonly SentimentDetector _sentimentDetector;
@@ -59,9 +59,9 @@ namespace CyberChat
             }
 
             // Sentiment detection
-            Sentiments mood = _sentimentDetector.Detect(normalizedInput);
+            SentimentDetector.Sentiments mood = _sentimentDetector.Detect(normalizedInput);
 
-            if (mood != Sentiments.Neutral)
+            if (mood != SentimentDetector.Sentiments.Neutral)
             {
                 CurrentStatus = "Responded to sentiment";
                 return _sentimentDetector.GetSentimentsResponse(mood);
