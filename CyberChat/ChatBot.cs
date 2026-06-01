@@ -1,4 +1,6 @@
 ﻿using Chatty;
+using System.IO.Packaging;
+using System.Windows;
 
 
 namespace CyberChat
@@ -28,6 +30,7 @@ namespace CyberChat
 
         public string ProcessInput(string input)
         {
+            
             // Validate input
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -107,7 +110,7 @@ namespace CyberChat
 
             CurrentStatus = $"Chatting with {userName}";
 
-            return $"Nice to meet you {userName}! How are you?";
+            return $"{TimeOfDayResponse(0)}{userName},Nice to meet you! How are you?";
         }
 
         private string SaveFavouriteTopic(string input)
@@ -181,6 +184,37 @@ namespace CyberChat
             }
 
             return string.Empty;
+        }
+        //Not part of assignment but added to make the bot more interactive and friendly.
+        //part of my learning process to learn more about cshap features and how to use them in a practical way.
+        public string TimeOfDayResponse(int hour)
+            
+        {
+      
+            string timeOfDayResponse = " ";
+            switch (hour)
+            {
+                case >= 0 and <= 11:
+                    timeOfDayResponse = "Good morning!";
+                    break;
+                case >= 12 and <= 17:
+                    timeOfDayResponse = "Good Afternoon!";
+                    break;
+                case >= 18 and <= 21:
+                    timeOfDayResponse = "Good Evening!";
+                    break;
+                case >= 22 and < 23:
+                    timeOfDayResponse = "Good Night";
+                    break;
+                default:
+                case >= 24:
+                    timeOfDayResponse = "";
+                    break;
+
+
+            }
+               MessageBox.Show(timeOfDayResponse + hour);
+            return timeOfDayResponse;
         }
     }
 }

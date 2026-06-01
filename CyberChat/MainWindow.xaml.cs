@@ -21,7 +21,9 @@ namespace CyberChat
             LoadAsciiArt();
             voiceGreeting();
             GetGreeting("");
-          
+            chatBot.TimeOfDayResponse(0);
+
+
 
 
 
