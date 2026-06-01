@@ -14,13 +14,13 @@
          new Dictionary<Sentiments, List<string>>()
          {
              {Sentiments.Worried,
-             new List<string> {"worried","scared","Afraid,","concerned","sad"}},
+             new List<string> {"unhappy","scared","worry", "worried","afraid,","concerned","sad","bother"}},
              {Sentiments.Neutral,
              new List<string >{""}}, 
              {Sentiments.Curious,
-             new List<string>{ "why", "what", "how","?"}},
+             new List<string>{ "Wonder", "Curious", "Inquisitive", "Intrigued", "Inquiring"}},
              {Sentiments.Frustrated,
-             new List<string>{ "angry", "frustrated", "worried","worry","not"}},
+             new List<string>{ "angry", "frustrated", "confused","annoyed", "irrated","troubled"}},
              {Sentiments.Happy,
              new List<string>{ "good", "well", "awesome","happy","excited"}},
 

@@ -1,9 +1,9 @@
 ﻿using Chatty;
-using static CyberChat.SentimentDetector;
+
 
 namespace CyberChat
 {
-    public class ChatBot
+    public class ChatBot    
     {
         private readonly KeywordResponder _keywordResponder;
         private readonly SentimentDetector _sentimentDetector;
@@ -59,9 +59,9 @@ namespace CyberChat
             }
 
             // Sentiment detection
-            Sentiments mood = _sentimentDetector.Detect(normalizedInput);
+            SentimentDetector.Sentiments mood = _sentimentDetector.Detect(normalizedInput);
 
-            if (mood != Sentiments.Neutral)
+            if (mood != SentimentDetector.Sentiments.Neutral)
             {
                 CurrentStatus = "Responded to sentiment";
                 return _sentimentDetector.GetSentimentsResponse(mood);
@@ -122,6 +122,8 @@ namespace CyberChat
             }
 
             _memoryStore.Store("topic", topic);
+            //
+            _lastTopic = topic;
 
             CurrentStatus = "Favourite topic saved";
 
@@ -142,6 +144,9 @@ namespace CyberChat
 
         private bool IsFollowUpRequest(string input)
         {
+            //in case if user input has extra spaces and is case insensitive
+            input.Trim().ToLower();
+            //handles follow up requests
             return input.Contains("tell me more") ||
                    input.Contains("explain more");
         }
@@ -160,12 +165,17 @@ namespace CyberChat
 
         private string HandleBasicQuestions(string input)
         {
-            if (input.Contains("how are you"))
+            string normalizedInput= input.ToLowerInvariant();
+      
+            if (normalizedInput.Contains("how are you") ||
+        normalizedInput.Contains("i'm good") ||
+        normalizedInput.Contains("im good") ||
+        normalizedInput.Contains("and you"))
             {
-                return $"I'm functioning correctly and ready to help, {_memoryStore.UserName}.";
+                return $"I'm functioning correctly and ready to help with Cyber Security question, {_memoryStore.UserName}.";
             }
 
-            if (input.Contains("what can you do"))
+            if (normalizedInput.Contains("what can you do"))
             {
                 return $"I can help you with cyber security awareness, password safety, phishing, malware, and online protection, {_memoryStore.UserName}.";
             }
