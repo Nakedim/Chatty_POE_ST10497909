@@ -1,6 +1,7 @@
 ﻿using Chatty;
 using System.IO.Packaging;
 using System.Windows;
+using MySql.Data.MySqlClient;
 
 
 namespace CyberChat
@@ -15,6 +16,9 @@ namespace CyberChat
         private string _lastTopic = "";
 
         public string CurrentStatus { get; private set; }
+        string connectionString =
+    "server=127.0.0.1;port=3306;database=CyberChatDB;uid=root;pwd=YOUR_PASSWORD;";
+
 
         public ChatBot(
             KeywordResponder keywordResponder,
@@ -27,6 +31,7 @@ namespace CyberChat
 
             CurrentStatus = "Ask me about Cyber Security";
         }
+
 
         public string ProcessInput(string input)
         {
@@ -110,7 +115,7 @@ namespace CyberChat
 
             CurrentStatus = $"Chatting with {userName}";
 
-            return $"{TimeOfDayResponse(0)}{userName},Nice to meet you! How are you?";
+            return $"{TimeOfDayResponse()} {userName},Nice to meet you! How are you?";
         }
 
         private string SaveFavouriteTopic(string input)
@@ -187,10 +192,10 @@ namespace CyberChat
         }
         //Not part of assignment but added to make the bot more interactive and friendly.
         //part of my learning process to learn more about cshap features and how to use them in a practical way.
-        public string TimeOfDayResponse(int hour)
+        public string TimeOfDayResponse()
             
         {
-      
+            int hour = DateTime.Now.Hour;
             string timeOfDayResponse = " ";
             switch (hour)
             {
@@ -203,7 +208,7 @@ namespace CyberChat
                 case >= 18 and <= 21:
                     timeOfDayResponse = "Good Evening!";
                     break;
-                case >= 22 and < 23:
+                case >= 22 and <= 23:
                     timeOfDayResponse = "Good Night";
                     break;
                 default:
@@ -213,6 +218,7 @@ namespace CyberChat
 
 
             }
+            //have and ending
                MessageBox.Show(timeOfDayResponse + hour);
             return timeOfDayResponse;
         }
