@@ -1,4 +1,6 @@
 ﻿using Chatty;
+using MySql.Data.MySqlClient;
+using System;
 using System.Media;
 using System.Windows;
 using System.Windows.Input;
@@ -8,11 +10,10 @@ namespace CyberChat
 {
     public partial class MainWindow : Window
     {
-   
-           private ChatBot chatBot;
-             private readonly string  Placeholder = 
-            "Type your message here...";
+        private ChatBot chatBot;
+        private readonly string Placeholder = "Type your message here...";
         private MemoryStore _memory = new MemoryStore();
+        private string DBConnctString = "server=localhost;database=ChatBotDB;uid=root;pwd=Nakedim@dac702;";
 
         public MainWindow()
         {
@@ -21,16 +22,10 @@ namespace CyberChat
             LoadAsciiArt();
             voiceGreeting();
             GetGreeting("");
-          
-
-
-
         }
 
         private void InitializeChatBot()
         {
-
-           
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
@@ -42,21 +37,30 @@ namespace CyberChat
             AppLogo.Text = @" __       __   ___  __   __            ___  __   __  ___ 
 /  ` \ / |__) |__  |__) /  ` |__|  /\   |  |__) /  \  |  
 \__,  |  |__) |___ |  \ \__, |  | /~~\  |  |__) \__/  |  
-                                                         ";    
-            
+                                                         ";
         }
+
         public void voiceGreeting()
         {
-
-            SoundPlayer player = new SoundPlayer("Welcome.wav");
-            player.Play();
+            try
+            {
+                SoundPlayer player = new SoundPlayer("Welcome.wav");
+                player.Play();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error playing audio greeting");
+            }
         }
 
-        //helper methods
-        private void AddBotMessage(string input)
-
+        // Helper methods
+        private void AddBotMessage(string BotInput, string UserInput)
         {
-            ChatBotArea.Items.Add("CyberChatBot: " + input);
+            ChatBotArea.Items.Add("CyberChatBot: " + BotInput);
+            ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
+
+            // FIXED: Flipped the arguments here so UserInput maps to UserMessage column
+            SaveToDatabase(UserInput, BotInput);
         }
 
         private void AddUserMessage(string input, string UserName)
@@ -68,25 +72,21 @@ namespace CyberChat
             ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
         }
 
-
- 
-       
-      private void SendMessage()
+        private void SendMessage()
         {
             string UserMessage = MsgInput.Text.Trim();
-            string botReply = chatBot.ProcessInput(UserMessage);
 
             if (string.IsNullOrWhiteSpace(UserMessage) || UserMessage == Placeholder)
             {
-              
-                AddBotMessage("Enter your name to proceed");
-                             return;
+                AddBotMessage("Enter your name to proceed", "");
+                return;
             }
 
-                AddUserMessage(UserMessage, "");
-                AddBotMessage(botReply);
-                MsgInput.Clear();
-            }
+            string botReply = chatBot.ProcessInput(UserMessage);
+            AddUserMessage(UserMessage, "");
+            AddBotMessage(botReply, UserMessage);
+            MsgInput.Clear();
+        }
 
         public string GetGreeting(string input)
         {
@@ -99,36 +99,27 @@ namespace CyberChat
             return string.Empty;
         }
 
-
-        //Events methods
-
+        // Events methods
         private void Send_Click(object sender, RoutedEventArgs e)
-            {
+        {
             SendMessage();
-            }
+        }
 
-
-        private void MsgInput_KeyDown(
-            object sender, KeyEventArgs e)
+        private void MsgInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
                 SendMessage();
                 e.Handled = true;
-                
             }
-            
         }
-  
+
         private void AnimateCursorGotFocus(object sender, RoutedEventArgs e)
         {
-
             if (MsgInput.Text.Trim() == Placeholder)
             {
                 MsgInput.Text = "";
                 MsgInput.Foreground = Brushes.Black;
-          
-
             }
         }
 
@@ -139,9 +130,30 @@ namespace CyberChat
                 MsgInput.Text = Placeholder;
                 MsgInput.Foreground = Brushes.Gray;
             }
-        
         }
 
-       
+        // Database methods
+        public void SaveToDatabase(string UserMessage, string BotMessage)
+        {
+            using (MySqlConnection connect = new MySqlConnection(DBConnctString))
+            {
+                try
+                {
+                    connect.Open();
+                    string query = "INSERT INTO ChatHistory(UserMessage, BotMessage) Values(@UserName, @bot)";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connect))
+                    {
+                        cmd.Parameters.AddWithValue("@UserName", UserMessage);
+                        cmd.Parameters.AddWithValue("@Bot", BotMessage);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Cleaned up exception catch and appended the real error details for easier debugging
+                    MessageBox.Show("Error saving into database: " + ex.Message);
+                }
+            }
+        }
     }
 }
