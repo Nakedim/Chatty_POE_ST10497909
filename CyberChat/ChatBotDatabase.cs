@@ -32,35 +32,51 @@ namespace CyberChat
                 catch (Exception ex)
                 {
                     // Cleaned up exception catch and appended the real error details for easier debugging
-                    MessageBox.Show("Error saving into database: " + ex.Message);
+                    MessageBox.Show("Error saving into database: ChatHistory " + ex.Message);
                 }
             }
         }
 
-        public void TaskHandler()
+        public void TaskHandler(string Title, string Description, bool IsReminderSet)
         
         {
+            string createTableSql = @"
+CREATE TABLE IF NOT EXISTS tasks(
+    taskid INT AUTO_INCREMENT PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    is_reminder_set BOOLEAN NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);";
+
+            string insertSql = @"
+INSERT INTO tasks (title, description, is_reminder_set) 
+          VALUES (@Title, @Description, @IsReminderSet);";
             using (MySqlConnection conn = new MySqlConnection(DBConnctString))
             {
                 try
                 {
                     conn.Open();
-                    //title, description, reminder
 
-                    string sql = @"
-            CREATE TABLE IF NOT EXISTS ChatLogs (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                UserInput TEXT NOT NULL,
-                BotInput TEXT NOT NULL,
-                Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )";
-
+                    using (MySqlCommand createCmd = new MySqlCommand(createTableSql, conn))
+                    {
+                        createCmd.ExecuteNonQuery();
+                    }
+                    using (MySqlCommand inserCMD = new MySqlCommand(insertSql, conn))
+                    {
+                        //attribute and values
+                        inserCMD.Parameters.AddWithValue("@Title", Title);
+                        inserCMD.Parameters.AddWithValue("@Description", Description);
+                        inserCMD.Parameters.AddWithValue("@IsReminderSet", IsReminderSet);
+                        inserCMD.ExecuteNonQuery();
+                        MessageBox.Show("Database initiation successful: Tasks", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
                 catch (Exception ex) 
                 {
-                    MessageBox.Show("Error saving into database: " + ex.Message);
+                    MessageBox.Show($"Error saving into database: {ex.Message}", "Database Error NewTasksTable", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
+          
             }
         }
     }

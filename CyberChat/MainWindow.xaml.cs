@@ -15,13 +15,14 @@ namespace CyberChat
         public MainWindow()
         {
             InitializeComponent();
- 
+
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
                 new MemoryStore(),
                 //for the part 3
-                new ChatBotDatabase()
+                new ChatBotDatabase(),
+                new TaskScheduler()
                 );
 
             LoadAsciiArt();
@@ -125,7 +126,21 @@ namespace CyberChat
             }
         }
 
+        //handles task
 
-       
+        public void TaskBtn(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void TaskBtn_Click(object sender, RoutedEventArgs e)
+        {
+            TaskScheduler taskScheduler = new TaskScheduler();
+            taskScheduler.Owner = this;
+
+            taskScheduler.ShowDialog();
+
+            
+        }
     }
 }

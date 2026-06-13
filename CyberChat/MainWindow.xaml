@@ -41,9 +41,8 @@
                     Content="Send"
                     Click="Send_Click" Margin="613,580,0,0"/>
         <StackPanel Orientation="Horizontal" Margin="0, 120">
-            <Button Content="Task Scheduler" Name="TaskBtn" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top" Height="45" Width="94"/>
+        <Button Content="Task Scheduler" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top" Height="45" Width="94" Click="TaskBtn_Click"/>
         <Button Content="Play Quiz" Name="QuizBtn" HorizontalAlignment="Left" Margin="60,3,0,0" Grid.Row="1" VerticalAlignment="Top" Height="45" Width="94"/>
-        <Button Content="Chabot" Name="ChatbotBtn" HorizontalAlignment="Left" Margin="90,3,0,0" Grid.Row="1" VerticalAlignment="Top" Height="45" Width="94"/>
         </StackPanel>
         
 

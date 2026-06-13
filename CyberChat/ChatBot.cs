@@ -10,19 +10,22 @@ namespace CyberChat
         private readonly KeywordResponder _responder;
         private readonly SentimentDetector _sentiment;
         private readonly MemoryStore _memory;
+        private readonly TaskScheduler _task;
         private readonly ChatBotDatabase _database;
         private bool _awaitingName = true;
         private string _lastTopic = "";
 
         public string CurrentStatus { get; private set; }
-        string connectionString = "server=127.0.0.1;port=3306;database=CyberChatDB;uid=root;pwd=YOUR_PASSWORD;";
+        //string connectionString = "server=127.0.0.1;port=3306;database=CyberChatDB;uid=root;pwd=YOUR_PASSWORD;";
 
-        public ChatBot(KeywordResponder responder, SentimentDetector sentiment, MemoryStore memory, ChatBotDatabase database)
+        public ChatBot(KeywordResponder responder, SentimentDetector
+            sentiment, MemoryStore memory, ChatBotDatabase database, TaskScheduler Tasks)
         {
             _responder = responder;
             _sentiment = sentiment;
             _memory = memory;
             _database = database;
+            _task = Tasks;
         }
         public string GetGreeting(string input)
         {
@@ -123,6 +126,7 @@ namespace CyberChat
             try
             {
                 _database.SaveToDatabase(input, response);
+                _database.TaskHandler(input, response, true);
             }
             catch (Exception e)
             {
