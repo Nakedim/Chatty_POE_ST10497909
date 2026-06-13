@@ -145,7 +145,6 @@ namespace CyberChat
 
             return $"{Time}{userName},Nice to meet you! How are you?";
 
-            return $"{TimeOfDayResponse()} {userName}, Nice to meet you! How are you?";
 
         }
 

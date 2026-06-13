@@ -68,7 +68,6 @@ namespace CyberChat
         {
             MemoryStore store = new MemoryStore();
             store.UserName = UserName;
-            ChatBotDatabase database = new ChatBotDatabase();
             ChatBotArea.Items.Add("You: " + input);
            
             ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
