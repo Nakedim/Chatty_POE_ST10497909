@@ -6,7 +6,7 @@
         Background="Cyan"
         Width="650">
 
-    <Grid Margin="10,10,10,7">
+    <Grid Margin="10,10,10,54">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -23,36 +23,6 @@
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal" Margin="0,10,0,10" Grid.RowSpan="2">
 
-            <!-- User Input -->
-
-            <!-- Send Button -->
-            <!-- User Input -->
-
-            <!-- Send Button -->
-            <!-- User Input -->
-
-            <!-- Send Button -->
-            <!-- User Input -->
-
-            <!-- Send Button -->
-            <!-- User Input -->
-            <TextBox x:Name="MsgInput"
-                     Width="500"
-                     Height="36"
-                     Text="Type your message here..."
-                     KeyDown ="MsgInput_KeyDown"
-                     Foreground="Gray"
-                     GotFocus="AnimateCursorGotFocus"
-                     LostFocus="AnimateCursorLostFocus" />
-
-            <!-- Send Button -->
-            <Button x:Name="Send"
-                    Content="Send"
-                    Width="130"
-                    Height="35"
-                    Click="Send_Click"/>
-
-
 
         </StackPanel>
         <StackPanel Margin="0,151,0,99">
@@ -61,8 +31,24 @@
                        TextWrapping="Wrap"
                        VerticalAlignment="Top" Height="110" Width="495"/>
         </StackPanel>
+        <ScrollViewer Name="ScrollViewer" 
+                      Grid.Row="1" 
+                      VerticalScrollBarVisibility="Auto" 
+                      Margin="0,0,0,10">
+            
+        </ScrollViewer>
 
-        <StackPanel Orientation="Horizontal" Margin="0,125,0,67"/>
+        <StackPanel Orientation="Horizontal" Margin="0,125,0,99"/>
+        <TextBox x:Name="MsgInput"
+                     Text="Type your message here..."
+                     KeyDown ="MsgInput_KeyDown"
+                     Foreground="Gray"
+                     GotFocus="AnimateCursorGotFocus"
+                     LostFocus="AnimateCursorLostFocus" Margin="0,390,130,58" />
+        <Button x:Name="Send"
+                    Content="Send"
+                    Click="Send_Click" Margin="500,390,0,58"/>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="10,457,0,0" VerticalAlignment="Top" Height="39" Width="73"/>
 
 
 
