@@ -27,33 +27,11 @@
 
          };
 
-        public Sentiments Detect(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return Sentiments.Neutral;
-            }
-
-
-            input = input.ToLower();
-
-            foreach(var sentiment in sentimentList)
-            {
-                bool found = sentiment.Value.Any(key => input.Contains(key.ToLower()));
-                if (found)
-                {
-                    return sentiment.Key;
-                }
-              
-            }
-            return Sentiments.Neutral;
-           
-        }
-
-        
+   
         
         public string GetSentimentsResponse(Sentiments mood)
         {
+
             switch (mood)
             {
                 case Sentiments.Neutral:
@@ -73,6 +51,10 @@
             }
         }
 
+        public Sentiments detect()
+        {
+
+        }
         
         }
     }

@@ -30,7 +30,7 @@ namespace CyberChat
 
         public string ProcessInput(string input)
         {
-            
+            input = input.Trim().ToLower();
             // Validate input
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -103,14 +103,16 @@ namespace CyberChat
         }
 
         private string HandleUserName(string userName)
+
         {
+             string Time = TimeOfDayResponse();
             _memoryStore.Store("name", userName);
 
             _awaitingName = false;
 
             CurrentStatus = $"Chatting with {userName}";
 
-            return $"{TimeOfDayResponse(0)}{userName},Nice to meet you! How are you?";
+            return $"{Time}{userName},Nice to meet you! How are you?";
         }
 
         private string SaveFavouriteTopic(string input)
@@ -148,7 +150,7 @@ namespace CyberChat
         private bool IsFollowUpRequest(string input)
         {
             //in case if user input has extra spaces and is case insensitive
-            input.Trim().ToLower();
+            input = input.Trim().ToLower();
             //handles follow up requests
             return input.Contains("tell me more") ||
                    input.Contains("explain more");
@@ -175,7 +177,7 @@ namespace CyberChat
         normalizedInput.Contains("im good") ||
         normalizedInput.Contains("and you"))
             {
-                return $"I'm functioning correctly and ready to help with Cyber Security question, {_memoryStore.UserName}.";
+                return $" {mood}  I'm functioning correctly and ready to help with Cyber Security question, {_memoryStore.UserName}.";
             }
 
             if (normalizedInput.Contains("what can you do"))
@@ -187,10 +189,10 @@ namespace CyberChat
         }
         //Not part of assignment but added to make the bot more interactive and friendly.
         //part of my learning process to learn more about cshap features and how to use them in a practical way.
-        public string TimeOfDayResponse(int hour)
+        public string TimeOfDayResponse()
             
-        {
-      
+        {    
+            int hour = DateTime.Now.Hour;           
             string timeOfDayResponse = " ";
             switch (hour)
             {
