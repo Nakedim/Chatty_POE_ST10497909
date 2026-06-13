@@ -46,12 +46,9 @@ namespace CyberChat
         }
         public string ProcessInput(string input)
         {
-<<<<<<< HEAD
+
             input = input.Trim().ToLower();
-            // Validate input
-=======
-            // 1. Validate input first
->>>>>>> f66c6af9915a04f62757e4e61b279dda79f9a071
+
             if (string.IsNullOrWhiteSpace(input))
             {
                 CurrentStatus = "Waiting for input";
@@ -136,21 +133,20 @@ namespace CyberChat
         private string HandleUserName(string userName)
 
         {
-<<<<<<< HEAD
-             string Time = TimeOfDayResponse();
-            _memoryStore.Store("name", userName);
 
-=======
+             string Time = TimeOfDayResponse();
             _memory.Store("name", userName);
->>>>>>> f66c6af9915a04f62757e4e61b279dda79f9a071
+
+            _memory.Store("name", userName);
+
             _awaitingName = false;
             CurrentStatus = $"Chatting with {userName}";
-<<<<<<< HEAD
+
 
             return $"{Time}{userName},Nice to meet you! How are you?";
-=======
+
             return $"{TimeOfDayResponse()} {userName}, Nice to meet you! How are you?";
->>>>>>> f66c6af9915a04f62757e4e61b279dda79f9a071
+
         }
 
         private string SaveFavouriteTopic(string input)
@@ -177,15 +173,12 @@ namespace CyberChat
 
         private bool IsFollowUpRequest(string input)
         {
-<<<<<<< HEAD
+
             //in case if user input has extra spaces and is case insensitive
             input = input.Trim().ToLower();
             //handles follow up requests
-            return input.Contains("tell me more") ||
-                   input.Contains("explain more");
-=======
             return input.Contains("tell me more") || input.Contains("explain more");
->>>>>>> f66c6af9915a04f62757e4e61b279dda79f9a071
+                   
         }
 
         private string HandleFollowUpRequest()
@@ -203,11 +196,11 @@ namespace CyberChat
             string normalizedInput = input.ToLowerInvariant();
             if (normalizedInput.Contains("how are you") || normalizedInput.Contains("i'm good") || normalizedInput.Contains("im good") || normalizedInput.Contains("and you"))
             {
-<<<<<<< HEAD
-                return $" {mood}  I'm functioning correctly and ready to help with Cyber Security question, {_memoryStore.UserName}.";
-=======
-                return $"I'm functioning correctly and ready to help with Cyber Security question, {_memory.UserName}.";
->>>>>>> f66c6af9915a04f62757e4e61b279dda79f9a071
+
+                return $" I'm functioning correctly and ready to help with Cyber Security question, {_memory.UserName}.";
+
+             
+
             }
             if (normalizedInput.Contains("what can you do"))
             {
@@ -215,20 +208,15 @@ namespace CyberChat
             }
             return string.Empty;
         }
-<<<<<<< HEAD
+
         //Not part of assignment but added to make the bot more interactive and friendly.
         //part of my learning process to learn more about cshap features and how to use them in a practical way.
-        public string TimeOfDayResponse()
-            
-        {    
-            int hour = DateTime.Now.Hour;           
-=======
+               
 
-       
-        public string TimeOfDayResponse()
-        {
+
+      public string TimeOfDayResponse(){
             int hour = DateTime.Now.Hour;
->>>>>>> f66c6af9915a04f62757e4e61b279dda79f9a071
+
             string timeOfDayResponse = " ";
             switch (hour)
             {

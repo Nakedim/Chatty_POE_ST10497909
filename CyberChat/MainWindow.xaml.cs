@@ -15,25 +15,7 @@ namespace CyberChat
         public MainWindow()
         {
             InitializeComponent();
-<<<<<<< HEAD
-            InitializeChatBot();
-            LoadAsciiArt();
-            voiceGreeting();
-            GetGreeting("");
-          
-
-
-
-
-
-        }
-
-        private void InitializeChatBot()
-        {
-
-           
-=======
->>>>>>> f66c6af9915a04f62757e4e61b279dda79f9a071
+ 
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
@@ -44,17 +26,12 @@ namespace CyberChat
 
             LoadAsciiArt();
             voiceGreeting();
+            string greet = chatBot.GetGreeting("Hello");
+            AppendBotMessage(greet);
 
-            string BotGreeting = chatBot.GetGreeting("hello");
-            ChatBotArea.Items.Add($"CyberChatBot: {BotGreeting}");
+
         }
-        
-
-
-
-
-
-
+      
         public void LoadAsciiArt()
         {
             AppLogo.Text = @" __       __   ___  __   __            ___  __   __  ___ 
@@ -83,6 +60,10 @@ namespace CyberChat
             ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
         }
 
+        private void AppendBotMessage(string message)
+        {
+            ChatBotArea.Items.Add(message);
+        }
         private void AddUserMessage(string input, string UserName)
         {
             MemoryStore store = new MemoryStore();
