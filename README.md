@@ -43,3 +43,10 @@ How It Works
 On the draft release we do have the youtube link: https://youtu.be/pRObSdPoODQ
 this is our CI screenshot<img width="1430" height="756" alt="CI Link" src="https://github.com/user-attachments/assets/97c910ff-a0e9-4dba-9431-6d37e69aab51" />
 
+Changelog 
+Time: 14/06/2026
+
+Task 1 complete successfull and it is working . see screenshot
+<img width="1212" height="740" alt="image" src="https://github.com/user-attachments/assets/482e35be-d796-44b0-a2b4-d82b225f8438" />
+
+
