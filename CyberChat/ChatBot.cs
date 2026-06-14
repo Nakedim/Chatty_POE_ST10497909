@@ -11,7 +11,6 @@ namespace CyberChat
         private readonly SentimentDetector _sentiment;
         private readonly MemoryStore _memory;
         private readonly TaskScheduler _task;
-        private readonly ChatBotDatabase _database;
         private bool _awaitingName = true;
         private string _lastTopic = "";
 
@@ -19,12 +18,11 @@ namespace CyberChat
         //string connectionString = "server=127.0.0.1;port=3306;database=CyberChatDB;uid=root;pwd=YOUR_PASSWORD;";
 
         public ChatBot(KeywordResponder responder, SentimentDetector
-            sentiment, MemoryStore memory, ChatBotDatabase database, TaskScheduler Tasks)
+            sentiment, MemoryStore memory, TaskScheduler Tasks)
         {
             _responder = responder;
             _sentiment = sentiment;
             _memory = memory;
-            _database = database;
             _task = Tasks;
         }
         public string GetGreeting(string input)
@@ -56,7 +54,7 @@ namespace CyberChat
             {
                 CurrentStatus = "Waiting for input";
                 string emptyResponse = "Please type something.";
-                SaveToDbQuietly(input, emptyResponse);
+                //SaveToDbQuietly(input, emptyResponse);
                 return emptyResponse;
             }
 
@@ -114,25 +112,10 @@ namespace CyberChat
                 botMessage = $"I'm not sure how to respond to that, {_memory.UserName}. Ask me something about cyber security.";
             }
 
-            // 3. Save the actual final message to the database before returning
-            SaveToDbQuietly(input, botMessage);
-
-            return botMessage;
+                 return botMessage;
         }
 
-        // Helper method to keep database logging clean and reusable
-        private void SaveToDbQuietly(string input, string response)
-        {
-            try
-            {
-                _database.SaveToDatabase(input, response);
-                _database.TaskHandler(input, response, true);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Error saving data to the database: " + e.Message);
-            }
-        }
+    
 
         private string HandleUserName(string userName)
 

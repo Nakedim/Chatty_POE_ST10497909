@@ -4,7 +4,7 @@
         Title="CyberChatBot"
         Height="750"
         Background="Cyan"
-        Width="750">
+        Width="780">
 
     <Grid Margin="10,10,10,24">
 
@@ -17,7 +17,9 @@
         <!-- Chat Area -->
         <ListBox Name="ChatBotArea"
                  Grid.Row="0"
-                 FontSize="16" Margin="10,192,-10,58"/>
+                 FontSize="16" Margin="10,192,10,58">
+         
+        </ListBox>
 
         <!-- Bottom Input Area -->
 
@@ -39,7 +41,7 @@
                      LostFocus="AnimateCursorLostFocus" Margin="10,580,117,0" />
         <Button x:Name="Send"
                     Content="Send"
-                    Click="Send_Click" Margin="613,580,0,0"/>
+                    Click="Send_Click" Margin="613,580,10,0"/>
         <StackPanel Orientation="Horizontal" Margin="0, 120">
         <Button Content="Task Scheduler" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top" Height="45" Width="94" Click="TaskBtn_Click"/>
         <Button Content="Play Quiz" Name="QuizBtn" HorizontalAlignment="Left" Margin="60,3,0,0" Grid.Row="1" VerticalAlignment="Top" Height="45" Width="94"/>

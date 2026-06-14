@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 );";
 
             string insertSql = @"
-INSERT INTO tasks (title, description, is_reminder_set) 
+INSERT INTO Tasks (title, description, is_reminder_set) 
           VALUES (@Title, @Description, @IsReminderSet);";
             using (MySqlConnection conn = new MySqlConnection(DBConnctString))
             {
@@ -68,6 +68,8 @@ INSERT INTO tasks (title, description, is_reminder_set)
                         inserCMD.Parameters.AddWithValue("@Title", Title);
                         inserCMD.Parameters.AddWithValue("@Description", Description);
                         inserCMD.Parameters.AddWithValue("@IsReminderSet", IsReminderSet);
+                        //inserCMD.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
+                     
                         inserCMD.ExecuteNonQuery();
                         MessageBox.Show("Database initiation successful: Tasks", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     }

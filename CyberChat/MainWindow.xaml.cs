@@ -21,7 +21,7 @@ namespace CyberChat
                 new SentimentDetector(),
                 new MemoryStore(),
                 //for the part 3
-                new ChatBotDatabase(),
+                //new ChatBotDatabase(),
                 new TaskScheduler()
                 );
 

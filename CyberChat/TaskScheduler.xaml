@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberChat"
         mc:Ignorable="d"
-        Title="TaskScheduler" Height="330" Width="437">
-    <Grid Margin="20,34,20,45">
+        Title="TaskScheduler" Height="502" Width="470">
+    <Grid Margin="20,34,10,22">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="143*"/>
             <ColumnDefinition Width="32*"/>
@@ -25,13 +25,37 @@
 
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="10,30,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="415" FontWeight="Bold" Grid.ColumnSpan="3"><Run Language="en-za" Text="Title"/></TextBlock>
+
         <TextBlock HorizontalAlignment="Left" Margin="10,75,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="376" FontWeight="Bold" Grid.ColumnSpan="3"><Run Language="en-za" Text="Description"/></TextBlock>
-        <CheckBox  HorizontalAlignment="Left" Margin="55,206,0,0" Grid.Row="6" VerticalAlignment="Top" Checked="CheckBox_Checked" RenderTransformOrigin="0.501,0.378"/>
-        <TextBox HorizontalAlignment="Left" Margin="10,46,0,0" Grid.Row="6" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="376" Height="24" Grid.ColumnSpan="3"/>
-        <TextBox HorizontalAlignment="Left" Margin="10,99,0,0" Grid.Row="6" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="376" Height="54" Grid.ColumnSpan="3"/>
-        <Button Content="Save Task" HorizontalAlignment="Left" Margin="128,158,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="70" Grid.ColumnSpan="3"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,189,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="365" Grid.ColumnSpan="3" ><Run Text="Do you wan to set reminder for ta"/><Run Text="s"/><Run Text="ks"/><Run Language="en-za" Text=", Tick the box to agree or leave it blank"/></TextBlock>
+
+        <TextBox Name="TitleBox" HorizontalAlignment="Left" Margin="10,46,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="24" Grid.ColumnSpan="3"/>
+        <TextBox Name ="DescriptionBox" HorizontalAlignment="Left" Margin="10,99,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="95" Grid.ColumnSpan="3"/>
+
+
         <TextBlock HorizontalAlignment="Left" Margin="10,-2,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="365" Grid.ColumnSpan="3" ><Run Language="en-za" Text="Save your task below and set a reminder (Optional)"/></TextBlock>
+
+      
+        <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" HorizontalAlignment="Left" Margin="107,199,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="81" Grid.Column="2"  RenderTransformOrigin="0.306,0.13"/>
+        <Button Click ="SafeTask" Content="Save Task" HorizontalAlignment="Left" Margin="18,199,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="81" Grid.Column="1"  RenderTransformOrigin="0.306,0.13" Grid.ColumnSpan="2"/>
+        <TextBlock HorizontalAlignment="Left" Margin="0,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="430" Grid.ColumnSpan="3" Grid.Row="6" ><Run Language="en-za" Text="List of Tasks"/></TextBlock>
+        
+        
+        <!--<ListBox Name="listBoxArea" Grid.Row="6" Grid.ColumnSpan="3" Margin="2,261,6,15"/>-->
+        <ListView Name="TasklistView">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" 
+                                Margin="5">
+                        <TextBlock Text="{Binding title}" FontWeight="bold" FontSize="14">
+                            <TextBlock Text="{Binding Description}" Foreground="Gray">
+                                
+                            </TextBlock>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <CheckBox Name ="reminderBox"  Grid.Column="2" Content="Set Reminder" HorizontalAlignment="Left" Margin="203,204,0,0" Grid.Row="6" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
 
     </Grid>
 </Window>
