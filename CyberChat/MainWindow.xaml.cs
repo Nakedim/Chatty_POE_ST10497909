@@ -11,27 +11,28 @@ namespace CyberChat
     public partial class MainWindow : Window
     {
         private ChatBot chatBot;
-        private readonly string Placeholder = "Type your message here...";
-        private MemoryStore _memory = new MemoryStore();
-        private string DBConnctString = "server=localhost;database=ChatBotDB;uid=root;pwd=Nakedim@dac702;";
-
+        
         public MainWindow()
         {
             InitializeComponent();
-            InitializeChatBot();
-            LoadAsciiArt();
-            voiceGreeting();
-            GetGreeting("");
-        }
 
-        private void InitializeChatBot()
-        {
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
-                new MemoryStore());
-        }
+                new MemoryStore(),
+                //for the part 3
+                new ChatBotDatabase(),
+                new TaskScheduler()
+                );
 
+            LoadAsciiArt();
+            voiceGreeting();
+            string greet = chatBot.GetGreeting("Hello");
+            AppendBotMessage(greet);
+
+
+        }
+      
         public void LoadAsciiArt()
         {
             AppLogo.Text = @" __       __   ___  __   __            ___  __   __  ___ 
@@ -58,22 +59,24 @@ namespace CyberChat
         {
             ChatBotArea.Items.Add("CyberChatBot: " + BotInput);
             ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
-
-            // FIXED: Flipped the arguments here so UserInput maps to UserMessage column
-            SaveToDatabase(UserInput, BotInput);
         }
 
+        private void AppendBotMessage(string message)
+        {
+            ChatBotArea.Items.Add(message);
+        }
         private void AddUserMessage(string input, string UserName)
         {
             MemoryStore store = new MemoryStore();
             store.UserName = UserName;
-
             ChatBotArea.Items.Add("You: " + input);
+           
             ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
         }
-
+        private readonly string Placeholder = "Type your message here...";
         private void SendMessage()
         {
+
             string UserMessage = MsgInput.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(UserMessage) || UserMessage == Placeholder)
@@ -85,18 +88,9 @@ namespace CyberChat
             string botReply = chatBot.ProcessInput(UserMessage);
             AddUserMessage(UserMessage, "");
             AddBotMessage(botReply, UserMessage);
-            MsgInput.Clear();
-        }
+            
 
-        public string GetGreeting(string input)
-        {
-            ChatBotArea.Items.Add("CyberChatBot: Hello! I'm your Cyber Security assistant.");
-            ChatBotArea.Items.Add("CyberChatBot: What’s your name?");
-            if (input.Contains("hello") || input.Contains("hi"))
-            {
-                return $"Hello ow can I assist you today?";
-            }
-            return string.Empty;
+            MsgInput.Clear();
         }
 
         // Events methods
@@ -132,28 +126,21 @@ namespace CyberChat
             }
         }
 
-        // Database methods
-        public void SaveToDatabase(string UserMessage, string BotMessage)
+        //handles task
+
+        public void TaskBtn(object sender, RoutedEventArgs e)
         {
-            using (MySqlConnection connect = new MySqlConnection(DBConnctString))
-            {
-                try
-                {
-                    connect.Open();
-                    string query = "INSERT INTO ChatHistory(UserMessage, BotMessage) Values(@UserName, @bot)";
-                    using (MySqlCommand cmd = new MySqlCommand(query, connect))
-                    {
-                        cmd.Parameters.AddWithValue("@UserName", UserMessage);
-                        cmd.Parameters.AddWithValue("@Bot", BotMessage);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Cleaned up exception catch and appended the real error details for easier debugging
-                    MessageBox.Show("Error saving into database: " + ex.Message);
-                }
-            }
+            
+        }
+
+        private void TaskBtn_Click(object sender, RoutedEventArgs e)
+        {
+            TaskScheduler taskScheduler = new TaskScheduler();
+            taskScheduler.Owner = this;
+
+            taskScheduler.ShowDialog();
+
+            
         }
     }
 }
