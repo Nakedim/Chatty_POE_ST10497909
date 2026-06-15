@@ -1,4 +1,5 @@
 ﻿using Chatty;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-
+using System.Windows.Threading;
 using static CyberChat.SentimentDetector;
 
 namespace CyberChat
@@ -23,15 +24,27 @@ namespace CyberChat
     {
 
         private ChatBot bot;
+        private DispatcherTimer reminderTimer;
         private readonly ChatBotDatabase db = new ChatBotDatabase();
         public TaskScheduler()
         {
             InitializeComponent();
-
-
+            //SetReminderNortification();
 
         }
 
+        public void SetReminderTimer()
+        {
+            reminderTimer = new DispatcherTimer();
+            reminderTimer.Interval = TimeSpan.FromSeconds(30);
+            reminderTimer.Tick += ReminderTimer_Tick;
+            reminderTimer.Start();
+        }
+
+        private void ReminderTimer_Tick(object? sender, EventArgs e)
+        {
+            //CheckReminder();
+        }
 
 
         private void SetReminderBtn_Click(object sender, RoutedEventArgs e)
@@ -46,9 +59,9 @@ namespace CyberChat
                 return;
             }
 
-            db.TaskHandler(title, description, reminder);
+            db.TaskHandler(title, description,reminder);
 
-            ClearInputFields();
+           
 
         }
      
@@ -64,11 +77,7 @@ namespace CyberChat
 
             return Title;
         }
-        private void AddDescription()
-        {
-         
-        }
-
+ 
         //click method save
         private void SafeTask(object sender, RoutedEventArgs e)
         {
@@ -81,19 +90,39 @@ namespace CyberChat
             {
                 MessageBox.Show("Enter title and descriptions");
             }
-
             //storing details into the databases
-            db.TaskHandler(title, description, reminder);
+            db.TaskHandler(title, description,reminder);
+
+            MessageBoxResult res = MessageBox.Show("Do you also want to set a reminder", "Reminder", 
+                MessageBoxButton.YesNo,MessageBoxImage.Question, MessageBoxResult.Yes);
+
+            if (res == MessageBoxResult.Yes)
+            {
+                //pop up a calender to set reminder
+                MessageBox.Show("Reminder have been set");
+            }
+
+            
 
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                ListBoxArea.Items.Clear();
 
+                foreach (string task in db.GetTasks())
+                {
+                    ListBoxArea.Items.Add(task);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading tasks: {ex.Message}");
+            }
         }
-        public string ClearInputFields()
-        {
-            return "all fields have been stored on the data";
-        }
+
+       
     }
 }

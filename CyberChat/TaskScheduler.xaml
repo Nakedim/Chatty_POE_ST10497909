@@ -8,9 +8,8 @@
         Title="TaskScheduler" Height="502" Width="470">
     <Grid Margin="20,34,10,22">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="143*"/>
-            <ColumnDefinition Width="32*"/>
-            <ColumnDefinition Width="585*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -24,38 +23,27 @@
 
 
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="10,30,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="415" FontWeight="Bold" Grid.ColumnSpan="3"><Run Language="en-za" Text="Title"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="14,19,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" Width="416" FontWeight="Bold"><Run Language="en-za" Text="Title"/></TextBlock>
 
-        <TextBlock HorizontalAlignment="Left" Margin="10,75,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="376" FontWeight="Bold" Grid.ColumnSpan="3"><Run Language="en-za" Text="Description"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="15,75,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="414" FontWeight="Bold"><Run Language="en-za" Text="Description"/></TextBlock>
 
-        <TextBox Name="TitleBox" HorizontalAlignment="Left" Margin="10,46,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="24" Grid.ColumnSpan="3"/>
-        <TextBox Name ="DescriptionBox" HorizontalAlignment="Left" Margin="10,99,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="95" Grid.ColumnSpan="3"/>
+        <TextBox Name="TitleBox" HorizontalAlignment="Center" Margin="0,46,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="24"/>
+        <TextBox Name ="DescriptionBox" HorizontalAlignment="Center" Margin="0,99,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="95"/>
 
 
-        <TextBlock HorizontalAlignment="Left" Margin="10,-2,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="365" Grid.ColumnSpan="3" ><Run Language="en-za" Text="Save your task below and set a reminder (Optional)"/></TextBlock>
+        <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" HorizontalAlignment="Left" Margin="122,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="82"  RenderTransformOrigin="0.306,0.13"/>
+        <Button Click ="SafeTask" Content="Save Task" HorizontalAlignment="Left" Margin="10,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="90"  RenderTransformOrigin="0.494,0.54"/>
 
-      
-        <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" HorizontalAlignment="Left" Margin="107,199,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="81" Grid.Column="2"  RenderTransformOrigin="0.306,0.13"/>
-        <Button Click ="SafeTask" Content="Save Task" HorizontalAlignment="Left" Margin="18,199,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="81" Grid.Column="1"  RenderTransformOrigin="0.306,0.13" Grid.ColumnSpan="2"/>
-        <TextBlock HorizontalAlignment="Left" Margin="0,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="430" Grid.ColumnSpan="3" Grid.Row="6" ><Run Language="en-za" Text="List of Tasks"/></TextBlock>
-        
-        
+
         <!--<ListBox Name="listBoxArea" Grid.Row="6" Grid.ColumnSpan="3" Margin="2,261,6,15"/>-->
-        <ListView Name="TasklistView">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" 
-                                Margin="5">
-                        <TextBlock Text="{Binding title}" FontWeight="bold" FontSize="14">
-                            <TextBlock Text="{Binding Description}" Foreground="Gray">
-                                
-                            </TextBlock>
-                        </TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <CheckBox Name ="reminderBox"  Grid.Column="2" Content="Set Reminder" HorizontalAlignment="Left" Margin="203,204,0,0" Grid.Row="6" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
+        <ListBox Grid.Row="6" 
+                 Name="ListBoxArea"
+                 d:ItemsSource="{d:SampleData ItemCount=5}" 
+                 Margin="0,245,2,31"/>
+        <CheckBox Name="reminderBox" Content="CheckBox" HorizontalAlignment="Left" Margin="358,215,0,0" Grid.Row="6" VerticalAlignment="Top"/>
+        <Button Content="View Tasks" HorizontalAlignment="Left" Margin="219,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="93" Click="btnLoad_Click"/>
+        <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="49,223,0,0" Grid.Row="6" VerticalAlignment="Top" Width="0"/>
+        
 
     </Grid>
 </Window>
