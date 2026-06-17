@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CyberChat"
         mc:Ignorable="d"
         Title="TaskScheduler" Height="502" Width="470">
-    <Grid Margin="20,34,10,22">
+    <Grid Margin="20,34,10,13">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
@@ -39,11 +39,12 @@
         <ListBox Grid.Row="6" 
                  Name="ListBoxArea"
                  d:ItemsSource="{d:SampleData ItemCount=5}" 
-                 Margin="0,245,2,31"/>
+                 Margin="0,245,2,77"/>
         <CheckBox Name="reminderBox" Content="CheckBox" HorizontalAlignment="Left" Margin="358,215,0,0" Grid.Row="6" VerticalAlignment="Top"/>
         <Button Content="View Tasks" HorizontalAlignment="Left" Margin="219,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="93" Click="btnLoad_Click"/>
         <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="49,223,0,0" Grid.Row="6" VerticalAlignment="Top" Width="0"/>
-        
+        <Button Content="Delete Task" HorizontalAlignment="Left" Margin="10,367,0,0" Grid.Row="6" VerticalAlignment="Top" Height="31" Width="71" Click="DeleteTasks"/>
+
 
     </Grid>
 </Window>

@@ -15,6 +15,7 @@ namespace CyberChat
     {
     
          private string DBConnctString = "server=localhost;database=ChatBotDB;uid=root;pwd=Nakedim@dac702;";
+       
 
         //Data class
         public class UrgentTask
@@ -124,7 +125,10 @@ CREATE TABLE IF NOT EXISTS tasks(
         //Method to extract tasklist from DB
         public List<string> GetTasks()
         {
+            List<int> TaskId = new List<int>();
             List<string> tasks = new List<string>();
+
+            List<string> description = new List<string>();
 
             string sqlQuery = "SELECT title FROM tasks ORDER BY timestamp DESC";
 
@@ -138,6 +142,8 @@ CREATE TABLE IF NOT EXISTS tasks(
                     while (reader.Read())
                     {
                         tasks.Add(reader.GetString("title"));
+                        description.Add(reader.GetString("Description"));
+                        TaskId.Add(reader.GetInt16("TaskId"));
                     }
                 }
             }
@@ -145,5 +151,40 @@ CREATE TABLE IF NOT EXISTS tasks(
             return tasks;
         }
 
+        public void DeleteTasks()
+        {
+            try
+            {
+                string queryToDelete = "DELETE FROM tasks WHERE TaskId = @TaskId";
+
+                using (MySqlConnection conn = new MySqlConnection(DBConnctString))
+                {
+                    conn.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand(queryToDelete, conn))
+                    {
+                        // 1. Bind the parameter value
+                        cmd.Parameters.AddWithValue("@TaskId", 1);
+
+                        // 2. CRITICAL: Execute the command on the database
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        // Optional visual confirmation
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Task deleted successfully.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("No task found with that ID.");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error occurred attempting deletion: " + e.Message);
+            }
+        }
     }
     }

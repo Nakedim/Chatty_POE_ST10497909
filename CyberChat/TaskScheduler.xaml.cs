@@ -123,6 +123,9 @@ namespace CyberChat
             }
         }
 
-       
+        private void DeleteTasks(object sender, RoutedEventArgs e)
+        {
+            db.DeleteTasks();
+        }
     }
 }
