@@ -7,6 +7,19 @@
         Width="780">
 
     <Grid Margin="10,10,10,24">
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem  Header="Open" Command="{Binding OpenCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem  Header="Open" Command="{Binding OpenCommand}"/>
+                
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem  Header="Open" Command="{Binding OpenCommand}"/>
+               
+            </MenuItem>
+        </Menu>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
