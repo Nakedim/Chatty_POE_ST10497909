@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS tasks(
         {
             try
             {
-                string queryToDelete = "DELETE FROM tasks WHERE taskId = @TaskId";
+                string queryToDelete = "DELETE FROM tasks WHERE taskId = 4";
                 
 
                 using (MySqlConnection conn = new MySqlConnection(DBConnctString))
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS tasks(
                     using (MySqlCommand cmd = new MySqlCommand(queryToDelete, conn))
                     {
                         
-                        cmd.Parameters.AddWithValue("@TaskId", taskId);
+                        cmd.Parameters.Add("@TaskId",MySqlDbType.Int32, taskId).Value = taskId;
 
          
                         int rowsAffected = cmd.ExecuteNonQuery();
