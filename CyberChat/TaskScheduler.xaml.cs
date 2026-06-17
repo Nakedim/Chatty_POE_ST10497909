@@ -115,6 +115,7 @@ namespace CyberChat
                 foreach (string task in db.GetTasks())
                 {
                     ListBoxArea.Items.Add(task);
+                   
                 }
             }
             catch (Exception ex)
@@ -125,7 +126,7 @@ namespace CyberChat
 
         private void DeleteTasks(object sender, RoutedEventArgs e)
         {
-            db.DeleteTasks();
+            db.DeleteTasks(1);
         }
     }
 }

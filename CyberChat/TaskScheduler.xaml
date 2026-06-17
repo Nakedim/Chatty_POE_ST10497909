@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CyberChat"
         mc:Ignorable="d"
         Title="TaskScheduler" Height="502" Width="470">
+
     <Grid Margin="20,34,10,13">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -31,8 +32,12 @@
         <TextBox Name ="DescriptionBox" HorizontalAlignment="Center" Margin="0,99,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="95"/>
 
 
-        <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" HorizontalAlignment="Left" Margin="122,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="82"  RenderTransformOrigin="0.306,0.13"/>
-        <Button Click ="SafeTask" Content="Save Task" HorizontalAlignment="Left" Margin="10,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="90"  RenderTransformOrigin="0.494,0.54"/>
+        <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" 
+                HorizontalAlignment="Left" Margin="122,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="82" 
+                RenderTransformOrigin="0.306,0.13"/>
+        <Button Click ="SafeTask" Content="Save Task"
+                HorizontalAlignment="Left" Margin="10,210,0,0" Grid.Row="6" VerticalAlignment="Top" 
+                Height="26" Width="90"  RenderTransformOrigin="0.494,0.54"/>
 
 
         <!--<ListBox Name="listBoxArea" Grid.Row="6" Grid.ColumnSpan="3" Margin="2,261,6,15"/>-->
@@ -45,6 +50,14 @@
         <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="49,223,0,0" Grid.Row="6" VerticalAlignment="Top" Width="0"/>
         <Button Content="Delete Task" HorizontalAlignment="Left" Margin="10,367,0,0" Grid.Row="6" VerticalAlignment="Top" Height="31" Width="71" Click="DeleteTasks"/>
 
+        <Button Content="RightClick" Width="100"  Height="40">
 
+            <Button.ContextMenu>
+                <ContextMenu>
+                    <MenuItem  Header="Update"/>
+                    <MenuItem  Header="Delete"/>
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
     </Grid>
 </Window>
