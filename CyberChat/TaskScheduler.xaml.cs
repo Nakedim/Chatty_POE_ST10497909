@@ -52,14 +52,14 @@ namespace CyberChat
 
             string title = TitleBox.Text;
             string description = DescriptionBox.Text;
-            bool reminder = reminderBox.IsChecked == true;
+            //bool reminder = reminderBox.IsChecked == true;
             if (string.IsNullOrEmpty(title))
             {
                 MessageBox.Show("Please enter a title for your task.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            db.TaskHandler(title, description,reminder);
+            db.TaskHandler(title, description,true);
 
            
 
@@ -84,14 +84,14 @@ namespace CyberChat
 
             string title = TitleBox.Text;
             string description = DescriptionBox.Text;
-            bool reminder = reminderBox.IsChecked == true;
+            //bool reminder = reminderBox.IsChecked == true;
 
             if (string.IsNullOrWhiteSpace(title) && string.IsNullOrWhiteSpace(description))
             {
                 MessageBox.Show("Enter title and descriptions");
             }
             //storing details into the databases
-            db.TaskHandler(title, description,reminder);
+            db.TaskHandler(title, description,true);
 
             MessageBoxResult res = MessageBox.Show("Do you also want to set a reminder", "Reminder", 
                 MessageBoxButton.YesNo,MessageBoxImage.Question, MessageBoxResult.Yes);

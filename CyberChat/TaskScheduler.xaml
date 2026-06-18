@@ -24,7 +24,7 @@
 
 
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="14,19,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" Width="416" FontWeight="Bold"><Run Language="en-za" Text="Title"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="10,19,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" Width="416" FontWeight="Bold"><Run Language="en-za" Text="Title"/></TextBlock>
 
         <TextBlock HorizontalAlignment="Left" Margin="15,75,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="414" FontWeight="Bold"><Run Language="en-za" Text="Description"/></TextBlock>
 
@@ -33,31 +33,21 @@
 
 
         <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" 
-                HorizontalAlignment="Left" Margin="122,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="82" 
+                HorizontalAlignment="Left" Margin="110,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="82" 
                 RenderTransformOrigin="0.306,0.13"/>
         <Button Click ="SafeTask" Content="Save Task"
-                HorizontalAlignment="Left" Margin="10,210,0,0" Grid.Row="6" VerticalAlignment="Top" 
-                Height="26" Width="90"  RenderTransformOrigin="0.494,0.54"/>
+                HorizontalAlignment="Left" Margin="15,210,0,0" Grid.Row="6" VerticalAlignment="Top" 
+                Height="26" Width="85"  RenderTransformOrigin="0.494,0.54"/>
 
 
         <!--<ListBox Name="listBoxArea" Grid.Row="6" Grid.ColumnSpan="3" Margin="2,261,6,15"/>-->
         <ListBox Grid.Row="6" 
                  Name="ListBoxArea"
                  d:ItemsSource="{d:SampleData ItemCount=5}" 
-                 Margin="0,245,2,77"/>
-        <CheckBox Name="reminderBox" Content="CheckBox" HorizontalAlignment="Left" Margin="122,195,0,0" VerticalAlignment="Top" Grid.Row="6"/>
-        <Button Content="View Tasks" HorizontalAlignment="Left" Margin="219,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="93" Click="btnLoad_Click"/>
+                 Margin="13,241,14,14"/>
+
+        <Button Content="View Tasks" HorizontalAlignment="Left" Margin="210,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="93" Click="btnLoad_Click"/>
         <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="49,223,0,0" Grid.Row="6" VerticalAlignment="Top" Width="0"/>
-        <Button Content="Delete Task" HorizontalAlignment="Left" Margin="335,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="92" Click="DeleteTasks"/>
-
-        <Button Content="RightClick" Width="100"  Height="40">
-
-            <Button.ContextMenu>
-                <ContextMenu>
-                    <MenuItem  Header="Update"/>
-                    <MenuItem  Header="Delete"/>
-                </ContextMenu>
-            </Button.ContextMenu>
-        </Button>
+        <Button Content="Delete Task" HorizontalAlignment="Left" Margin="322,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="92" Click="DeleteTasks"/>
     </Grid>
 </Window>

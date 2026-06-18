@@ -142,5 +142,22 @@ namespace CyberChat
 
             
         }
+
+        private void exit_click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void NewTask_click(object sender, RoutedEventArgs e)
+        {
+            TaskScheduler taskScheduler = new TaskScheduler();
+            taskScheduler.Owner = this;
+
+            taskScheduler.ShowDialog();
+
+        }
+        private void logClick_click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
