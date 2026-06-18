@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CyberChat
 {
-    class UserMenu
+    public class UserMenu
     {
+        
     }
 }

@@ -14,7 +14,7 @@ namespace CyberChat
     public class ChatBotDatabase
     {
     
-         private string DBConnctString = "server=localhost;database=ChatBotDB;uid=root;pwd=Nakedim@dac702;";
+         private string DBConnctString = "server=localhost;database=ChatBotDB;uid=root;pwd=1234;";
        
 
         //Data class
@@ -29,6 +29,8 @@ namespace CyberChat
 
         public void TaskHandler(string Title, string Description, bool IsReminderSet)
         //is_reminder_set BOOLEAN NOT NULL,
+
+            
         {
             string createTableSql = @"
 CREATE TABLE IF NOT EXISTS tasks(
@@ -40,7 +42,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 );";
 
             string insertSql = @"
-           INSERT INTO Tasks (title, description,is_reminder_set) 
+           INSERT INTO Tasks (Title, Description,is_reminder_set) 
           VALUES (@Title, @Description, @IsReminderSet);";
             using (MySqlConnection conn = new MySqlConnection(DBConnctString))
             {
@@ -142,8 +144,9 @@ CREATE TABLE IF NOT EXISTS tasks(
                     while (reader.Read())
                     {
                         tasks.Add(reader.GetString("title"));
-                        description.Add(reader.GetString("Description"));
-                        TaskId.Add(reader.GetInt16("TaskId"));
+                        //TaskId.Add(reader.GetInt16("TaskId"));
+                        //description.Add(reader.GetString("Description"));
+                        
                     }
                 }
             }
@@ -151,11 +154,14 @@ CREATE TABLE IF NOT EXISTS tasks(
             return tasks;
         }
 
-        public void DeleteTasks()
+        public void DeleteTasks(int taskId)
         {
+         
+            
             try
             {
-                string queryToDelete = "DELETE FROM tasks WHERE TaskId = @TaskId";
+                string queryToDelete = "DELETE FROM tasks WHERE taskId = 4";
+                
 
                 using (MySqlConnection conn = new MySqlConnection(DBConnctString))
                 {
@@ -163,13 +169,13 @@ CREATE TABLE IF NOT EXISTS tasks(
 
                     using (MySqlCommand cmd = new MySqlCommand(queryToDelete, conn))
                     {
-                        // 1. Bind the parameter value
-                        cmd.Parameters.AddWithValue("@TaskId", 1);
+                        
+                        cmd.Parameters.Add("@TaskId",MySqlDbType.Int32, taskId).Value = taskId;
 
-                        // 2. CRITICAL: Execute the command on the database
+         
                         int rowsAffected = cmd.ExecuteNonQuery();
 
-                        // Optional visual confirmation
+                       
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Task deleted successfully.");
@@ -185,6 +191,10 @@ CREATE TABLE IF NOT EXISTS tasks(
             {
                 MessageBox.Show("Error occurred attempting deletion: " + e.Message);
             }
+
+            
         }
+
+        
     }
     }

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CyberChat"
         mc:Ignorable="d"
         Title="TaskScheduler" Height="502" Width="470">
+
     <Grid Margin="20,34,10,13">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -23,7 +24,7 @@
 
 
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="14,19,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" Width="416" FontWeight="Bold"><Run Language="en-za" Text="Title"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="10,19,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" Width="416" FontWeight="Bold"><Run Language="en-za" Text="Title"/></TextBlock>
 
         <TextBlock HorizontalAlignment="Left" Margin="15,75,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="414" FontWeight="Bold"><Run Language="en-za" Text="Description"/></TextBlock>
 
@@ -31,20 +32,33 @@
         <TextBox Name ="DescriptionBox" HorizontalAlignment="Center" Margin="0,99,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="95"/>
 
 
-        <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" HorizontalAlignment="Left" Margin="122,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="82"  RenderTransformOrigin="0.306,0.13"/>
-        <Button Click ="SafeTask" Content="Save Task" HorizontalAlignment="Left" Margin="10,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="90"  RenderTransformOrigin="0.494,0.54"/>
+        <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" 
+                HorizontalAlignment="Left" Margin="94,271,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="82" 
+                RenderTransformOrigin="0.306,0.13"/>
+        <Button Click ="SafeTask" Content="Save Task"
+                HorizontalAlignment="Left" Margin="-1,271,0,0" Grid.Row="6" VerticalAlignment="Top" 
+                Height="26" Width="85"  RenderTransformOrigin="0.494,0.54"/>
 
 
         <!--<ListBox Name="listBoxArea" Grid.Row="6" Grid.ColumnSpan="3" Margin="2,261,6,15"/>-->
-        <ListBox Grid.Row="6" 
-                 Name="ListBoxArea"
-                 d:ItemsSource="{d:SampleData ItemCount=5}" 
-                 Margin="0,245,2,77"/>
-        <CheckBox Name="reminderBox" Content="CheckBox" HorizontalAlignment="Left" Margin="358,215,0,0" Grid.Row="6" VerticalAlignment="Top"/>
-        <Button Content="View Tasks" HorizontalAlignment="Left" Margin="219,210,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="93" Click="btnLoad_Click"/>
+        <ListBox ItemsSource="{Binding Tasks}" Name="listBoxArea">
+            <ListBox.Resources>
+                <!-- 1. Define the ContextMenu out here to fix the cast crash -->
+                <ContextMenu x:Key="ItemMenu">
+                    <MenuItem Header="Delete" Click="deleteContxtMenu"/>
+                </ContextMenu>
+            </ListBox.Resources>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <!-- 2. Safely apply the menu via StaticResource -->
+                    <Setter Property="ContextMenu" Value="{StaticResource ItemMenu}"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <Button Content="View Tasks" HorizontalAlignment="Left" Margin="194,271,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="93" Click="btnLoad_Click"/>
         <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="49,223,0,0" Grid.Row="6" VerticalAlignment="Top" Width="0"/>
-        <Button Content="Delete Task" HorizontalAlignment="Left" Margin="10,367,0,0" Grid.Row="6" VerticalAlignment="Top" Height="31" Width="71" Click="DeleteTasks"/>
-
-
+        <Button Content="Delete Task" HorizontalAlignment="Left" Margin="306,271,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="92" Click="DeleteTasks"/>
+        <DatePicker HorizontalAlignment="Left" Margin="306,0,0,0" Grid.Row="6" VerticalAlignment="Center"/>
     </Grid>
 </Window>

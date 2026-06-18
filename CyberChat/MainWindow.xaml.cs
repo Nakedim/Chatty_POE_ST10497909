@@ -1,8 +1,11 @@
 ﻿using Chatty;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections.ObjectModel;
 using System.Media;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -12,10 +15,11 @@ namespace CyberChat
     {
         private ChatBot chatBot;
         
+
         public MainWindow()
         {
             InitializeComponent();
-
+           
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
@@ -142,5 +146,24 @@ namespace CyberChat
 
             
         }
+
+        private void exit_click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void NewTask_click(object sender, RoutedEventArgs e)
+        {
+            TaskScheduler taskScheduler = new TaskScheduler();
+            taskScheduler.Owner = this;
+
+            taskScheduler.ShowDialog();
+
+        }
+        private void logClick_click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+       
     }
 }
