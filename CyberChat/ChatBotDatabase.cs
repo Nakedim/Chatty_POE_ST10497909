@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 
             List<string> description = new List<string>();
 
-            string sqlQuery = "SELECT title FROM tasks ORDER BY timestamp DESC";
+            string sqlQuery = "SELECT * FROM tasks ORDER BY timestamp DESC";
 
             using (MySqlConnection conn = new MySqlConnection(DBConnctString))
             {
