@@ -43,5 +43,15 @@ namespace CyberChat.Views
         {
             AnswerTextBox.Clear();
         }
+        private void CancelGame_click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
+        private void newCyberChat(object sender, RoutedEventArgs e)
+        {
+
+          
+
+        }
     }
 }

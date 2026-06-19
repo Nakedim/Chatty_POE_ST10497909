@@ -27,7 +27,7 @@ namespace CyberChat
                 new SentimentDetector(),
                 new MemoryStore(),
                 //for the part 3
-                //new ChatBotDatabase(),
+                
                 new TaskScheduler()
                
                 );
@@ -39,7 +39,7 @@ namespace CyberChat
 
 
         }
-      
+     
         public void LoadAsciiArt()
         {
             AppLogo.Text = @" __       __   ___  __   __            ___  __   __  ___ 
@@ -136,10 +136,7 @@ namespace CyberChat
 
         //handles task
 
-        public void TaskBtn(object sender, RoutedEventArgs e)
-        {
-            
-        }
+  
 
         private void TaskBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -171,6 +168,12 @@ namespace CyberChat
 
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+            if(mainWindow != null)
+            {
+                mainWindow.ReturnToMain();
+            }
+            
             // Hide chat interface
             ChatInterfaceGrid.Visibility = Visibility.Collapsed;
 
@@ -183,8 +186,41 @@ namespace CyberChat
             // Show the ContentControl
             SubWindowContainer.Visibility = Visibility.Visible;
         }
+        //user can press escape key
+        public void Esc_press(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+
+                // Hide chat interface
+                ChatInterfaceGrid.Visibility = Visibility.Collapsed;
+
+                // Create quiz view
+                QuizView quizView = new QuizView();
+
+                // Put it inside the ContentControl
+                SubWindowContainer.Content = quizView;
+            }
+        }
+
+       public void ReturnToMain()
+            {
+            
+
+                SubWindowContainer.Content = null;
+
+                ChatInterfaceGrid.Visibility = Visibility.Collapsed;
+                SubWindowContainer.Visibility = Visibility.Visible;
+            
+
+
+            }
+        }
+
+     }
+       
+           
         
             
 
-    }
-}
+   

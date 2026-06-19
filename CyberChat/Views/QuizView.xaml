@@ -41,6 +41,12 @@
                 VerticalAlignment="Top"
                 Width="98"
                 Click="Clear_Click"/>
+        <Button Content="Exit Quiz"
+            HorizontalAlignment="Left"
+            Margin="325,308,0,0"
+            VerticalAlignment="Top"
+            Width="98"
+            Click="CancelGame_click"/>
 
     </Grid>
 </UserControl>

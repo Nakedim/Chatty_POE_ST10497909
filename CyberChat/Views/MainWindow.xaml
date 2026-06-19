@@ -11,6 +11,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="New Task" Click="NewTask_click"/>
+                <MenuItem Header="New CyberChat"/>
                 <MenuItem Header="Play Quiz" Click="quizGame_click"/>
                 <Separator />
                 <MenuItem Header="Log">
@@ -64,7 +65,8 @@
                     <Button Content="Play Quiz" Name="QuizBtn" Click="quizGame_click" HorizontalAlignment="Left" Margin="60,3,0,0" VerticalAlignment="Top" Height="45" Width="94"/>
                 </StackPanel>
 
-                <Button Content="Activity Log" HorizontalAlignment="Left" Margin="307,124,0,0" VerticalAlignment="Top" Height="44" Width="73"/>
+                <Button Content="Activity Log" HorizontalAlignment="Left" Margin="307,124,0,0"
+                        VerticalAlignment="Top" Height="44" Width="73"/>
             </Grid>
 
             <!-- 2. SUBWINDOW DYNAMIC CONTAINER REGION -->
