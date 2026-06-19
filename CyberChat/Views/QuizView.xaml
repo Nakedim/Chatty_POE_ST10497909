@@ -47,6 +47,13 @@
             VerticalAlignment="Top"
             Width="98"
             Click="CancelGame_click"/>
+        <Button Content="Back To Chat"
+            HorizontalAlignment="Left"
+     Margin="325,308,0,0"
+     VerticalAlignment="Top"
+     Width="98"
+     Click="ReturnToMain"/>
+  
 
     </Grid>
 </UserControl>

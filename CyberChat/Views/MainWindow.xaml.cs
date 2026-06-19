@@ -169,9 +169,10 @@ namespace CyberChat
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+            var usercontrol = new QuizView();
             if(mainWindow != null)
             {
-                mainWindow.ReturnToMain();
+                
             }
             
             // Hide chat interface
@@ -203,18 +204,7 @@ namespace CyberChat
             }
         }
 
-       public void ReturnToMain()
-            {
-            
-
-                SubWindowContainer.Content = null;
-
-                ChatInterfaceGrid.Visibility = Visibility.Collapsed;
-                SubWindowContainer.Visibility = Visibility.Visible;
-            
-
-
-            }
+       
         }
 
      }

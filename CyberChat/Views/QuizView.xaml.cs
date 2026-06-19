@@ -45,13 +45,31 @@ namespace CyberChat.Views
         }
         private void CancelGame_click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+            
+            ReturnToMain(this, new RoutedEventArgs());
         }
         private void newCyberChat(object sender, RoutedEventArgs e)
         {
-
-          
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            mainWindow.ChatBotArea.Items.Clear();
+            ReturnToMain(this, new RoutedEventArgs());
 
         }
+        public void ReturnToMain(object sender, RoutedEventArgs e)
+        {
+            // 1. Get a reference to your actual MainWindow
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+
+            if (mainWindow != null)
+            {
+                // 2. Clear the quiz content from the container
+                mainWindow.SubWindowContainer.Content = null;
+
+                // 3. Turn the Chat Interface back VISIBLE, and hide the sub-container
+                mainWindow.ChatInterfaceGrid.Visibility = Visibility.Visible;
+                mainWindow.SubWindowContainer.Visibility = Visibility.Collapsed;
+            }
+        }
+
     }
 }
