@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.DirectoryServices;
 using System.Linq;
 using System.Linq.Expressions;
@@ -195,6 +196,43 @@ CREATE TABLE IF NOT EXISTS tasks(
             
         }
 
-        
+        public void ListMyDb()
+        {
+            string sqlQuery = "SELECT * FROM tasks";
+            {
+                //1st step connection string
+                using (MySqlConnection conn = new MySqlConnection (DBConnctString))
+                {
+                    try
+                    {
+                        //Step 2: connect to the server
+                        conn.Open();
+                        //step 3: create a command and execute it
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(sqlQuery, conn);
+                        DataTable dt = new DataTable();
+
+                        //fill the datatable with the results of the query
+                        adapter.Fill(dt);
+
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string title = row["title"].ToString();
+                            string description = row["description"].ToString();
+                            bool isReminderSet = Convert.ToBoolean(row["is_reminder_set"]);
+                            DateTime timestamp = Convert.ToDateTime(row["timestamp"]);
+                            // Display the data in a message box or console
+                            MessageBox.Show($"Title: {title}\nDescription: {description}\nIs Reminder Set: {isReminderSet}\nTimestamp: {timestamp}");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Database listeing error" +e.Message);
+                    }
+
+                }
+            }
+           
+        }
     }
     }

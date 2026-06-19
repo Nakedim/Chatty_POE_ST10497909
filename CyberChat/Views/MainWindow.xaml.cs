@@ -15,7 +15,7 @@ namespace CyberChat
     public partial class MainWindow : Window
     {
         private ChatBot chatBot;
-    
+        
 
         public MainWindow()
         {
@@ -49,6 +49,7 @@ namespace CyberChat
 
         public void voiceGreeting()
         {
+        
             try
             {
                 SoundPlayer player = new SoundPlayer("Welcome.wav");
@@ -169,8 +170,8 @@ namespace CyberChat
 
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
-         
-        }
+            QuizView quizView = new QuizView();
+            quizView.Owner = this;
 
     }
 }
