@@ -1,9 +1,8 @@
-﻿using Chatty;
-using System.IO.Packaging;
+﻿using System.IO.Packaging;
 using System.Windows;
 using MySql.Data.MySqlClient;
 
-namespace CyberChat
+namespace CyberChat.Core
 {
     public class ChatBot
     {

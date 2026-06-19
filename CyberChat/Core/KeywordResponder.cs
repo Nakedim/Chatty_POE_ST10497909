@@ -1,4 +1,4 @@
-﻿namespace CyberChat
+﻿namespace CyberChat.Core
 {
     public class KeywordResponder
     {

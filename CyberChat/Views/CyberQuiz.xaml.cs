@@ -15,9 +15,10 @@ using System.Windows.Shapes;
 
 namespace CyberChat
 {
-   partial class QuizGame : UserControl
+    
+    public partial class CyberQuiz : UserControl
     {
-        public QuizGame()
+        public CyberQuiz()
         {
             InitializeComponent();
         }

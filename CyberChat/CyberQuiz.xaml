@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="CyberChat.UserControl1"
+﻿<UserControl x:Class="CyberChat.CyberQuiz"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

@@ -46,6 +46,7 @@
                 <!-- 1. Define the ContextMenu out here to fix the cast crash -->
                 <ContextMenu x:Key="ItemMenu">
                     <MenuItem Header="Delete" Click="deleteContxtMenu"/>
+                    <MenuItem Header="Mark as Complete" />
                 </ContextMenu>
             </ListBox.Resources>
 

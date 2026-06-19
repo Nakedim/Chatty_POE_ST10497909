@@ -1,4 +1,5 @@
-﻿using Chatty;
+﻿
+using CyberChat.Core;
 using MySql.Data.MySqlClient;
 using System;
 
@@ -18,7 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
 using System.Windows.Threading;
-using static CyberChat.SentimentDetector;
+using static CyberChat.Core.SentimentDetector;
 
 namespace CyberChat
 {

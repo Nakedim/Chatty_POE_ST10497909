@@ -1,4 +1,5 @@
-﻿using Chatty;
+﻿using CyberChat.Core;
+using CyberChat.QuizGame;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.ObjectModel;
@@ -14,7 +15,7 @@ namespace CyberChat
     public partial class MainWindow : Window
     {
         private ChatBot chatBot;
-        
+    
 
         public MainWindow()
         {
@@ -27,6 +28,7 @@ namespace CyberChat
                 //for the part 3
                 //new ChatBotDatabase(),
                 new TaskScheduler()
+               
                 );
 
             LoadAsciiArt();
@@ -147,6 +149,7 @@ namespace CyberChat
             
         }
 
+        //top Menu links
         private void exit_click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -164,6 +167,10 @@ namespace CyberChat
 
         }
 
-       
+        private void quizGame_click(object sender, RoutedEventArgs e)
+        {
+         
+        }
+
     }
 }

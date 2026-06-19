@@ -1,4 +1,4 @@
-﻿namespace Chatty
+﻿namespace CyberChat.Core
 {
     public class MemoryStore
     {
