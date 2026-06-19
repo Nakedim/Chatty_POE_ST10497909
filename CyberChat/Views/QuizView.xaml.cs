@@ -19,12 +19,11 @@ namespace CyberChat.Views
     
     public partial class QuizView : UserControl
     {
-        QuizQuestions game = new QuizQuestions();
+        
+        
         public QuizView()
         {
             InitializeComponent();
-            SetQuizContent(this, EventArgs.Empty, "");
-
         }
 
 
@@ -33,6 +32,16 @@ namespace CyberChat.Views
         {
             QuestionTextBlock.Text = question;
             // You can add code here to display the options in the UI, e.g., in a ListBox or ComboBox.
+        }
+        private void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            string answer = AnswerTextBox.Text;
+            MessageBox.Show($"Your answer: {answer}");
+        }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            AnswerTextBox.Clear();
         }
     }
 }

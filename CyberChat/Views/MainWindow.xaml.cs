@@ -1,4 +1,5 @@
 ﻿using CyberChat.Core;
+using CyberChat.Views;
 using CyberChat.QuizGame;
 using MySql.Data.MySqlClient;
 using System;
@@ -170,8 +171,20 @@ namespace CyberChat
 
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
+            // Hide chat interface
+            ChatInterfaceGrid.Visibility = Visibility.Collapsed;
+
+            // Create quiz view
             QuizView quizView = new QuizView();
-            quizView.Owner = this;
+
+            // Put it inside the ContentControl
+            SubWindowContainer.Content = quizView;
+
+            // Show the ContentControl
+            SubWindowContainer.Visibility = Visibility.Visible;
+        }
+        
+            
 
     }
 }
