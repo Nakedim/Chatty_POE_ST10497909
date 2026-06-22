@@ -10,6 +10,7 @@ namespace CyberChat.Core
         private readonly SentimentDetector _sentiment;
         private readonly MemoryStore _memory;
         private readonly TaskScheduler _task;
+        private readonly NaturalLanguage _NLP;
         private bool _awaitingName = true;
         private string _lastTopic = "";
 
@@ -17,12 +18,13 @@ namespace CyberChat.Core
         //string connectionString = "server=127.0.0.1;port=3306;database=CyberChatDB;uid=root;pwd=YOUR_PASSWORD;";
 
         public ChatBot(KeywordResponder responder, SentimentDetector
-            sentiment, MemoryStore memory, TaskScheduler Tasks)
+            sentiment, MemoryStore memory, TaskScheduler Tasks, NaturalLanguage nlp)
         {
             _responder = responder;
             _sentiment = sentiment;
             _memory = memory;
             _task = Tasks;
+            _NLP = nlp;
         }
         public string GetGreeting(string input)
         {
@@ -104,6 +106,19 @@ namespace CyberChat.Core
                 CurrentStatus = "Topic discussed";
                 botMessage = _responder.GetResponse(normalizedInput);
             }
+            else if (!string.IsNullOrEmpty(_NLP.keywordPicker(normalizedInput)))
+            {
+                CurrentStatus = "Scheduling Task";
+                //run UI
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _task.Show();
+
+                });
+                string safeUser = _memory.Recall("Name") ?? "User";
+                botMessage = $"{_memory.UserName} I'm happy to assist you to set your task";
+
+            }
             // Default fallback response
             else
             {
@@ -126,9 +141,7 @@ namespace CyberChat.Core
             _memory.Store("name", userName);
 
             _awaitingName = false;
-            CurrentStatus = $"Chatting with {userName}";
-
-
+           
             return $"{Time}{userName},Nice to meet you! How are you?";
 
 
@@ -194,11 +207,8 @@ namespace CyberChat.Core
             return string.Empty;
         }
 
-        //Not part of assignment but added to make the bot more interactive and friendly.
-        //part of my learning process to learn more about cshap features and how to use them in a practical way.
-               
-
-
+//as part of NLP
+             
       public string TimeOfDayResponse(){
             int hour = DateTime.Now.Hour;
 

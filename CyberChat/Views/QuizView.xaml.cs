@@ -1,7 +1,9 @@
 ﻿using CyberChat.QuizGame;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,7 +33,9 @@ namespace CyberChat.Views
         public void SetQuizContent(object sender, EventArgs e, string question)
         {
             QuestionTextBlock.Text = question;
+            
             // You can add code here to display the options in the UI, e.g., in a ListBox or ComboBox.
+
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
@@ -69,6 +73,27 @@ namespace CyberChat.Views
                 mainWindow.ChatInterfaceGrid.Visibility = Visibility.Visible;
                 mainWindow.SubWindowContainer.Visibility = Visibility.Collapsed;
             }
+        }
+        public class TaskItem : INotifyPropertyChanged
+        {
+            private string _title;
+            private bool _isCompleted;
+
+            public string Title
+            {
+                get => _title;
+                set { _title = value; OnPropertyChanged(); }
+            }
+
+            public bool IsCompleted
+            {
+                get => _isCompleted;
+                set { _isCompleted = value; OnPropertyChanged(); }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            protected void OnPropertyChanged([CallerMemberName] string name = null) =>
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
     }

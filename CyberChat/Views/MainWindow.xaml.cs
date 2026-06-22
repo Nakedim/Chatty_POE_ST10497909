@@ -27,8 +27,8 @@ namespace CyberChat
                 new SentimentDetector(),
                 new MemoryStore(),
                 //for the part 3
-                
-                new TaskScheduler()
+                new TaskScheduler(),
+                new NaturalLanguage()
                
                 );
 
