@@ -28,14 +28,12 @@ namespace CyberChat
                 new SentimentDetector(),
                 new MemoryStore(),
                 //for the part 3
-<<<<<<< HEAD
+
                 //new ChatBotDatabase(),
-                new TaskScheduler()
-              
-=======
+        
                 new TaskScheduler(),
                 new NaturalLanguage()
->>>>>>> 98ed709aee692eaa104fffdce99c39b832bda4ab
+
                
                 );
 
@@ -170,19 +168,12 @@ namespace CyberChat
         }
         private void logClick_click(object sender, RoutedEventArgs e)
         {
-          ChatBotDatabase bd = new ChatBotDatabase();
-            bd.ListMyDb();
+         
         }
 
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
-
-
-
-        }
-=======
-            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
             var usercontrol = new QuizView();
             if(mainWindow != null)
             {
@@ -191,7 +182,7 @@ namespace CyberChat
             
             // Hide chat interface
             ChatInterfaceGrid.Visibility = Visibility.Collapsed;
->>>>>>> 98ed709aee692eaa104fffdce99c39b832bda4ab
+
 
             // Create quiz view
             QuizView quizView = new QuizView();
@@ -201,7 +192,12 @@ namespace CyberChat
 
             // Show the ContentControl
             SubWindowContainer.Visibility = Visibility.Visible;
+
+
+
         }
+
+           
         //user can press escape key
         public void Esc_press(object sender, KeyEventArgs e)
         {

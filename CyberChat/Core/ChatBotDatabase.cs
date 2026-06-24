@@ -157,8 +157,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 
         public void DeleteTasks(int taskId)
         {
-         
-            
+
             try
             {
                 string queryToDelete = "DELETE FROM tasks WHERE taskId = 4";
@@ -179,6 +178,7 @@ CREATE TABLE IF NOT EXISTS tasks(
                        
                         if (rowsAffected > 0)
                         {
+                            //ListMyDb(TasksGrid);
                             MessageBox.Show("Task deleted successfully.");
                         }
                         else
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS tasks(
                             MessageBox.Show("No task found with that ID.");
                         }
                     }
-              conn.Close();
+             
                 }
                
             }
@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 
         public void ListMyDb(DataGrid DataGridTasks)
         {
-            string sqlQuery = "SELECT * FROM tasks";
+            string sqlQuery = "SELECT * taskid AS id, title, description FROM tasks";
             {
                 //1st step connection string
                 using (MySqlConnection conn = new MySqlConnection (DBConnctString))
@@ -221,6 +221,7 @@ CREATE TABLE IF NOT EXISTS tasks(
                     catch (Exception e)
                     {
                         MessageBox.Show("Database listing error" +e.Message);
+
                     }
 
                 }

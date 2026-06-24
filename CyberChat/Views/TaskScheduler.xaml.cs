@@ -6,6 +6,7 @@ using System;
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace CyberChat
     {
         public ObservableCollection<string> Tasks { get; set; } = new ObservableCollection<string>();
         private ChatBot bot;
+        
         private DispatcherTimer reminderTimer;
         private readonly ChatBotDatabase db = new ChatBotDatabase();
         public TaskScheduler()
@@ -125,21 +127,39 @@ namespace CyberChat
         }
         private void deleteContxtMenu(object sender, RoutedEventArgs e)
         {
-            MenuItem deleteMenu = sender as MenuItem;
-            if (deleteMenu == null) return;
-             var taskToDelete = deleteMenu.DataContext as string;
-            if(taskToDelete != null)
+            MenuItem menuItem = sender as MenuItem;
+            if (menuItem == null) return;
+            //get contextMenu
+            ContextMenu contextMenu = menuItem.Parent as ContextMenu;
+            if (contextMenu == null) return;
+            DataGrid dataGrid = contextMenu.PlacementTarget as DataGrid;
+            if (dataGrid == null || dataGrid.SelectedItem == null) return;
+            DataRowView row = dataGrid.SelectedItem as DataRowView;
+            if (row == null) return;
+            string taskid = row["id"].ToString();
+            //confirm dialogbox
+            MessageBoxResult res = MessageBox.Show("Are you sure you want to delete",
+                "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                
+            if(res == MessageBoxResult.Yes)
             {
-                Tasks.Remove(taskToDelete);
+                if (int.TryParse(taskid, out int idToDelete))
+                {
+                 db.DeleteTasks(idToDelete);
+                    db.ListMyDb(datagridtasks);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Task ID format.");
+                }
             }
-
-
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            db.ListMyDb(TasksGrid);
+
+            //db.ListMyDb();
+            db.ListMyDb(datagridtasks);
         }
        
        
