@@ -6,7 +6,9 @@
         Background="Cyan"
         Width="780">
     <DockPanel>
-
+        <Grid Background="LightGray" Margin="0,0,0,0">
+          
+        </Grid>
         <!-- Top Menu Layer -->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">

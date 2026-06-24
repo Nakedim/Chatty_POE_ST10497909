@@ -1,5 +1,6 @@
 ﻿using System.IO.Packaging;
 using System.Windows;
+using CyberChat.QuizGame;
 using MySql.Data.MySqlClient;
 
 namespace CyberChat.Core

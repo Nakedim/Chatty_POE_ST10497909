@@ -1,5 +1,6 @@
 ﻿using CyberChat.Core;
 using CyberChat.QuizGame;
+using CyberChat.Views;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.ObjectModel;
@@ -15,7 +16,7 @@ namespace CyberChat
     public partial class MainWindow : Window
     {
         private ChatBot chatBot;
-        
+        private QuizView quizView ;
 
         public MainWindow()
         {
@@ -28,6 +29,7 @@ namespace CyberChat
                 //for the part 3
                 //new ChatBotDatabase(),
                 new TaskScheduler()
+              
                
                 );
 
@@ -170,8 +172,10 @@ namespace CyberChat
 
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
-            QuizView quizView = new QuizView();
-            quizView.Owner = this;
+
+
+
+        }
 
     }
 }
