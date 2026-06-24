@@ -139,7 +139,7 @@ namespace CyberChat
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            db.ListMyDb();
+            db.ListMyDb(TasksGrid);
         }
        
        
