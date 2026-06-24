@@ -13,12 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CyberChat
+namespace CyberChat.Views
 {
-    
-    public partial class CyberQuiz : UserControl
+    /// <summary>
+    /// Interaction logic for LogActivities.xaml
+    /// </summary>
+    public partial class LogActivities : Page
     {
-        public CyberQuiz()
+        public LogActivities()
         {
             InitializeComponent();
         }

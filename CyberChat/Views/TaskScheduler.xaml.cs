@@ -1,5 +1,6 @@
 ﻿
 using CyberChat.Core;
+using CyberChat.Views;
 using MySql.Data.MySqlClient;
 using System;
 
@@ -69,18 +70,7 @@ namespace CyberChat
 
         }
      
-        private string AddTitle()
-        {
-            
-           string Title = TitleBox.Text;
-            if (string.IsNullOrEmpty(Title))
-            {
-                MessageBox.Show("Enter title");
-                return null;
-            }
-
-            return Title;
-        }
+  
  
         //click method save
         private void SafeTask(object sender, RoutedEventArgs e)
@@ -149,7 +139,9 @@ namespace CyberChat
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            db.ListMyDb();
+            db.ListMyDb(TasksGrid);
         }
+       
+       
     }
 }

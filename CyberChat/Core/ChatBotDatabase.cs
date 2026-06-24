@@ -186,8 +186,11 @@ CREATE TABLE IF NOT EXISTS tasks(
                             MessageBox.Show("No task found with that ID.");
                         }
                     }
+              conn.Close();
                 }
+               
             }
+
             catch (Exception e)
             {
                 MessageBox.Show("Error occurred attempting deletion: " + e.Message);
@@ -196,7 +199,7 @@ CREATE TABLE IF NOT EXISTS tasks(
             
         }
 
-        public void ListMyDb()
+        public void ListMyDb(DataGrid DataGridTasks)
         {
             string sqlQuery = "SELECT * FROM tasks";
             {
@@ -207,27 +210,17 @@ CREATE TABLE IF NOT EXISTS tasks(
                     {
                         //Step 2: connect to the server
                         conn.Open();
-                        //step 3: create a command and execute it
                         MySqlDataAdapter adapter = new MySqlDataAdapter(sqlQuery, conn);
                         DataTable dt = new DataTable();
-
-                        //fill the datatable with the results of the query
                         adapter.Fill(dt);
+                        DataGridTasks.ItemsSource = dt.DefaultView;
 
+                        conn.Close();
 
-                        foreach (DataRow row in dt.Rows)
-                        {
-                            string title = row["title"].ToString();
-                            string description = row["description"].ToString();
-                            bool isReminderSet = Convert.ToBoolean(row["is_reminder_set"]);
-                            DateTime timestamp = Convert.ToDateTime(row["timestamp"]);
-                            // Display the data in a message box or console
-                            MessageBox.Show($"Title: {title}\nDescription: {description}\nIs Reminder Set: {isReminderSet}\nTimestamp: {timestamp}");
-                        }
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("Database listeing error" +e.Message);
+                        MessageBox.Show("Database listing error" +e.Message);
                     }
 
                 }

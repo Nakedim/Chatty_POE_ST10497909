@@ -1,4 +1,5 @@
 ﻿using CyberChat.Core;
+using CyberChat.Views;
 using CyberChat.QuizGame;
 using CyberChat.Views;
 using MySql.Data.MySqlClient;
@@ -27,9 +28,14 @@ namespace CyberChat
                 new SentimentDetector(),
                 new MemoryStore(),
                 //for the part 3
+<<<<<<< HEAD
                 //new ChatBotDatabase(),
                 new TaskScheduler()
               
+=======
+                new TaskScheduler(),
+                new NaturalLanguage()
+>>>>>>> 98ed709aee692eaa104fffdce99c39b832bda4ab
                
                 );
 
@@ -40,7 +46,7 @@ namespace CyberChat
 
 
         }
-      
+     
         public void LoadAsciiArt()
         {
             AppLogo.Text = @" __       __   ___  __   __            ___  __   __  ___ 
@@ -137,10 +143,7 @@ namespace CyberChat
 
         //handles task
 
-        public void TaskBtn(object sender, RoutedEventArgs e)
-        {
-            
-        }
+  
 
         private void TaskBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -167,15 +170,62 @@ namespace CyberChat
         }
         private void logClick_click(object sender, RoutedEventArgs e)
         {
-
+          ChatBotDatabase bd = new ChatBotDatabase();
+            bd.ListMyDb();
         }
 
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
+<<<<<<< HEAD
 
 
 
         }
+=======
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+            var usercontrol = new QuizView();
+            if(mainWindow != null)
+            {
+                
+            }
+            
+            // Hide chat interface
+            ChatInterfaceGrid.Visibility = Visibility.Collapsed;
+>>>>>>> 98ed709aee692eaa104fffdce99c39b832bda4ab
 
-    }
-}
+            // Create quiz view
+            QuizView quizView = new QuizView();
+
+            // Put it inside the ContentControl
+            SubWindowContainer.Content = quizView;
+
+            // Show the ContentControl
+            SubWindowContainer.Visibility = Visibility.Visible;
+        }
+        //user can press escape key
+        public void Esc_press(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+
+                // Hide chat interface
+                ChatInterfaceGrid.Visibility = Visibility.Collapsed;
+
+                // Create quiz view
+                QuizView quizView = new QuizView();
+
+                // Put it inside the ContentControl
+                SubWindowContainer.Content = quizView;
+            }
+        }
+
+       
+        }
+
+     }
+       
+           
+        
+            
+
+   
