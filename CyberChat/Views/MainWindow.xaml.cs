@@ -163,7 +163,8 @@ namespace CyberChat
         }
         private void logClick_click(object sender, RoutedEventArgs e)
         {
-
+          ChatBotDatabase bd = new ChatBotDatabase();
+            bd.ListMyDb();
         }
 
         private void quizGame_click(object sender, RoutedEventArgs e)

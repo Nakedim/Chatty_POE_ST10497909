@@ -15,8 +15,6 @@
          {
              {Sentiments.Worried,
              new List<string> {"unhappy","scared","worry", "worried","afraid,","concerned","sad","bother"}},
-             {Sentiments.Neutral,
-             new List<string >{""}}, 
              {Sentiments.Curious,
              new List<string>{ "Wonder", "Curious", "Inquisitive", "Intrigued", "Inquiring"}},
              {Sentiments.Frustrated,
@@ -35,7 +33,7 @@
             switch (mood)
             {
                 case Sentiments.Neutral:
-                    return "";
+                    return string.Empty;
                 case Sentiments.Worried:
                     return "Sad to Hear that, dont worry i will help you";
                 case Sentiments.Curious:
@@ -60,7 +58,7 @@
 
 
             input = input.ToLower();
-
+            string cleanInput = input.ToLowerInvariant();
             foreach (var sentiment in sentimentList)
             {
                 bool found = sentiment.Value.Any(key => input.Contains(key.ToLower()));

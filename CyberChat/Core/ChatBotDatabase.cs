@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 
                         //fill the datatable with the results of the query
                         adapter.Fill(dt);
-
+                        StringBuilder sb = new StringBuilder();
 
                         foreach (DataRow row in dt.Rows)
                         {
@@ -222,8 +222,13 @@ CREATE TABLE IF NOT EXISTS tasks(
                             bool isReminderSet = Convert.ToBoolean(row["is_reminder_set"]);
                             DateTime timestamp = Convert.ToDateTime(row["timestamp"]);
                             // Display the data in a message box or console
+
                             MessageBox.Show($"Title: {title}\nDescription: {description}\nIs Reminder Set: {isReminderSet}\nTimestamp: {timestamp}");
+                            sb.Append($"Title: {title}");
+
                         }
+                   
+
                     }
                     catch (Exception e)
                     {

@@ -49,84 +49,84 @@ namespace CyberChat.Core
         public string ProcessInput(string input)
         {
 
-            input = input.Trim().ToLower();
-
             if (string.IsNullOrWhiteSpace(input))
             {
                 CurrentStatus = "Waiting for input";
                 string emptyResponse = "Please type something.";
-                //SaveToDbQuietly(input, emptyResponse);
+                //SaveLogToDatabase(string.Empty, emptyResponse);
                 return emptyResponse;
             }
 
             string originalInput = input.Trim();
-            string normalizedInput = originalInput.ToLower();
+            string normalizedInput = originalInput.ToLowerInvariant();
             CurrentStatus = "Processing...";
 
-            // 2. Determine the correct response based on logic
             string botMessage;
 
-            // First interaction = ask for username 
+            // PRIORITY 1: Identity & Authentication Initialization
             if (_awaitingName)
             {
-                botMessage = HandleUserName(originalInput);
+                string sanitizedName = System.Web.HttpUtility.HtmlEncode(originalInput);
+                botMessage = HandleUserName(sanitizedName);
             }
-            // Store favourite topic 
+            // PRIORITY 2: Contextual Topic Memory Management
             else if (normalizedInput.Contains("my favourite topic is"))
             {
                 botMessage = SaveFavouriteTopic(originalInput);
             }
-            // Recall favourite topic 
             else if (normalizedInput.Contains("what is my favourite topic"))
             {
                 botMessage = RecallFavouriteTopic();
             }
-            // Sentiment detection 
+            // PRIORITY 3: General Dynamic Context Follow-Ups
+            else if (IsFollowUpRequest(normalizedInput))
+            {
+                botMessage = HandleFollowUpRequest();
+            }
+            // PRIORITY 4: Direct Action Triggers (WPF UI Windows / Security Tasks)
+            else if (!string.IsNullOrEmpty(_NLP.keywordPicker(normalizedInput)))
+            {
+                CurrentStatus = "Scheduling Task";
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _task.Show();
+                });
+
+                string safeUser = _memory.Recall("name") ?? "User";
+                botMessage = $"{safeUser}, I'm happy to assist you to set your task.";
+            }
+            // PRIORITY 5: Exact Infrastructure Keyword Matches 
+            else if (!string.IsNullOrEmpty(botMessage = _responder.GetResponse(normalizedInput)))
+            {
+                _lastTopic = originalInput;
+                CurrentStatus = "Topic discussed";
+            }
+            // PRIORITY 6: Static Informational Structural Questions
+            else if (!string.IsNullOrEmpty(botMessage = HandleBasicQuestions(normalizedInput)))
+            {
+                CurrentStatus = "Answered basic question";
+            }
+            // PRIORITY 7: Sentiment & Urgency Assessment (Natural Fallback)
+            // Placed at the bottom so words like "confused" don't break security commands.
             else if (_sentiment.Detect(normalizedInput) != SentimentDetector.Sentiments.Neutral)
             {
                 SentimentDetector.Sentiments mood = _sentiment.Detect(normalizedInput);
                 CurrentStatus = "Responded to sentiment";
                 botMessage = _sentiment.GetSentimentsResponse(mood);
             }
-            // Follow-up requests 
-            else if (IsFollowUpRequest(normalizedInput))
-            {
-                botMessage = HandleFollowUpRequest();
-            }
-            // Basic chatbot questions 
-            else if (!string.IsNullOrEmpty(HandleBasicQuestions(normalizedInput)))
-            {
-                CurrentStatus = "Answered basic question";
-                botMessage = HandleBasicQuestions(normalizedInput);
-            }
-            // Keyword responses 
-            else if (!string.IsNullOrEmpty(_responder.GetResponse(normalizedInput)))
-            {
-                _lastTopic = originalInput;
-                CurrentStatus = "Topic discussed";
-                botMessage = _responder.GetResponse(normalizedInput);
-            }
-            else if (!string.IsNullOrEmpty(_NLP.keywordPicker(normalizedInput)))
-            {
-                CurrentStatus = "Scheduling Task";
-                //run UI
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _task.Show();
-
-                });
-                string safeUser = _memory.Recall("Name") ?? "User";
-                botMessage = $"{_memory.UserName} I'm happy to assist you to set your task";
-
-            }
-            // Default fallback response
+            // PRIORITY 8: Catch-All System Fallback
             else
             {
                 CurrentStatus = "Awaiting next question";
-                botMessage = $"I'm not sure how to respond to that, {_memory.UserName}. Ask me something about cyber security.";
+                string safeUser = _memory.Recall("name") ?? "User";
+                botMessage = $"I'm not sure how to respond to that, {safeUser}. Ask me something about cyber security.";
             }
 
-                 return botMessage;
+            // Secure database log execution
+            //SaveLogToDatabase(originalInput, botMessage);
+
+            return botMessage;
         }
 
     
@@ -192,7 +192,8 @@ namespace CyberChat.Core
         private string HandleBasicQuestions(string input)
         {
             string normalizedInput = input.ToLowerInvariant();
-            if (normalizedInput.Contains("how are you") || normalizedInput.Contains("i'm good") || normalizedInput.Contains("im good") || normalizedInput.Contains("and you"))
+            if (normalizedInput.Contains("how are you") 
+                || normalizedInput.Contains("and you"))
             {
 
                 return $" I'm functioning correctly and ready to help with Cyber Security question, {_memory.UserName}.";
