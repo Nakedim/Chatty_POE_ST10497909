@@ -222,7 +222,7 @@ namespace CyberChat.Core
                 case >= 12 and <= 17:
                     timeOfDayResponse = "Good Afternoon!";
                     break;
-                case >= 18 and <= 23:
+                case >= 18 and <= 24:
                     timeOfDayResponse = "Good Evening!";
                     break;
                 default:
