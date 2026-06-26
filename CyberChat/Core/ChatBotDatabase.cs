@@ -151,9 +151,9 @@ CREATE TABLE IF NOT EXISTS tasks(
             return tasks;
         }
 
-        public void DeleteTasks(int taskId)
+        public bool DeleteTasks(int taskId)
         {
-
+            bool isSuccess = false;
             try
             {
                 string queryToDelete = "DELETE FROM tasks WHERE taskId = @taskId";
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS tasks(
                        
                         if (rowsAffected > 0)
                         {
-                         
+                            isSuccess = true;
                             MessageBox.Show("Task deleted successfully.");
                         }
                         else
@@ -191,8 +191,8 @@ CREATE TABLE IF NOT EXISTS tasks(
             {
                 MessageBox.Show("Error occurred attempting deletion: " + e.Message);
             }
+            return isSuccess;
 
-            
         }
 
         public void ListMyDb(DataGrid DataGridTasks)
@@ -226,31 +226,58 @@ CREATE TABLE IF NOT EXISTS tasks(
 
         public void SaveLogToDatabase(string userInput, string botResponse)
         {
+            string createLogsTableSql = @"
+    CREATE TABLE IF NOT EXISTS activitylogs (
+        LogId INT AUTO_INCREMENT PRIMARY KEY,
+        UserInput TEXT NOT NULL,
+        BotResponse TEXT NOT NULL,
+        Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );";
+
+            string insertQuery = "INSERT INTO activitylogs (UserInput, BotResponse) VALUES (@input, @response);";
+            string alterTableSql = "ALTER TABLE activitylogs MODIFY COLUMN BotResponse LONGTEXT NOT NULL;";
+
+
             try
             {
                 using (var connection = new MySqlConnection(DBConnctString))
                 {
                     connection.Open();
-                    string query = "INSERT INTO ActivityLogs (UserInput, BotResponse, Timestamp) VALUES (@input, @response, NOW())";
 
-                    using (var cmd = new MySqlCommand(query, connection))
+                    // 1. Execute table creation inside the open connection block
+                    using (var createCmd = new MySqlCommand(createLogsTableSql, connection))
+                    {
+                        createCmd.ExecuteNonQuery();
+                    }
+                   
+                    using (var alterCmd = new MySqlCommand(alterTableSql, connection))
+                    {
+                        alterCmd.ExecuteNonQuery();
+                    }
+
+                    // 2. Execute record insertion inside the open connection block
+                    using (var cmd = new MySqlCommand(insertQuery, connection))
                     {
                         cmd.Parameters.AddWithValue("@input", userInput);
                         cmd.Parameters.AddWithValue("@response", botResponse);
                         cmd.ExecuteNonQuery();
                     }
-                }
+                } // The database connection safely closes here AFTER commands finish running
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("Database logging failed: " + e.Message);
+                MessageBox.Show($"CRITICAL: Logging Failed!\nReason: {e.Message}",
+                                "Database Debug Diagnostics",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
             }
         }
+
 
         public string GetActivityLogFromDatabase()
         {
             var logs = new System.Text.StringBuilder();
-            string safeUser = ("name") ?? "User";
+            string safeUser = "User";
             logs.AppendLine($"{safeUser}, here are the recent actions recorded in the log:\n");
 
             try
@@ -264,7 +291,10 @@ CREATE TABLE IF NOT EXISTS tasks(
                     using (var cmd = new MySqlCommand(query, connection))
                     using (var reader = cmd.ExecuteReader())
                     {
-                        if (!reader.HasRows) return "No actions have been recorded in the log yet.";
+                        if (!reader.HasRows)
+                        {
+                            logs.AppendLine("No actions have been recorded in the log yet.");
+                        } 
 
                         while (reader.Read())
                         {
@@ -280,7 +310,9 @@ CREATE TABLE IF NOT EXISTS tasks(
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Database retrieval failed: " + e.Message);
-                return "Sorry, I encountered an error pulling the activity logs.";
+                logs.Clear();
+                logs.AppendLine("Sorry, I encountered an error pulling the activity logs.");
+               
             }
 
             return logs.ToString();

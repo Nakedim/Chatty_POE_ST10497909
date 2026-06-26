@@ -1,171 +1,182 @@
-﻿
-using CyberChat.Core;
-using CyberChat.Views;
-using MySql.Data.MySqlClient;
+﻿using CyberChat.Core;
 using System;
-
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Shell;
-using System.Windows.Threading;
-using static CyberChat.Core.SentimentDetector;
-
 namespace CyberChat
 {
-    partial class TaskScheduler : Window
+    public partial class TaskScheduler : Window
     {
-        public ObservableCollection<string> Tasks { get; set; } = new ObservableCollection<string>();
-        private ChatBot bot;
-        
-        private DispatcherTimer reminderTimer;
-        private readonly ChatBotDatabase db = new ChatBotDatabase();
+        private bool _isReminderSet = false;
+        ChatBotDatabase db = new ChatBotDatabase();
         public TaskScheduler()
         {
             InitializeComponent();
-            this.DataContext = this;
-
-
+            InitializeTimeSelectorItems();
         }
 
-        public void SetReminderTimer()
+        private void InitializeTimeSelectorItems()
         {
-            reminderTimer = new DispatcherTimer();
-            reminderTimer.Interval = TimeSpan.FromSeconds(30);
-            reminderTimer.Tick += ReminderTimer_Tick;
-            reminderTimer.Start();
-        }
+            // Populate matching 24 hour standard range loop indices
+            for (int h = 0; h < 24; h++) ComboHours.Items.Add(h.ToString("D2"));
+            for (int m = 0; m < 60; m++) ComboMinutes.Items.Add(m.ToString("D2"));
 
-        private void ReminderTimer_Tick(object? sender, EventArgs e)
-        {
-            //CheckReminder();
+            // Pre-select current timestamp metrics context values automatically
+            TargetDatePicker.SelectedDate = DateTime.Now;
+            ComboHours.SelectedItem = DateTime.Now.Hour.ToString("D2");
+            ComboMinutes.SelectedItem = DateTime.Now.Minute.ToString("D2");
         }
 
 
-        private void SetReminderBtn_Click(object sender, RoutedEventArgs e)
+        
+        private void SetReminderButton_Click(object sender, RoutedEventArgs e)
         {
+            _isReminderSet =!_isReminderSet;
 
-            string title = TitleBox.Text;
-            string description = DescriptionBox.Text;
-            //bool reminder = reminderBox.IsChecked == true;
-            if (string.IsNullOrEmpty(title))
+            if (_isReminderSet)
             {
-                MessageBox.Show("Please enter a title for your task.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                btnSetReminder.Content = "🔔 Reminder Set Active";
+            }
+        string title = TitleBox.Text.Trim();
+            string description = DescriptionBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description))
+            {
+                MessageBox.Show("Please provide both a Title and Description for your task.", "Inputs Missing");
                 return;
             }
 
-            db.TaskHandler(title, description,true);
+            if (TargetDatePicker.SelectedDate == null || ComboHours.SelectedItem == null || ComboMinutes.SelectedItem == null)
+            {
+                MessageBox.Show("Please configure a valid complete future Date and Time constraint.", "Time Validation Error");
+                return;
+            }
 
-           
+            // Combine form inputs safely into a distinct target date timestamp
+            DateTime date = TargetDatePicker.SelectedDate.Value;
+            int hrs = int.Parse(ComboHours.SelectedItem.ToString());
+            int mins = int.Parse(ComboMinutes.SelectedItem.ToString());
+            DateTime targetReminderTime = new DateTime(date.Year, date.Month, date.Day, hrs, mins, 0);
 
+            TimeSpan durationRemaining = targetReminderTime - DateTime.Now;
+
+            if (durationRemaining.TotalMilliseconds <= 0)
+            {
+                MessageBox.Show("The chosen target reminder timestamp has already passed. Please select a point in the future.", "Scheduling Conflict");
+                return;
+            }
+
+            MessageBox.Show($"Notification confirmed for {targetReminderTime.ToString("g")}!", "Reminder Armed");
+
+            // Spin a non-blocking background asynchronous execution task path
+            Task.Run(async () =>
+            {
+                await Task.Delay(durationRemaining);
+
+               
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show(
+                        $"🔔 CURRENT SYSTEM TASK ALERT:\n\n📌 Title: {title}\n📝 Details: {description}",
+                        "CyberChat Security System Alert Notification",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation
+                    );
+                });
+            });
         }
-     
-  
- 
-        //click method save
+
         private void SafeTask(object sender, RoutedEventArgs e)
         {
-
-            string title = TitleBox.Text;
-            string description = DescriptionBox.Text;
-            //bool reminder = reminderBox.IsChecked == true;
-
-            if (string.IsNullOrWhiteSpace(title) && string.IsNullOrWhiteSpace(description))
-            {
-                MessageBox.Show("Enter title and descriptions");
-            }
-            //storing details into the databases
-            db.TaskHandler(title, description,true);
-
-            MessageBoxResult res = MessageBox.Show("Do you also want to set a reminder", "Reminder", 
-                MessageBoxButton.YesNo,MessageBoxImage.Question, MessageBoxResult.Yes);
-
-            if (res == MessageBoxResult.Yes)
-            {
-                //pop up a calender to set reminder
-                MessageBox.Show("Reminder have been set");
-            }
-
+            string userTitle = TitleBox.Text;
+            string userDescription = DescriptionBox.Text;
             
+            db.TaskHandler("New Task Title", "Description", _isReminderSet);
 
+            MessageBox.Show("Task logged to workspace ledger storage successfully.", "Task Saved");
+
+            TitleBox.Clear();
+            DescriptionBox.Clear();
+            _isReminderSet = false;
+            btnSetReminder.Content = "Set Reminder";
+            RefreshTaskViews();
         }
 
-        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        private void ViewTasksButton_Click(object sender, RoutedEventArgs e)
+        { 
+            db.ListMyDb(datagridtasks);
+          
+        }
+
+        private void deleteContxtMenu(object sender, RoutedEventArgs e)
         {
             try
             {
+                // 1. Prompt user with a confirmation safety dialogue
+                MessageBoxResult result = MessageBox.Show(
+                    "Are you sure you want to permanently delete this task?",
+                    "Confirm Deletion",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                );
 
-                Tasks.Clear();
+                if (result != MessageBoxResult.Yes) return;
 
-                foreach (string task in db.GetTasks())
+                int taskIdToDelete = -1;
+
+                // 2. Scenario A: Item deleted via the DataGrid Context Menu
+                if (datagridtasks.SelectedItem != null)
                 {
-                    Tasks.Add(task);
-                   
+                    
+                    dynamic selectedRow = datagridtasks.SelectedItem;
+                    taskIdToDelete = selectedRow.ID;
+                }
+                // 3. Scenario B: Item deleted via the ListBox Context Menu
+                else if (listBoxArea.SelectedItem != null)
+                {
+                    dynamic selectedItem = listBoxArea.SelectedItem;
+                    taskIdToDelete = selectedItem.ID;
+                }
+                else
+                {
+                    MessageBox.Show("Please select an item to delete first.", "Selection Error");
+                    return;
+                }
+
+                // 4. Execute the deletion query using Database component layer
+                if (taskIdToDelete != -1)
+                {
+                    // Instantiate project database helper class
+                    ChatBotDatabase db = new ChatBotDatabase();
+
+                    // Call database execution delete command logic query method
+                    bool isDeleted = db.DeleteTasks(taskIdToDelete);
+
+                    if (isDeleted)
+                    {
+                        MessageBox.Show("Task deleted successfully from storage.", "Success");
+
+                        // 5. Force the grids to refresh live to reflect changes instantly
+                        RefreshTaskViews();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Could not process deletion request in the database backend.", "Database Error");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading tasks: {ex.Message}");
+                MessageBox.Show($"An explicit system error occurred during execution: {ex.Message}", "System Error Exception");
             }
         }
-
-        private void DeleteTasks(object sender, RoutedEventArgs e)
+        private void RefreshTaskViews()
         {
-            
-        }
-        private void deleteContxtMenu(object sender, RoutedEventArgs e)
-        {
-            MenuItem menuItem = sender as MenuItem;
-            if (menuItem == null) return;
-            //get contextMenu
-            ContextMenu contextMenu = menuItem.Parent as ContextMenu;
-            if (contextMenu == null) return;
-            DataGrid dataGrid = contextMenu.PlacementTarget as DataGrid;
-            if (dataGrid == null || dataGrid.SelectedItems.Count ==0) return;
-            DataRowView row = dataGrid.SelectedItem as DataRowView;
+            datagridtasks.SelectedItem = null;
+            listBoxArea.SelectedItem = null;
 
-            if (row["TaskId"] == DBNull.Value) return;
-            string taskid = row["TaskId"] == DBNull.Value ? string.Empty :
-                row["TaskId"].ToString();
-                
-            
-            //confirm dialogbox
-            MessageBoxResult res = MessageBox.Show("Are you sure you want to delete",
-                "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                
-            if(res == MessageBoxResult.Yes)
-            {
-                if (int.TryParse(taskid, out int idToDelete))
-                {
-                 db.DeleteTasks(idToDelete);
-                    db.ListMyDb(dataGrid);
-                }
-                else
-                {
-                    MessageBox.Show("Invalid Task ID format.");
-                }
-            }
-        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-           
-            db.ListMyDb(datagridtasks);
+            ViewTasksButton_Click(this, null);
         }
-       
        
     }
 }

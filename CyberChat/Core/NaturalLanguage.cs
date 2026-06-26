@@ -1,68 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 
 namespace CyberChat.Core
 {
-
-
-   public class NaturalLanguage
+    public class NaturalLanguage
     {
-
-       
         public string keywordPicker(string userInput)
         {
-            userInput = userInput.ToLower();
-
             if (string.IsNullOrWhiteSpace(userInput))
             {
                 return string.Empty;
             }
 
+            // CLEANED: Keys are lowercase to guarantee accurate substring match lookup executions
             var UserQuiries = new Dictionary<string, string>
             {
-                {"Task","activities" },
-                {"2FA","Passwords" },
-                {"Quiz","Game" },
-                {"Remind me","Update Password" },
-                {"play","activities" },
+                {"task", "activities"},
+                {"2fa", "Passwords"},
+                {"quiz", "Game"},
+                {"remind me", "Update Password"},
+                {"play", "activities"}
             };
 
             var UserGreeting = new Dictionary<string, string>
             {
-                {"Hello","greeting" },
-                {"Hey","Greeting" },
-                {"Show","History" },
-                {"chat History","log" },
-                {"Task","scores" },
+                {"hello", "greeting"},
+                {"hey", "Greeting"},
+                {"show", "History"},
+                {"chat history", "log"}
             };
 
-            var ExitQuries = new Dictionary<string, string>
+            var ExitQueries = new Dictionary<string, string>
             {
-                {"Quit","Cancel" },
-                {"exit","abort" },
-                {"Shutdown","poweroff" },
-                {"bye","Goodbye" },
-                {"leave","" },
+                {"quit", "Cancel"},
+                {"exit", "abort"},
+                {"shutdown", "poweroff"},
+                {"bye", "Goodbye"}
             };
+
             var botDictionaries = new List<Dictionary<string, string>>
             {
-                ExitQuries,UserGreeting,UserQuiries
+                ExitQueries, UserGreeting, UserQuiries
             };
-            var matchedEntries = botDictionaries
+
+            // Scans dictionaries for any matching substring inside the user input
+            var matchedEntry = botDictionaries
                 .SelectMany(dict => dict)
-                .FirstOrDefault(entry => userInput.Contains(entry.Key,
-                StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(entry => userInput.Contains(entry.Key, StringComparison.OrdinalIgnoreCase));
 
-                     
-            return matchedEntries.Value?? string.Empty;
+            return matchedEntry.Value ?? string.Empty;
         }
-
-        
-
-       
     }
 }

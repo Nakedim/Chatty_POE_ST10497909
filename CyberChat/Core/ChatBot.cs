@@ -236,7 +236,7 @@ namespace CyberChat.Core
         }
 
 
-             
+          //as part of NLP
       public string TimeOfDayResponse(){
             int hour = DateTime.Now.Hour;
 

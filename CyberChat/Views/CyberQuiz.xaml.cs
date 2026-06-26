@@ -49,24 +49,59 @@ namespace CyberChat.Views
                 },
                 new QuizQuestion {
                     QuestionText = "Unscramble this letter wsdspra.",
-                    // 💡 Added options list so it doesn't default to True/False layout
+                 
                     Options = new List<string> { "Password", "Drawpass", "Wadpress", "Sparsward" },
                     CorrectAnswer = "Password",
                     Explanation = "Unscrambling 'wsdspra' spells out 'Password'. Make sure your passwords are complex and long."
                 },
                 new QuizQuestion {
                     QuestionText = "Which one is an active virus threat classification?",
-                    // 💡 Provided selection structure items
+                    
                     Options = new List<string> { "Trojan Horse", "Phishing", "Social Engineering", "Adware Cookie" },
                     CorrectAnswer = "Trojan Horse",
                     Explanation = "A Trojan Horse infects computers, phones, and networks by masquerading as legitimate software."
                 },
                 new QuizQuestion {
                     QuestionText = "Which of the following techniques is an example of social engineering?",
-                    // 💡 Provided selection structure items
+                   
                     Options = new List<string> { "CEO Fraud", "SQL Injection", "Brute Force Attack", "Firewall Blocking" },
                     CorrectAnswer = "CEO Fraud",
                     Explanation = "CEO Fraud uses manipulation and impersonation tactics to bypass secure organizational perimeters."
+                },
+                     new QuizQuestion {
+                    QuestionText = "choose the worse practice for online safety",
+
+                    Options = new List<string> { "share password","use strong passwords","avoid suspicious links" },
+                    CorrectAnswer = "share password",
+                    Explanation = "Sharing passwords compromises account security and should be avoided."
+                },
+                    new QuizQuestion {
+                    QuestionText = "Computer virus are smilar to human viruses",
+
+                    Options = new List<string> { "True", "False" },
+                    CorrectAnswer = "true",
+                    Explanation = "Computer viruses are similar to human viruses in that they both replicate and spread from one host to another."
+                },
+                         new QuizQuestion {
+                    QuestionText = "Choose methods to keep your online accounts secure",
+
+                    Options = new List<string> { "Use strong, unique passwords for each account", "Enable two-factor authentication", "Be cautious of suspicious emails and links", "All of the above" },
+                    CorrectAnswer = "All of the above",
+                    Explanation = "Using strong, unique passwords, enabling two-factor authentication, and being cautious of suspicious emails and links are all effective methods to keep your online accounts secure."
+                },
+                              new QuizQuestion {
+                    QuestionText = "what is VPN",
+
+                    Options = new List<string> { "Virtual Private Network", "Visible Private Network", "Virus Protection Network", "Video Processing Node" },
+                    CorrectAnswer = "Virtual Private Network",
+                    Explanation = "A VPN (Virtual Private Network) creates a secure connection over a public network, allowing users to access resources as if they were directly connected to a private network."
+                },
+                    new QuizQuestion {
+                    QuestionText = "what is SSL",
+
+                    Options = new List<string> { "Secure Sockets Layer", "Super Simple Layer", "System Security Layer", "Safe Storage Link" },
+                    CorrectAnswer = "Secure Sockets Layer",
+                    Explanation = "SSL (Secure Sockets Layer) is a protocol for establishing encrypted links between web servers and browsers."
                 }
             };
         }

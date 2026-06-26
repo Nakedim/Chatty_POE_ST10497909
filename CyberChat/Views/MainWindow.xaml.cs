@@ -1,6 +1,5 @@
 ﻿using CyberChat.Core;
 using CyberChat.Views;
-
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.ObjectModel;
@@ -94,6 +93,18 @@ namespace CyberChat
             AddUserMessage(UserMessage, "");
             AddBotMessage(botReply, UserMessage);
 
+          
+            try
+            {
+                ChatBotDatabase db = new ChatBotDatabase();
+                db.SaveLogToDatabase(UserMessage, botReply);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Background logging pipeline exception: {ex.Message}");
+            }
+
+            // Moved out of catch scope so input field clears correctly every time
             MsgInput.Clear();
         }
 
@@ -152,24 +163,27 @@ namespace CyberChat
 
         private void logClick_click(object sender, RoutedEventArgs e)
         {
-            ChatBotDatabase db = new ChatBotDatabase();
-            db.SaveLogToDatabase("hello", "Cyberchat");
+            if (ChatInterfaceGrid != null && SubWindowContainer != null)
+            {
+                // 1. Hide the Chat Interface Grid
+                ChatInterfaceGrid.Visibility = Visibility.Collapsed;
+
+                // 2. Inject Page Instance 
+                SubWindowContainer.Content = new LogActivities();
+
+                // 3. FIX: Force container visibility on so your page element actually renders
+                SubWindowContainer.Visibility = Visibility.Visible;
+            }
         }
 
-        // 🔗 CORRECTED METHOD TO OPEN THE QUIZ VIEW
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
             cyberQuiz = new CyberQuiz();
 
             if (ChatInterfaceGrid != null && SubWindowContainer != null)
             {
-                // 1. Hide the Chat Interface Grid completely
                 ChatInterfaceGrid.Visibility = Visibility.Collapsed;
-
-                // 2. Set the content of the container to our quiz
                 SubWindowContainer.Content = cyberQuiz;
-
-                // 3. Force the container area to become visible on screen
                 SubWindowContainer.Visibility = Visibility.Visible;
             }
             else
@@ -183,7 +197,6 @@ namespace CyberChat
         {
             if (e.Key == Key.Escape)
             {
-              
                 if (ChatInterfaceGrid != null && SubWindowContainer != null)
                 {
                     ChatInterfaceGrid.Visibility = Visibility.Collapsed;
@@ -191,6 +204,18 @@ namespace CyberChat
                     SubWindowContainer.Visibility = Visibility.Visible;
                 }
             }
+        }
+
+        private void ShowChatInterface()
+        {
+            SubWindowContainer.Visibility = Visibility.Collapsed;
+            SubWindowContainer.Content = null;
+            ChatInterfaceGrid.Visibility = Visibility.Visible;
+        }
+
+        private void NewCyberChat_Click(object sender, RoutedEventArgs e)
+        {
+            ShowChatInterface();
         }
     }
 }

@@ -15,7 +15,7 @@
                 <MenuItem Header="Play Quiz" Click="quizGame_click"/>
                 <Separator />
                 <MenuItem Header="Log">
-                    <MenuItem Header="View Activity log..."/>
+                    <MenuItem Header="View Activity log..." />
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="Exit" Click="exit_click"/>
@@ -70,7 +70,7 @@
 
             <!-- 2. SUBWINDOW DYNAMIC CONTAINER REGION -->
             <!-- Changed Visibility to Collapsed initially, and set Grid.RowSpan so it occupies the full panel space -->
-            <ContentControl x:Name="SubWindowContainer" Grid.Row="0" Margin="10" Visibility="Collapsed"/>
+            <Frame x:Name="SubWindowContainer" Grid.Row="0" Margin="10" Visibility="Collapsed" NavigationUIVisibility="Hidden"/>
 
             <!-- 3. STATUS DISPLAY AREA -->
             <StatusBar Grid.Row="1" Background="#005B99" Foreground="White" Height="30" VerticalAlignment="Bottom">

@@ -5,70 +5,113 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberChat"
         mc:Ignorable="d"
-        Title="TaskScheduler" Height="503" Width="470">
+        Title="CyberChat Task Scheduler Engine" Height="650" Width="480"
+        WindowStartupLocation="CenterOwner" Background="#F4F4F5">
+    <Window.Resources>
+ 
+        <Style x:Key="HeaderLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#005B99"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
 
-    <Grid Margin="20,34,10,13">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0*"/>
-        </Grid.ColumnDefinitions>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,6,0,2"/>
+        </Style>
+
+        <Style x:Key="FormInput" TargetType="Control">
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Padding" Value="5,0"/>
+        </Style>
+
+        <!-- Context menu shared resource for data views -->
+        <ContextMenu x:Key="SharedTaskContextMenu">
+            <MenuItem Header="Delete Task" Click="deleteContxtMenu"/>
+            <MenuItem Header="Mark as Complete" Click="deleteContxtMenu"/>
+        </ContextMenu>
+    </Window.Resources>
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <!-- Row 0: Text Inputs -->
             <RowDefinition Height="Auto" />
+            <!-- Row 1: Time Pickers -->
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <!-- Row 2: Operation Buttons -->
             <RowDefinition Height="*" />
-
-
-
+            <!-- Row 3: Live Output Monitors -->
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="10,19,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" Width="416" FontWeight="Bold"><Run Language="en-za" Text="Title"/></TextBlock>
 
-        <TextBlock HorizontalAlignment="Left" Margin="15,75,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="19" Width="414" FontWeight="Bold"><Run Language="en-za" Text="Description"/></TextBlock>
+        <!-- SECTION 1: FORM INPUT ENTRY FIELDS -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="🛡️ Task Scheduler &amp; Alert Engine" Style="{StaticResource HeaderLabel}"/>
 
-        <TextBox Name="TitleBox" HorizontalAlignment="Center" Margin="0,46,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="24"/>
-        <TextBox Name ="DescriptionBox" HorizontalAlignment="Center" Margin="0,99,0,0" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="414" Height="95"/>
+            <TextBlock Text="Task Title:" Style="{StaticResource FieldLabel}"/>
+            <TextBox x:Name="TitleBox" Style="{StaticResource FormInput}" Padding="4,2"/>
 
+            <TextBlock Text="Task Description Details:" Style="{StaticResource FieldLabel}"/>
+            <TextBox x:Name="DescriptionBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Padding="4,2"/>
+        </StackPanel>
 
-        <Button Click ="SetReminderBtn_Click"  Content="Set Reminder" 
-                HorizontalAlignment="Left" Margin="94,271,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="82" 
-                RenderTransformOrigin="0.306,0.13"/>
-        <Button Click ="SafeTask" Content="Save Task"
-                HorizontalAlignment="Left" Margin="-1,271,0,0" Grid.Row="6" VerticalAlignment="Top" 
-                Height="26" Width="85"  RenderTransformOrigin="0.494,0.54"/>
+        <!-- SECTION 2: DATE & TIME CONFIGURATION INPUTS -->
+        <Grid Grid.Row="1" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Target Date:" Style="{StaticResource FieldLabel}" Margin="0,0,0,3"/>
+                <DatePicker x:Name="TargetDatePicker" Style="{StaticResource FormInput}"/>
+            </StackPanel>
 
-        <!--<ListBox Name="listBoxArea" Grid.Row="6" Grid.ColumnSpan="3" Margin="2,261,6,15"/>-->
-        <ListBox ItemsSource="{Binding TasksGrid}" Name="listBoxArea">
-            <ListBox.Resources>
-                <!-- context menu to enable right click menu-->
-                <ContextMenu x:Key="ItemMenu">
-                    <MenuItem Header="Delete" Click="deleteContxtMenu"/>
-                    <MenuItem Header="Mark as Complete" />
-                </ContextMenu>
-            </ListBox.Resources>
+            <StackPanel Grid.Column="1" Margin="0,0,5,0">
+                <TextBlock Text="Hour (00-23):" Style="{StaticResource FieldLabel}" Margin="0,0,0,3"/>
+                <ComboBox x:Name="ComboHours" Style="{StaticResource FormInput}"/>
+            </StackPanel>
 
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <!-- 2. Safely apply the menu via StaticResource -->
-                    <Setter Property="ContextMenu" Value="{StaticResource ItemMenu}"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
-        <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="49,223,0,0" Grid.Row="6" VerticalAlignment="Top" Width="0"/>
-        <DatePicker HorizontalAlignment="Left" Margin="324,0,0,0" Grid.Row="6" VerticalAlignment="Center" RenderTransformOrigin="0.833,0.529"/>
-       
-        <Button Content="View Tasks" HorizontalAlignment="Left" Margin="181,271,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="114" Click="Button_Click"/>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Minute (00-59):" Style="{StaticResource FieldLabel}" Margin="0,0,0,3"/>
+                <ComboBox x:Name="ComboMinutes" Style="{StaticResource FormInput}"/>
+            </StackPanel>
+        </Grid>
 
-        
-        <DataGrid Name="datagridtasks" AutoGenerateColumns="true" Grid.Row="6" Margin="0,313,0,0"> 
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Delete Task" Click="deleteContxtMenu"></MenuItem>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-        </DataGrid>
+        <!-- SECTION 3: SYSTEM CONTROL ACTION BUTTONS -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,15">
+            <Button x:Name="btnSaveTask" Click="SafeTask" Content="💾 Save Task" Width="90" Style="{StaticResource ActionButton}"/>
+            <Button x:Name="btnSetReminder" Click="SetReminderButton_Click" Content="🔔 Set Reminder" Width="105" Style="{StaticResource ActionButton}" Background="#005B99" Foreground="White" FontWeight="SemiBold"/>
+            <Button x:Name="btnViewTasks" Click="ViewTasksButton_Click" Content="🔍 View Tasks" Width="95" Style="{StaticResource ActionButton}"/>
+            </StackPanel>
+
+            <!-- SECTION 4: LIVE MONITOR DISPLAY LOG GRIDS -->
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Active Workspace Tasks List View -->
+            <ListBox x:Name="listBoxArea" ItemsSource="{Binding TasksGrid}" Margin="0,0,0,10" Grid.Row="0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource SharedTaskContextMenu}"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+
+            <!-- Relational Database Log DataGrid View -->
+            <DataGrid x:Name="datagridtasks" AutoGenerateColumns="True" Grid.Row="1" Background="White" AlternatingRowBackground="#F9F9FB" ContextMenu="{StaticResource SharedTaskContextMenu}" />
+        </Grid>
     </Grid>
+
 </Window>

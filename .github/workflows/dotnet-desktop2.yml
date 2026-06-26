@@ -13,35 +13,29 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
-
-    strategy:
-      matrix:
-        configuration: [Release]
 
     env:
       Solution_Name: CyberChat.sln
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore $env:Solution_Name
 
-    - name: Restore dependencies
-      run: dotnet restore $env:CyberChat.sln
+      - name: Build solution
+        run: dotnet build $env:Solution_Name --configuration Release --no-restore
 
-    - name: Build solution
-      run: dotnet build $env:CyberChat.snl --configuration Release --no-restore
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: CyberChatBuild
-        path: |
-          **/bin/Release/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: CyberChatBuild
+          path: |
+            **/bin/Release/
