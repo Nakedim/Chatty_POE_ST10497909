@@ -123,7 +123,7 @@ namespace CyberChat
 
         private void DeleteTasks(object sender, RoutedEventArgs e)
         {
-            db.DeleteTasks(1);
+            
         }
         private void deleteContxtMenu(object sender, RoutedEventArgs e)
         {
@@ -133,10 +133,14 @@ namespace CyberChat
             ContextMenu contextMenu = menuItem.Parent as ContextMenu;
             if (contextMenu == null) return;
             DataGrid dataGrid = contextMenu.PlacementTarget as DataGrid;
-            if (dataGrid == null || dataGrid.SelectedItem == null) return;
+            if (dataGrid == null || dataGrid.SelectedItems.Count ==0) return;
             DataRowView row = dataGrid.SelectedItem as DataRowView;
-            if (row == null) return;
-            string taskid = row["id"].ToString();
+
+            if (row["TaskId"] == DBNull.Value) return;
+            string taskid = row["TaskId"] == DBNull.Value ? string.Empty :
+                row["TaskId"].ToString();
+                
+            
             //confirm dialogbox
             MessageBoxResult res = MessageBox.Show("Are you sure you want to delete",
                 "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -146,7 +150,7 @@ namespace CyberChat
                 if (int.TryParse(taskid, out int idToDelete))
                 {
                  db.DeleteTasks(idToDelete);
-                    db.ListMyDb(datagridtasks);
+                    db.ListMyDb(dataGrid);
                 }
                 else
                 {
@@ -158,7 +162,7 @@ namespace CyberChat
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            //db.ListMyDb();
+           
             db.ListMyDb(datagridtasks);
         }
        

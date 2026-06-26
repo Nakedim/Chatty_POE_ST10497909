@@ -12,7 +12,7 @@ namespace CyberChat.Core
    public class NaturalLanguage
     {
 
-
+       
         public string keywordPicker(string userInput)
         {
             userInput = userInput.ToLower();
@@ -21,19 +21,47 @@ namespace CyberChat.Core
             {
                 return string.Empty;
             }
-            string normalizedInput = userInput.ToLowerInvariant();
-            if (normalizedInput.Contains("task"))
 
+            var UserQuiries = new Dictionary<string, string>
             {
-                return "task";
-            }
-            if (normalizedInput.Contains("reminder") || normalizedInput.Contains("schedule"))
+                {"Task","activities" },
+                {"2FA","Passwords" },
+                {"Quiz","Game" },
+                {"Remind me","Update Password" },
+                {"play","activities" },
+            };
 
+            var UserGreeting = new Dictionary<string, string>
             {
-                return "reminder";
-            }
-            return string.Empty;
+                {"Hello","greeting" },
+                {"Hey","Greeting" },
+                {"Show","History" },
+                {"chat History","log" },
+                {"Task","scores" },
+            };
+
+            var ExitQuries = new Dictionary<string, string>
+            {
+                {"Quit","Cancel" },
+                {"exit","abort" },
+                {"Shutdown","poweroff" },
+                {"bye","Goodbye" },
+                {"leave","" },
+            };
+            var botDictionaries = new List<Dictionary<string, string>>
+            {
+                ExitQuries,UserGreeting,UserQuiries
+            };
+            var matchedEntries = botDictionaries
+                .SelectMany(dict => dict)
+                .FirstOrDefault(entry => userInput.Contains(entry.Key,
+                StringComparison.OrdinalIgnoreCase));
+
+                     
+            return matchedEntries.Value?? string.Empty;
         }
+
+        
 
        
     }

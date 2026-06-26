@@ -5,6 +5,7 @@ using System.Data;
 using System.DirectoryServices;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -77,9 +78,9 @@ CREATE TABLE IF NOT EXISTS tasks(
         public void CheckReminder()
         {
 
-            string selectSql = "Select taskid, title, description " +
-                "FROM task WHERE is_reminder_set = 1 LIMIT 1;";
-            String updateSql = "UPDATE tasks SET is_reminder_set = 0 WHERE taskid = @TaskId;";
+            string selectSql = "SELECT taskid, title, description FROM tasks WHERE is_reminder_set = 1 LIMIT 1;";
+            string updateSql = "UPDATE tasks SET is_reminder_set = 0 WHERE taskid = @TaskId;";
+
             int taskId = -1;
             string title = string.Empty;
             string description = string.Empty;
@@ -91,39 +92,34 @@ CREATE TABLE IF NOT EXISTS tasks(
                 {
                     conn.Open();
                     using (MySqlCommand selectCmd = new MySqlCommand(selectSql, conn))
+                    using (MySqlDataReader reader = selectCmd.ExecuteReader())
                     {
-                        using (MySqlDataReader reader = selectCmd.ExecuteReader())
+                        if (reader.Read())
                         {
-                            if (reader.Read())
-                            {
-                                taskId = reader.GetInt32("taskid");
-                                title = reader.GetString("title");
-                                description = reader.GetString("description");
-                               
-                                foundReminder = true;
-                            }
-                        }     
+                            taskId = reader.GetInt32("taskid");
+                            title = reader.GetString("title");
+                            description = reader.GetString("description");
+                            foundReminder = true;
+                        }
                     }
+
                     if (foundReminder)
                     {
-                        //display popup
-                     MessageBox.Show($"Reminder:{title}\n\n{description}","Task Alert",
-                      MessageBoxButton.OK,
-                         MessageBoxImage.Information);
+                        MessageBox.Show($"Reminder: {title}\n\n{description}", "Task Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+
                         using (MySqlCommand updateCmd = new MySqlCommand(updateSql, conn))
                         {
                             updateCmd.Parameters.AddWithValue("@TaskId", taskId);
                             updateCmd.ExecuteNonQuery();
                         }
-                     }
-
+                    }
                 }
                 catch (Exception e)
                 {
-                    System.Diagnostics.Debug.WriteLine($"error executing reminder");
+                    System.Diagnostics.Debug.WriteLine($"Error executing reminder: {e.Message}");
                 }
-            }
-               
+                }
+
             }
         //Method to extract tasklist from DB
         public List<string> GetTasks()
@@ -160,7 +156,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 
             try
             {
-                string queryToDelete = "DELETE FROM tasks WHERE taskId = 4";
+                string queryToDelete = "DELETE FROM tasks WHERE taskId = @taskId";
                 
 
                 using (MySqlConnection conn = new MySqlConnection(DBConnctString))
@@ -170,7 +166,7 @@ CREATE TABLE IF NOT EXISTS tasks(
                     using (MySqlCommand cmd = new MySqlCommand(queryToDelete, conn))
                     {
                         
-                        cmd.Parameters.Add("@TaskId",MySqlDbType.Int32, taskId).Value = taskId;
+                        cmd.Parameters.Add("@taskId", MySqlDbType.Int32, taskId).Value = taskId;
 
          
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -178,7 +174,7 @@ CREATE TABLE IF NOT EXISTS tasks(
                        
                         if (rowsAffected > 0)
                         {
-                            //ListMyDb(TasksGrid);
+                         
                             MessageBox.Show("Task deleted successfully.");
                         }
                         else
@@ -201,7 +197,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 
         public void ListMyDb(DataGrid DataGridTasks)
         {
-            string sqlQuery = "SELECT * taskid AS id, title, description FROM tasks";
+            string sqlQuery = "SELECT * FROM tasks";
             {
                 //1st step connection string
                 using (MySqlConnection conn = new MySqlConnection (DBConnctString))
@@ -221,12 +217,74 @@ CREATE TABLE IF NOT EXISTS tasks(
                     catch (Exception e)
                     {
                         MessageBox.Show("Database listing error" +e.Message);
-
                     }
 
                 }
             }
            
         }
+
+        public void SaveLogToDatabase(string userInput, string botResponse)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(DBConnctString))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO ActivityLogs (UserInput, BotResponse, Timestamp) VALUES (@input, @response, NOW())";
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@input", userInput);
+                        cmd.Parameters.AddWithValue("@response", botResponse);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Database logging failed: " + e.Message);
+            }
+        }
+
+        public string GetActivityLogFromDatabase()
+        {
+            var logs = new System.Text.StringBuilder();
+            string safeUser = ("name") ?? "User";
+            logs.AppendLine($"{safeUser}, here are the recent actions recorded in the log:\n");
+
+            try
+            {
+                using (var connection = new MySqlConnection(DBConnctString))
+                {
+                    connection.Open();
+                    // Pulls the last 5 recorded actions
+                    string query = "SELECT UserInput, BotResponse, Timestamp FROM ActivityLogs ORDER BY Timestamp DESC LIMIT 5";
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (!reader.HasRows) return "No actions have been recorded in the log yet.";
+
+                        while (reader.Read())
+                        {
+                            string timestamp = reader.GetDateTime("Timestamp").ToString("yyyy-MM-dd HH:mm:ss");
+                            string input = reader.GetString("UserInput");
+                            string response = reader.GetString("BotResponse");
+
+                            logs.AppendLine($"[{timestamp}] User: {input} -> Bot: {response}");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Database retrieval failed: " + e.Message);
+                return "Sorry, I encountered an error pulling the activity logs.";
+            }
+
+            return logs.ToString();
+        }
+
     }
     }

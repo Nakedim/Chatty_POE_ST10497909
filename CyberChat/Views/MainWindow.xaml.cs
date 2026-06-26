@@ -1,7 +1,6 @@
 ﻿using CyberChat.Core;
 using CyberChat.Views;
-using CyberChat.QuizGame;
-using CyberChat.Views;
+
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.ObjectModel;
@@ -17,34 +16,27 @@ namespace CyberChat
     public partial class MainWindow : Window
     {
         private ChatBot chatBot;
-        private QuizView quizView ;
+        private CyberQuiz cyberQuiz;
 
         public MainWindow()
         {
             InitializeComponent();
-           
+
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
                 new MemoryStore(),
-                //for the part 3
-
-                //new ChatBotDatabase(),
-        
+                new ChatBotDatabase(),
                 new TaskScheduler(),
                 new NaturalLanguage()
-
-               
-                );
+            );
 
             LoadAsciiArt();
             voiceGreeting();
             string greet = chatBot.GetGreeting("Hello");
             AppendBotMessage(greet);
-
-
         }
-     
+
         public void LoadAsciiArt()
         {
             AppLogo.Text = @" __       __   ___  __   __            ___  __   __  ___ 
@@ -55,7 +47,6 @@ namespace CyberChat
 
         public void voiceGreeting()
         {
-        
             try
             {
                 SoundPlayer player = new SoundPlayer("Welcome.wav");
@@ -78,18 +69,19 @@ namespace CyberChat
         {
             ChatBotArea.Items.Add(message);
         }
+
         private void AddUserMessage(string input, string UserName)
         {
             MemoryStore store = new MemoryStore();
             store.UserName = UserName;
             ChatBotArea.Items.Add("You: " + input);
-           
             ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
         }
+
         private readonly string Placeholder = "Type your message here...";
+
         private void SendMessage()
         {
-
             string UserMessage = MsgInput.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(UserMessage) || UserMessage == Placeholder)
@@ -101,7 +93,6 @@ namespace CyberChat
             string botReply = chatBot.ProcessInput(UserMessage);
             AddUserMessage(UserMessage, "");
             AddBotMessage(botReply, UserMessage);
-            
 
             MsgInput.Clear();
         }
@@ -139,89 +130,67 @@ namespace CyberChat
             }
         }
 
-        //handles task
-
-  
-
         private void TaskBtn_Click(object sender, RoutedEventArgs e)
         {
             TaskScheduler taskScheduler = new TaskScheduler();
             taskScheduler.Owner = this;
-
             taskScheduler.ShowDialog();
-
-            
         }
 
-        //top Menu links
+        // Top Menu links
         private void exit_click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+
         private void NewTask_click(object sender, RoutedEventArgs e)
         {
             TaskScheduler taskScheduler = new TaskScheduler();
             taskScheduler.Owner = this;
-
             taskScheduler.ShowDialog();
-
         }
+
         private void logClick_click(object sender, RoutedEventArgs e)
         {
-         
+            ChatBotDatabase db = new ChatBotDatabase();
+            db.SaveLogToDatabase("hello", "Cyberchat");
         }
 
+        // 🔗 CORRECTED METHOD TO OPEN THE QUIZ VIEW
         private void quizGame_click(object sender, RoutedEventArgs e)
         {
-MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-            var usercontrol = new QuizView();
-            if(mainWindow != null)
+            cyberQuiz = new CyberQuiz();
+
+            if (ChatInterfaceGrid != null && SubWindowContainer != null)
             {
-                
+                // 1. Hide the Chat Interface Grid completely
+                ChatInterfaceGrid.Visibility = Visibility.Collapsed;
+
+                // 2. Set the content of the container to our quiz
+                SubWindowContainer.Content = cyberQuiz;
+
+                // 3. Force the container area to become visible on screen
+                SubWindowContainer.Visibility = Visibility.Visible;
             }
-            
-            // Hide chat interface
-            ChatInterfaceGrid.Visibility = Visibility.Collapsed;
-
-
-            // Create quiz view
-            QuizView quizView = new QuizView();
-
-            // Put it inside the ContentControl
-            SubWindowContainer.Content = quizView;
-
-            // Show the ContentControl
-            SubWindowContainer.Visibility = Visibility.Visible;
-
-
-
+            else
+            {
+                MessageBox.Show("WPF Layout initialization error: Controls missing.");
+            }
         }
 
-           
-        //user can press escape key
+        // User can press escape key to toggle open quiz
         public void Esc_press(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
-
-                // Hide chat interface
-                ChatInterfaceGrid.Visibility = Visibility.Collapsed;
-
-                // Create quiz view
-                QuizView quizView = new QuizView();
-
-                // Put it inside the ContentControl
-                SubWindowContainer.Content = quizView;
+              
+                if (ChatInterfaceGrid != null && SubWindowContainer != null)
+                {
+                    ChatInterfaceGrid.Visibility = Visibility.Collapsed;
+                    SubWindowContainer.Content = cyberQuiz;
+                    SubWindowContainer.Visibility = Visibility.Visible;
+                }
             }
         }
-
-       
-        }
-
-     }
-       
-           
-        
-            
-
-   
+    }
+}

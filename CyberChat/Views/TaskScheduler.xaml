@@ -57,10 +57,8 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <Button Content="View Tasks" HorizontalAlignment="Left" Margin="42,225,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="92" Click="btnLoad_Click"/>
         <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="49,223,0,0" Grid.Row="6" VerticalAlignment="Top" Width="0"/>
-        <Button Content="Delete Task" HorizontalAlignment="Left" Margin="306,271,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="92" Click="DeleteTasks"/>
-        <DatePicker HorizontalAlignment="Left" Margin="306,0,0,0" Grid.Row="6" VerticalAlignment="Center"/>
+        <DatePicker HorizontalAlignment="Left" Margin="324,0,0,0" Grid.Row="6" VerticalAlignment="Center" RenderTransformOrigin="0.833,0.529"/>
        
         <Button Content="View Tasks" HorizontalAlignment="Left" Margin="181,271,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="114" Click="Button_Click"/>
 
