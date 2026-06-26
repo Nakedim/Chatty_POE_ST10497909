@@ -62,5 +62,8 @@ task 2: Quiz is working
 <img width="1169" height="788" alt="quiz working" src="https://github.com/user-attachments/assets/a277ba90-1c68-456a-8cbe-37e6ccaacb68" />
 
 Changelog 4
+time: 24/06/2026
+task 4 Activity log
+<img width="1073" height="863" alt="image" src="https://github.com/user-attachments/assets/b9a004aa-3efa-498f-b596-fd1dd2421530" />
 
 
