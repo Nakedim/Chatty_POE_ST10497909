@@ -65,5 +65,6 @@ Changelog 4
 time: 24/06/2026
 task 4 Activity log
 <img width="1073" height="863" alt="image" src="https://github.com/user-attachments/assets/b9a004aa-3efa-498f-b596-fd1dd2421530" />
+<img width="1381" height="807" alt="image" src="https://github.com/user-attachments/assets/e9df5bad-433b-4b95-ace7-8f4acfd34eca" />
 
 
