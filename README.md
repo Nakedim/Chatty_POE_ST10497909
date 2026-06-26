@@ -43,3 +43,28 @@ How It Works
 On the draft release we do have the youtube link: https://youtu.be/pRObSdPoODQ
 this is our CI screenshot<img width="1430" height="756" alt="CI Link" src="https://github.com/user-attachments/assets/97c910ff-a0e9-4dba-9431-6d37e69aab51" />
 
+Changelog 1
+Time: 14/06/2026
+
+
+Task 1 complete successfull and it is working . see screenshot
+<img width="1212" height="740" alt="image" src="https://github.com/user-attachments/assets/482e35be-d796-44b0-a2b4-d82b225f8438" />
+
+Changelog 2
+Time: 22/06/2026
+
+Task 3 working
+<img width="1234" height="786" alt="NLP task1 working" src="https://github.com/user-attachments/assets/06e257d5-568f-4462-973a-23bc545e415b" />
+
+Changelog  3
+Time: 22/06/2026
+task 2: Quiz is working
+<img width="1169" height="788" alt="quiz working" src="https://github.com/user-attachments/assets/a277ba90-1c68-456a-8cbe-37e6ccaacb68" />
+
+Changelog 4
+time: 24/06/2026
+task 4 Activity log
+<img width="1073" height="863" alt="image" src="https://github.com/user-attachments/assets/b9a004aa-3efa-498f-b596-fd1dd2421530" />
+<img width="1381" height="807" alt="image" src="https://github.com/user-attachments/assets/e9df5bad-433b-4b95-ace7-8f4acfd34eca" />
+
+

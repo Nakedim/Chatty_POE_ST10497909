@@ -1,6 +1,6 @@
 ﻿using System.IO.Packaging;
 using System.Windows;
-using CyberChat.QuizGame;
+
 using MySql.Data.MySqlClient;
 
 namespace CyberChat.Core
@@ -11,6 +11,7 @@ namespace CyberChat.Core
         private readonly SentimentDetector _sentiment;
         private readonly MemoryStore _memory;
         private readonly TaskScheduler _task;
+        private readonly ChatBotDatabase _database;
         private readonly NaturalLanguage _NLP;
         private bool _awaitingName = true;
         private string _lastTopic = "";
@@ -19,13 +20,15 @@ namespace CyberChat.Core
         //string connectionString = "server=127.0.0.1;port=3306;database=CyberChatDB;uid=root;pwd=YOUR_PASSWORD;";
 
         public ChatBot(KeywordResponder responder, SentimentDetector
-            sentiment, MemoryStore memory, TaskScheduler Tasks, NaturalLanguage nlp)
+            sentiment, MemoryStore memory,ChatBotDatabase database, TaskScheduler Tasks, 
+            NaturalLanguage nlp)
         {
             _responder = responder;
             _sentiment = sentiment;
             _memory = memory;
             _task = Tasks;
             _NLP = nlp;
+            _database = database;
         }
         public string GetGreeting(string input)
         {
@@ -63,6 +66,7 @@ namespace CyberChat.Core
             CurrentStatus = "Processing...";
 
             string botMessage;
+            string actionKeyword;
 
             // PRIORITY 1: Identity & Authentication Initialization
             if (_awaitingName)
@@ -85,16 +89,38 @@ namespace CyberChat.Core
                 botMessage = HandleFollowUpRequest();
             }
             // PRIORITY 4: Direct Action Triggers (WPF UI Windows / Security Tasks)
-            else if (!string.IsNullOrEmpty(_NLP.keywordPicker(normalizedInput)))
+            else if (!string.IsNullOrEmpty(actionKeyword = _NLP.keywordPicker(normalizedInput)))
             {
-                CurrentStatus = "Scheduling Task";
+                 string safeUser = _memory.Recall("name") ?? "User";
+
+                if (actionKeyword =="activities" || actionKeyword =="scores")
+                {
+                    CurrentStatus = "Scheduling Task";
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     _task.Show();
                 });
-
-                string safeUser = _memory.Recall("name") ?? "User";
+                    botMessage = $"{safeUser}, I'm happy to assist you to set your task.";
+                }
+                // 2. Matches "Passwords" (from "2FA") or "Update Password" (from "Remind me")
+                else if (actionKeyword.Equals("Passwords", StringComparison.OrdinalIgnoreCase) ||
+                         actionKeyword.Equals("Update Password", StringComparison.OrdinalIgnoreCase))
+                {
+                    botMessage = $"{safeUser}, let's look at your security credentials. Please use strong 2FA configurations.";
+                }
+                // 3. Matches "Game" (from "Quiz")
+                else if (actionKeyword.Equals("Game", StringComparison.OrdinalIgnoreCase))
+                {
+                    botMessage = $"Starting the security quiz game for you now, {safeUser}!";
+                }
+                // 4. Matches "Cancel", "abort", "poweroff", "Goodbye", or "" (from your ExitQueries dictionary)
+                else
+                {
+                    CurrentStatus = "Exiting Chat";
+                    botMessage = $"Goodbye {safeUser}! Stay safe online.";
+                }
+               
                 botMessage = $"{safeUser}, I'm happy to assist you to set your task.";
             }
             // PRIORITY 5: Exact Infrastructure Keyword Matches 
@@ -125,7 +151,7 @@ namespace CyberChat.Core
             }
 
             // Secure database log execution
-            //SaveLogToDatabase(originalInput, botMessage);
+            _database.SaveLogToDatabase(originalInput, botMessage);
 
             return botMessage;
         }
@@ -209,8 +235,8 @@ namespace CyberChat.Core
             return string.Empty;
         }
 
-//as part of NLP
-             
+
+          //as part of NLP
       public string TimeOfDayResponse(){
             int hour = DateTime.Now.Hour;
 
