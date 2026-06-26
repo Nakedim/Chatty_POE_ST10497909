@@ -2,12 +2,19 @@
 {
     public class MemoryStore
     {
+<<<<<<< HEAD
         public string UserName { get; set; } = string.Empty;
 
         public string FavouriteTopic { get; set; } = string.Empty;
 
         private Dictionary<string, string> UserInfo =
             new Dictionary<string, string>();
+=======
+
+        public string UserName { get; set; } = string.Empty;
+        public string FavouriteTopic { get; set; }= string.Empty;
+        Dictionary<string, string> UserInfo = new Dictionary<string, string>();
+>>>>>>> 5241f87e6666f7db359025a39ddd7a8cd8a53566
 
 
         public void Store(string key, string value)
@@ -18,9 +25,13 @@
                 return;
             }
 
+<<<<<<< HEAD
             key = key.ToLower().Trim();
 
             switch (key)
+=======
+            switch (key.ToLower())
+>>>>>>> 5241f87e6666f7db359025a39ddd7a8cd8a53566
             {
                 case "name":
                 case "username":
@@ -36,6 +47,7 @@
                     UserInfo[key] = value;
                     break;
             }
+<<<<<<< HEAD
         }
 
         public string Recall(string key)
@@ -48,6 +60,13 @@
             key = key.ToLower().Trim();
 
             switch (key)
+=======
+
+        }
+        public string Recall(string key)
+        {
+            switch (key.ToLower())
+>>>>>>> 5241f87e6666f7db359025a39ddd7a8cd8a53566
             {
                 case "name":
                 case "username":
@@ -58,6 +77,7 @@
                     return FavouriteTopic;
 
                 default:
+<<<<<<< HEAD
                     return UserInfo.ContainsKey(key)
                         ? UserInfo[key]
                         : "";
@@ -74,3 +94,30 @@
         }
     }
 }
+=======
+                    if (UserInfo.ContainsKey(key))
+                    {
+                        return UserInfo[key];
+                    }
+
+                    return "";
+            }
+        }
+    public string GetPersonalisedOpener(string input)
+        {
+            input.ToLower().Trim();
+            if (string.IsNullOrEmpty(input))
+            {
+                return "";
+            }
+            if (input.Contains("interested"))
+            {
+                input = FavouriteTopic;
+            }
+            return "user is new";
+        }
+    }
+
+    
+}
+>>>>>>> 5241f87e6666f7db359025a39ddd7a8cd8a53566
