@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - main
-
   pull_request:
     branches:
       - master
@@ -19,6 +18,10 @@ jobs:
       Solution_Name: CyberChat.sln
 
     steps:
+<<<<<<< HEAD:.github/workflows/dotnet-desktop.yml
+    - name: Checkout repository
+      uses: actions/checkout@v4
+=======
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -26,10 +29,25 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+>>>>>>> part3:.github/workflows/dotnet-desktop2.yml
 
       - name: Restore dependencies
         run: dotnet restore $env:Solution_Name
 
+<<<<<<< HEAD:.github/workflows/dotnet-desktop.yml
+    - name: Restore dependencies
+      run: dotnet restore $env:Solution_Name
+
+    - name: Build solution
+      run: dotnet build $env:Solution_Name --configuration Release --no-restore
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: CyberChatBuild
+        path: |
+          **/bin/Release/
+=======
       - name: Build solution
         run: dotnet build $env:Solution_Name --configuration Release --no-restore
 
@@ -39,3 +57,4 @@ jobs:
           name: CyberChatBuild
           path: |
             **/bin/Release/
+>>>>>>> part3:.github/workflows/dotnet-desktop2.yml

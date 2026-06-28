@@ -1,28 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using CyberChat.Core; 
 
 namespace CyberChat.Views
 {
-    /// <summary>
-    /// Interaction logic for LogActivities.xaml
-    /// </summary>
     public partial class LogActivities : Page
     {
+        
+        private readonly ChatBotDatabase _db = new ChatBotDatabase();
+
         public LogActivities()
         {
             InitializeComponent();
+
+            // Run the load method when the page initializes
+            LoadActivityLogs();
+        }
+
+        private void LoadActivityLogs()
+        {
+            
+            string completeLogText = _db.GetActivityLogFromDatabase();
+
+            
+            string[] logLines = completeLogText.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            
+            LogArea.ItemsSource = logLines;
+        }
+        private void BackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.ChatInterfaceGrid.Visibility = Visibility.Visible;
+                mainWindow.SubWindowContainer.Visibility = Visibility.Collapsed;
+                mainWindow.SubWindowContainer.Content = null;
+            }
         }
     }
 }

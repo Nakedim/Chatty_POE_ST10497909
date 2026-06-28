@@ -5,12 +5,52 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CyberChat.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="LogActivities">
+      d:DesignHeight="350" d:DesignWidth="600"
+      Title="LogActivities" Background="Cyan">
 
-    <Grid x:Name="ActivityLog" Margin="10,26,10,54">
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Name="LogArea"/>
+    <Grid Background="#F4F4F4" Margin="10,25,10,0" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Title Header -->
+            <RowDefinition Height="*"/>
+            <!-- Log ListBox scales to fill available workspace -->
+            <RowDefinition Height="Auto"/>
+            <!-- Footer Actions Grid -->
+        </Grid.RowDefinitions>
 
+        <!-- 1. Header Area -->
+        <TextBlock Grid.Row="0" 
+                   Text="System Activity Logs" 
+                   FontSize="22" 
+                   FontWeight="Bold" 
+                   Foreground="#333333" 
+                   Margin="0,0,0,15"/>
 
+        <!-- 2. Main Database Log Display Area -->
+        <ListBox x:Name="LogArea" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 Padding="10"
+                 Background="White"
+                 BorderBrush="#CCCCCC"
+                 BorderThickness="1"
+                 FontSize="14"
+                 FontFamily="Consolas" Margin="0,44,0,34" Grid.RowSpan="2"/>
+        <!-- Consolas aligns timestamps neatly -->
+
+        <!-- 3. Footer Area -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="77*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Back to Chat Room" 
+                    Width="160" 
+                    Height="40" 
+                    HorizontalAlignment="Left" 
+                    FontSize="13" 
+                    FontWeight="SemiBold"
+                    Click="BackBtn_Click" Margin="575,-10,0,10"/>
+        </Grid>
     </Grid>
 </Page>

@@ -1,40 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 
 namespace CyberChat.Core
 {
-
-
-   public class NaturalLanguage
+    public class NaturalLanguage
     {
-
-
         public string keywordPicker(string userInput)
         {
-            userInput = userInput.ToLower();
-
             if (string.IsNullOrWhiteSpace(userInput))
             {
                 return string.Empty;
             }
-            string normalizedInput = userInput.ToLowerInvariant();
-            if (normalizedInput.Contains("task"))
 
+            // CLEANED: Keys are lowercase to guarantee accurate substring match lookup executions
+            var UserQuiries = new Dictionary<string, string>
             {
-                return "task";
-            }
-            if (normalizedInput.Contains("reminder") || normalizedInput.Contains("schedule"))
+                {"task", "activities"},
+                {"2fa", "Passwords"},
+                {"quiz", "Game"},
+                {"remind me", "Update Password"},
+                {"play", "activities"}
+            };
 
+            var UserGreeting = new Dictionary<string, string>
             {
-                return "reminder";
-            }
-            return string.Empty;
+                {"hello", "greeting"},
+                {"hey", "Greeting"},
+                {"show", "History"},
+                {"chat history", "log"}
+            };
+
+            var ExitQueries = new Dictionary<string, string>
+            {
+                {"quit", "Cancel"},
+                {"exit", "abort"},
+                {"shutdown", "poweroff"},
+                {"bye", "Goodbye"}
+            };
+
+            var botDictionaries = new List<Dictionary<string, string>>
+            {
+                ExitQueries, UserGreeting, UserQuiries
+            };
+
+            // Scans dictionaries for any matching substring inside the user input
+            var matchedEntry = botDictionaries
+                .SelectMany(dict => dict)
+                .FirstOrDefault(entry => userInput.Contains(entry.Key, StringComparison.OrdinalIgnoreCase));
+
+            return matchedEntry.Value ?? string.Empty;
         }
-
-       
     }
 }

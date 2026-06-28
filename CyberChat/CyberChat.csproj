@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\Welcome.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\Welcome.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="9.7.0" />
   </ItemGroup>
 
