@@ -35,7 +35,7 @@
         <!-- Context menu shared resource for data views -->
         <ContextMenu x:Key="SharedTaskContextMenu">
             <MenuItem Header="Delete Task" Click="deleteContxtMenu"/>
-            <MenuItem Header="Mark as Complete" Click="deleteContxtMenu"/>
+            <MenuItem Header="Mark as Complete" Click="MarkAsCompete"/>
         </ContextMenu>
     </Window.Resources>
 
@@ -110,7 +110,9 @@
             </ListBox>
 
             <!-- Relational Database Log DataGrid View -->
-            <DataGrid x:Name="datagridtasks" AutoGenerateColumns="True" Grid.Row="1" Background="White" AlternatingRowBackground="#F9F9FB" ContextMenu="{StaticResource SharedTaskContextMenu}" />
+            <DataGrid x:Name="datagridtasks"
+                      AutoGenerateColumns="True" Grid.Row="1" Background="White" 
+                      AlternatingRowBackground="#F9F9FB" ContextMenu="{StaticResource SharedTaskContextMenu}" />
         </Grid>
     </Grid>
 

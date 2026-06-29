@@ -1,17 +1,23 @@
 ﻿using CyberChat.Core;
+using MySql.Data.MySqlClient;
 using System;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 namespace CyberChat
 {
     public partial class TaskScheduler : Window
     {
         private bool _isReminderSet = false;
         ChatBotDatabase db = new ChatBotDatabase();
+        MemoryStore store = new MemoryStore();
+
         public TaskScheduler()
         {
             InitializeComponent();
             InitializeTimeSelectorItems();
+
         }
 
         private void InitializeTimeSelectorItems()
@@ -62,6 +68,7 @@ namespace CyberChat
             if (durationRemaining.TotalMilliseconds <= 0)
             {
                 MessageBox.Show("The chosen target reminder timestamp has already passed. Please select a point in the future.", "Scheduling Conflict");
+                //CyberChat.Core.AppStateManager.TrackAction($"ReminderNortification - {} sen."
                 return;
             }
 
@@ -87,13 +94,15 @@ namespace CyberChat
 
         private void SafeTask(object sender, RoutedEventArgs e)
         {
+      
             string userTitle = TitleBox.Text;
             string userDescription = DescriptionBox.Text;
             
-            db.TaskHandler("New Task Title", "Description", _isReminderSet);
+            db.TaskHandler(userTitle, userDescription, _isReminderSet);
 
-            MessageBox.Show("Task logged to workspace ledger storage successfully.", "Task Saved");
 
+            CyberChat.Core.AppStateManager.TrackAction($"{store.UserName} saved this task{Title} ");
+       
             TitleBox.Clear();
             DescriptionBox.Clear();
             _isReminderSet = false;
@@ -104,7 +113,7 @@ namespace CyberChat
         private void ViewTasksButton_Click(object sender, RoutedEventArgs e)
         { 
             db.ListMyDb(datagridtasks);
-          
+            CyberChat.Core.AppStateManager.TrackAction($"{store.UserName} had Database Items viewed and poulated");
         }
 
         private void deleteContxtMenu(object sender, RoutedEventArgs e)
@@ -122,13 +131,14 @@ namespace CyberChat
                 if (result != MessageBoxResult.Yes) return;
 
                 int taskIdToDelete = -1;
-
+                CyberChat.Core.AppStateManager.TrackAction($"Database Item {taskIdToDelete} deleted");
                 // 2. Scenario A: Item deleted via the DataGrid Context Menu
                 if (datagridtasks.SelectedItem != null)
                 {
                     
                     dynamic selectedRow = datagridtasks.SelectedItem;
                     taskIdToDelete = selectedRow.ID;
+                    CyberChat.Core.AppStateManager.TrackAction($"Database ItemRow {selectedRow} deleted");
                 }
                 // 3. Scenario B: Item deleted via the ListBox Context Menu
                 else if (listBoxArea.SelectedItem != null)
@@ -150,17 +160,20 @@ namespace CyberChat
 
                     // Call database execution delete command logic query method
                     bool isDeleted = db.DeleteTasks(taskIdToDelete);
-
+                    
                     if (isDeleted)
                     {
                         MessageBox.Show("Task deleted successfully from storage.", "Success");
 
                         // 5. Force the grids to refresh live to reflect changes instantly
+                        CyberChat.Core.AppStateManager.TrackAction($"Database Item {taskIdToDelete}deleted");
                         RefreshTaskViews();
+                        ;
                     }
                     else
                     {
                         MessageBox.Show("Could not process deletion request in the database backend.", "Database Error");
+                        CyberChat.Core.AppStateManager.TrackAction($"Database Item {taskIdToDelete}deleted error");
                     }
                 }
             }
@@ -177,6 +190,33 @@ namespace CyberChat
 
             ViewTasksButton_Click(this, null);
         }
+       private void MarkAsCompete(object sender, EventArgs e)
+        {
+            if(sender is CheckBox checkbox && checkbox.DataContext is TaskItem task)
+            {
+                string taskName = checkbox.Content?.ToString() ?? "Unknown Task";
+                
+                    CyberChat.Core.AppStateManager.TrackAction($"Task marked as complete: '{task.Title}: {task.Description}");
+            }
+        }
+        private void CompleteBtn_Click(object sender, EventArgs e)
+        {
+            if (sender is MenuItem menuItem)
+            {
+                string taskName = menuItem.Header?.ToString() ?? "Unknown Task";
+                CyberChat.Core.AppStateManager.TrackAction($"{store.UserName} marked task '{taskName}' as complete");
+            }
        
+        }
+       private void CompleteTask(TaskItem task)
+        {
+            string taskName = TitleBox.Text;
+            CyberChat.Core.AppStateManager.TrackAction($"Task marked as complete: '{taskName}.");
+
+
+
+
+        }
+
     }
 }

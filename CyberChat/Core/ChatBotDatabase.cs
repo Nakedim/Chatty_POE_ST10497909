@@ -16,7 +16,7 @@ namespace CyberChat.Core
     public class ChatBotDatabase
     {
     
-         private string DBConnctString = "server=localhost;database=ChatBotDB;uid=root;pwd=1234;";
+         public string DBConnctString = "server=localhost;database=ChatBotDB;uid=root;pwd=1234;";
        
 
         //Data class
@@ -121,35 +121,7 @@ CREATE TABLE IF NOT EXISTS tasks(
                 }
 
             }
-        //Method to extract tasklist from DB
-        public List<string> GetTasks()
-        {
-            List<int> TaskId = new List<int>();
-            List<string> tasks = new List<string>();
 
-            List<string> description = new List<string>();
-
-            string sqlQuery = "SELECT * FROM tasks ORDER BY timestamp DESC";
-
-            using (MySqlConnection conn = new MySqlConnection(DBConnctString))
-            {
-                conn.Open();
-
-                using (MySqlCommand cmd = new MySqlCommand(sqlQuery, conn))
-                using (MySqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        tasks.Add(reader.GetString("title"));
-                        //TaskId.Add(reader.GetInt16("TaskId"));
-                        //description.Add(reader.GetString("Description"));
-                        
-                    }
-                }
-            }
-
-            return tasks;
-        }
 
         public bool DeleteTasks(int taskId)
         {
