@@ -192,9 +192,11 @@ namespace CyberChat
         }
        private void MarkAsCompete(object sender, EventArgs e)
         {
-            if(sender is CheckBox checkbox)
+            if(sender is CheckBox checkbox && checkbox.DataContext is TaskItem task)
             {
                 string taskName = checkbox.Content?.ToString() ?? "Unknown Task";
+                
+                    CyberChat.Core.AppStateManager.TrackAction($"Task marked as complete: '{task.Title}: {task.Description}");
             }
         }
         private void CompleteBtn_Click(object sender, EventArgs e)
@@ -205,6 +207,15 @@ namespace CyberChat
                 CyberChat.Core.AppStateManager.TrackAction($"{store.UserName} marked task '{taskName}' as complete");
             }
        
+        }
+       private void CompleteTask(TaskItem task)
+        {
+            string taskName = TitleBox.Text;
+            CyberChat.Core.AppStateManager.TrackAction($"Task marked as complete: '{taskName}.");
+
+
+
+
         }
 
     }

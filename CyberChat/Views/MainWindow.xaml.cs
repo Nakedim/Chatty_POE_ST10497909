@@ -3,6 +3,7 @@ using CyberChat.Views;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
@@ -48,12 +49,17 @@ namespace CyberChat
         {
             try
             {
-                SoundPlayer player = new SoundPlayer("Welcome.wav");
-                player.Play();
+                string audioPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "welcome.wav");
+             using (SoundPlayer player = new SoundPlayer(audioPath))
+                { 
+                    player.Play();
+
+                } 
+               
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show("Error playing audio greeting");
+                MessageBox.Show("Error playing audio greeting" +e.Message);
             }
         }
 
