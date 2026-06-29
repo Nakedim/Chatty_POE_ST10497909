@@ -12,6 +12,7 @@ namespace CyberChat
         {
             InitializeComponent();
             InitializeTimeSelectorItems();
+
         }
 
         private void InitializeTimeSelectorItems()
@@ -62,6 +63,7 @@ namespace CyberChat
             if (durationRemaining.TotalMilliseconds <= 0)
             {
                 MessageBox.Show("The chosen target reminder timestamp has already passed. Please select a point in the future.", "Scheduling Conflict");
+                //CyberChat.Core.AppStateManager.TrackAction($"ReminderNortification - {} sen."
                 return;
             }
 
@@ -150,13 +152,14 @@ namespace CyberChat
 
                     // Call database execution delete command logic query method
                     bool isDeleted = db.DeleteTasks(taskIdToDelete);
-
+                    
                     if (isDeleted)
                     {
                         MessageBox.Show("Task deleted successfully from storage.", "Success");
 
                         // 5. Force the grids to refresh live to reflect changes instantly
                         RefreshTaskViews();
+                        ;
                     }
                     else
                     {

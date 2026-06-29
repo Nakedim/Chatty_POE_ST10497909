@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CyberChat.Core;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -122,6 +123,7 @@ namespace CyberChat.Views
             if (currentQuestionIndex >= quizQuestions.Count)
             {
                 DisplayFinalScoreSummary();
+                AppStateManager.TrackAction($"Quiz finished: {userScore} / {quizQuestions.Count} questions answered.");
                 return;
             }
 
@@ -211,6 +213,7 @@ namespace CyberChat.Views
         {
             if (MessageBox.Show("Are you sure you want to exit the current quiz?", "Exit Game", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
+                AppStateManager.TrackAction($"Quiz cancelled - {userScore}:{quizQuestions.Count} questions answered.");
                 ReturnToMain(sender, e);
             }
         }
