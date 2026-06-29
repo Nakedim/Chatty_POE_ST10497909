@@ -60,7 +60,7 @@
 
                 <!-- Quick Feature Navigation Buttons -->
                 <StackPanel Orientation="Horizontal" Margin="0, 120">
-                    <Button Content="Task Scheduler" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="45" Width="94" Click="TaskBtn_Click"/>
+                    <Button Content="Task Scheduler" Name ="TaskScheduler_Btn"  HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="45" Width="94" Click="TaskBtn_Click"/>
                     <Button Content="Play Quiz" Name="QuizBtn" Click="quizGame_click" HorizontalAlignment="Left" Margin="60,3,0,0" VerticalAlignment="Top" Height="45" Width="94"/>
                 </StackPanel>
 

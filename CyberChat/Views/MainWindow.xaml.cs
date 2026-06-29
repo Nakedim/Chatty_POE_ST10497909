@@ -146,12 +146,14 @@ namespace CyberChat
             TaskScheduler taskScheduler = new TaskScheduler();
             taskScheduler.Owner = this;
             taskScheduler.ShowDialog();
+            CyberChat.Core.AppStateManager.TrackAction($"Task started{taskScheduler}");
         }
 
         // Top Menu links
         private void exit_click(object sender, RoutedEventArgs e)
         {
             this.Close();
+            CyberChat.Core.AppStateManager.TrackAction($"Task ended");
         }
 
         private void NewTask_click(object sender, RoutedEventArgs e)
@@ -185,6 +187,7 @@ namespace CyberChat
                 ChatInterfaceGrid.Visibility = Visibility.Collapsed;
                 SubWindowContainer.Content = cyberQuiz;
                 SubWindowContainer.Visibility = Visibility.Visible;
+                CyberChat.Core.AppStateManager.TrackAction($"{QuizBtn} quiz button clicked");
             }
             else
             {
