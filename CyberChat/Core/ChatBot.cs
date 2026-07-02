@@ -183,7 +183,8 @@ namespace CyberChat.Core
             }
             _memory.Store("topic", topic);
             CurrentStatus = "Favourite topic saved";
-            return $"Got it {_memory.UserName}! Your favourite topic is {topic}.";
+           
+            return $"Got it {MemoryStore.UserName}! Your favourite topic is {topic}.";
         }
 
         private string RecallFavouriteTopic()
@@ -193,7 +194,7 @@ namespace CyberChat.Core
             {
                 return "I do not know your favourite topic yet.";
             }
-            return $"{_memory.UserName}, your favourite topic is {topic}.";
+            return $"{MemoryStore.UserName}, your favourite topic is {topic}.";
         }
 
         private bool IsFollowUpRequest(string input)
@@ -211,7 +212,7 @@ namespace CyberChat.Core
             CurrentStatus = "Providing more information";
             if (!string.IsNullOrEmpty(_lastTopic))
             {
-                return $"{_memory.UserName}, here is more information about {_lastTopic}.";
+                return $"{MemoryStore.UserName}, here is more information about {_lastTopic}.";
             }
             return "Please ask about a cyber security topic first.";
         }
@@ -223,14 +224,14 @@ namespace CyberChat.Core
                 || normalizedInput.Contains("and you"))
             {
 
-                return $" I'm functioning correctly and ready to help with Cyber Security question, {_memory.UserName}.";
+                return $" I'm functioning correctly and ready to help with Cyber Security question, {MemoryStore.UserName}.";
 
              
 
             }
             if (normalizedInput.Contains("what can you do"))
             {
-                return $"I can help you with cyber security awareness, password safety, phishing, malware, and online protection, {_memory.UserName}.";
+                return $"I can help you with cyber security awareness, password safety, phishing, malware, and online protection, {MemoryStore.UserName}.";
             }
             return string.Empty;
         }

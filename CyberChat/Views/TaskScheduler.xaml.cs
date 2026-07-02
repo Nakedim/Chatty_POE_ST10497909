@@ -10,6 +10,7 @@ namespace CyberChat
     public partial class TaskScheduler : Window
     {
         private bool _isReminderSet = false;
+        
         ChatBotDatabase db = new ChatBotDatabase();
         MemoryStore store = new MemoryStore();
 
@@ -101,7 +102,7 @@ namespace CyberChat
             db.TaskHandler(userTitle, userDescription, _isReminderSet);
 
 
-            CyberChat.Core.AppStateManager.TrackAction($"{store.UserName} saved this task{Title} ");
+            CyberChat.Core.AppStateManager.TrackAction($"{MemoryStore.UserName} saved this task{Title} ");
        
             TitleBox.Clear();
             DescriptionBox.Clear();
@@ -113,7 +114,7 @@ namespace CyberChat
         private void ViewTasksButton_Click(object sender, RoutedEventArgs e)
         { 
             db.ListMyDb(datagridtasks);
-            CyberChat.Core.AppStateManager.TrackAction($"{store.UserName} had Database Items viewed and poulated");
+            CyberChat.Core.AppStateManager.TrackAction($"{MemoryStore.UserName} had Database Items viewed and poulated");
         }
 
         private void deleteContxtMenu(object sender, RoutedEventArgs e)
@@ -204,7 +205,7 @@ namespace CyberChat
             if (sender is MenuItem menuItem)
             {
                 string taskName = menuItem.Header?.ToString() ?? "Unknown Task";
-                CyberChat.Core.AppStateManager.TrackAction($"{store.UserName} marked task '{taskName}' as complete");
+                CyberChat.Core.AppStateManager.TrackAction($"{MemoryStore.UserName} marked task '{taskName}' as complete");
             }
        
         }

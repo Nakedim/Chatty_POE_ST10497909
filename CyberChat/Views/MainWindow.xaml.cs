@@ -78,7 +78,7 @@ namespace CyberChat
         private void AddUserMessage(string input, string UserName)
         {
             MemoryStore store = new MemoryStore();
-            store.UserName = UserName;
+            MemoryStore.UserName = UserName;
             ChatBotArea.Items.Add("You: " + input);
             ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
         }
