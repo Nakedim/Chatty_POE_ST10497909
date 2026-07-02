@@ -17,11 +17,12 @@ namespace CyberChat
     {
         private ChatBot chatBot;
         private CyberQuiz cyberQuiz;
+        private readonly MemoryStore memoryStore;
 
         public MainWindow()
         {
             InitializeComponent();
-
+            memoryStore = new MemoryStore();
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),

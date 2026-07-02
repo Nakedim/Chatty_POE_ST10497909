@@ -15,7 +15,7 @@
                 <MenuItem Header="Play Quiz" Click="quizGame_click"/>
                 <Separator />
                 <MenuItem Header="Log">
-                    <MenuItem Header="View Activity log..." />
+                    <MenuItem Header="View Activity log..." Click="logClick_click"/>
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="Exit" Click="exit_click"/>
