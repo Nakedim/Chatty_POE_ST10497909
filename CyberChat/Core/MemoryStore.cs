@@ -1,7 +1,7 @@
 ﻿public class MemoryStore
 {
     // Use auto-properties with modern C# string initialization
-    public string UserName { get; set; } = string.Empty;
+    public static string UserName { get; set; } ="UserName";
     public string FavouriteTopic { get; set; } = string.Empty;
 
     // Made readonly to prevent accidental reassignment
@@ -9,11 +9,15 @@
 
     public void Store(string key, string value)
     {
+        _userInfo[key] = value;
         if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(value))
         {
             return;
         }
-
+        if (key.Equals("user", StringComparison.OrdinalIgnoreCase))
+        {
+            UserName = value;
+        }
         // Standardize key formatting across the entire class lifecycle
         var normalizedKey = key.Trim().ToLowerInvariant();
 
@@ -39,7 +43,7 @@
     {
         if (string.IsNullOrWhiteSpace(key))
         {
-            return string.Empty;
+            return _userInfo.TryGetValue(key, out var value) ? value : null;
         }
 
         var normalizedKey = key.Trim().ToLowerInvariant();
