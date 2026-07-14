@@ -14,9 +14,10 @@ jobs:
 
     runs-on: windows-latest  
 
-    env:
-      Solution_Name: CyberChat.sln                     
+        env:
+      Solution_Name: CyberChat/CyberChat.sln                     
       Configuration: ${{ matrix.configuration }}
+
 
     steps:
     - name: Checkout
@@ -32,11 +33,13 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
 
+        # Remove the Setup MSBuild step completely, then use these:
+
     - name: Restore the application
-      run: msbuild "$env:Solution_Name" /t:Restore /p:Configuration="$env:Configuration"
+      run: dotnet restore
 
     - name: Build the application
-      run: msbuild "$env:Solution_Name" /p:Configuration="$env:Configuration"
+      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
