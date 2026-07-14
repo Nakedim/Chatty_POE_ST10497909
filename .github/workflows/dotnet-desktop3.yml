@@ -10,13 +10,14 @@ jobs:
   build:
     strategy:
       matrix:
-    
         configuration: [Debug, Release]
 
     runs-on: windows-latest  
 
     env:
       Solution_Name: CyberChat.sln                     
+      Configuration: ${{ matrix.configuration }}
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -31,22 +32,15 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
 
-    
     - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: msbuild "$env:Solution_Name" /t:Restore /p:Configuration="$env:Configuration"
 
- # Build the application
     - name: Build the application
-      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: msbuild "$env:Solution_Name" /p:Configuration="$env:Configuration"
 
-    # Upload build artifacts (Executables and DLLs)
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: CyberChat.sln-Build-${{ matrix.configuration }}
+        name: CyberChat-Build-${{ matrix.configuration }}
         path: |
           **/bin/${{ matrix.configuration }}/
