@@ -1,0 +1,32 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "MasterMainBranch" ]
+  pull_request:
+    branches: [ "MasterMainBranch" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest  
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore CyberChat/CyberChat.sln
+
+    - name: Build the application
+      run: dotnet build CyberChat/CyberChat.sln --configuration ${{ matrix.configuration }} --no-restore

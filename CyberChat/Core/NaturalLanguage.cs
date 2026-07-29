@@ -8,6 +8,7 @@ namespace CyberChat.Core
     {
         public string keywordPicker(string userInput)
         {
+
             if (string.IsNullOrWhiteSpace(userInput))
             {
                 return string.Empty;
@@ -17,9 +18,10 @@ namespace CyberChat.Core
             var UserQuiries = new Dictionary<string, string>
             {
                 {"task", "activities"},
-                {"2fa", "Passwords"},
+               
+
                 {"quiz", "Game"},
-                {"remind me", "Update Password"},
+                
                 {"play", "activities"}
             };
 
@@ -43,6 +45,7 @@ namespace CyberChat.Core
             {
                 ExitQueries, UserGreeting, UserQuiries
             };
+
 
             // Scans dictionaries for any matching substring inside the user input
             var matchedEntry = botDictionaries

@@ -3,6 +3,7 @@ using CyberChat.Views;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,11 +17,12 @@ namespace CyberChat
     {
         private ChatBot chatBot;
         private CyberQuiz cyberQuiz;
+        private readonly MemoryStore memoryStore;
 
         public MainWindow()
         {
             InitializeComponent();
-
+            memoryStore = new MemoryStore();
             chatBot = new ChatBot(
                 new KeywordResponder(),
                 new SentimentDetector(),
@@ -48,12 +50,17 @@ namespace CyberChat
         {
             try
             {
-                SoundPlayer player = new SoundPlayer("Welcome.wav");
-                player.Play();
+                string audioPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "welcome.wav");
+             using (SoundPlayer player = new SoundPlayer(audioPath))
+                { 
+                    player.Play();
+
+                } 
+               
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show("Error playing audio greeting");
+                MessageBox.Show("Error playing audio greeting" +e.Message);
             }
         }
 
@@ -72,7 +79,7 @@ namespace CyberChat
         private void AddUserMessage(string input, string UserName)
         {
             MemoryStore store = new MemoryStore();
-            store.UserName = UserName;
+            MemoryStore.UserName = UserName;
             ChatBotArea.Items.Add("You: " + input);
             ChatBotArea.ScrollIntoView(ChatBotArea.Items[ChatBotArea.Items.Count - 1]);
         }
@@ -146,12 +153,14 @@ namespace CyberChat
             TaskScheduler taskScheduler = new TaskScheduler();
             taskScheduler.Owner = this;
             taskScheduler.ShowDialog();
+            CyberChat.Core.AppStateManager.TrackAction($"Task started{taskScheduler}");
         }
 
         // Top Menu links
         private void exit_click(object sender, RoutedEventArgs e)
         {
             this.Close();
+            CyberChat.Core.AppStateManager.TrackAction($"Task ended");
         }
 
         private void NewTask_click(object sender, RoutedEventArgs e)
@@ -176,7 +185,7 @@ namespace CyberChat
             }
         }
 
-        private void quizGame_click(object sender, RoutedEventArgs e)
+        public void quizGame_click(object sender, RoutedEventArgs e)
         {
             cyberQuiz = new CyberQuiz();
 
@@ -185,6 +194,7 @@ namespace CyberChat
                 ChatInterfaceGrid.Visibility = Visibility.Collapsed;
                 SubWindowContainer.Content = cyberQuiz;
                 SubWindowContainer.Visibility = Visibility.Visible;
+                CyberChat.Core.AppStateManager.TrackAction($"{QuizBtn} quiz button clicked");
             }
             else
             {
