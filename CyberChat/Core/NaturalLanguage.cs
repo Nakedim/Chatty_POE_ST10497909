@@ -18,9 +18,10 @@ namespace CyberChat.Core
             var UserQuiries = new Dictionary<string, string>
             {
                 {"task", "activities"},
-                {"2fa", "Passwords"},
+               
+
                 {"quiz", "Game"},
-                {"remind me", "Update Password"},
+                
                 {"play", "activities"}
             };
 

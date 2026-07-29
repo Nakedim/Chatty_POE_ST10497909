@@ -27,63 +27,67 @@ namespace CyberChat.Core
             public string Description { get; set; }
 
         }
-       
 
-        public void TaskHandler(string Title, string Description, bool IsReminderSet)
-        //is_reminder_set BOOLEAN NOT NULL,
 
-            
+        //parameters
+        public void TaskHandler(string Title, string descriptions, bool IsReminderSet)
         {
+            
             string createTableSql = @"
-CREATE TABLE IF NOT EXISTS tasks(
-    taskid INT AUTO_INCREMENT PRIMARY KEY,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    is_reminder_set BOOLEAN NOT NULL,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);";
+    CREATE TABLE IF NOT EXISTS tasksFromApp(
+        taskid INT AUTO_INCREMENT PRIMARY KEY,
+        title TEXT NOT NULL,
+        descriptions TEXT NOT NULL,
+        is_reminder_set BOOLEAN NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );";
 
+         
             string insertSql = @"
-           INSERT INTO Tasks (Title, Description,is_reminder_set) 
-          VALUES (@Title, @Description, @IsReminderSet);";
+    INSERT INTO tasksFromApp (title, descriptions, is_reminder_set) 
+    VALUES (@Title, @descriptions, @IsReminderSet);";
+
             using (MySqlConnection conn = new MySqlConnection(DBConnctString))
             {
                 try
                 {
                     conn.Open();
 
+                    // Create table if it doesn't exist
                     using (MySqlCommand createCmd = new MySqlCommand(createTableSql, conn))
                     {
                         createCmd.ExecuteNonQuery();
                     }
+
+                    // Insert data
                     using (MySqlCommand inserCMD = new MySqlCommand(insertSql, conn))
                     {
-                        //attribute and values
+                        // 3. Removed the accidental trailing space from "@descriptions "
                         inserCMD.Parameters.AddWithValue("@Title", Title);
-                        inserCMD.Parameters.AddWithValue("@Description", Description);
+                        inserCMD.Parameters.AddWithValue("@descriptions", descriptions);
                         inserCMD.Parameters.AddWithValue("@IsReminderSet", IsReminderSet);
+
                         inserCMD.ExecuteNonQuery();
 
                         MessageBox.Show("Database initiation successful: Tasks", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     MessageBox.Show($"Error saving into database: {ex.Message}", "Database Error NewTasksTable", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-          
             }
         }
 
         public void CheckReminder()
         {
 
-            string selectSql = "SELECT taskid, title, description FROM tasks WHERE is_reminder_set = 1 LIMIT 1;";
+            string selectSql = "SELECT taskid, title, descriptions FROM tasks WHERE is_reminder_set = 1 LIMIT 1;";
             string updateSql = "UPDATE tasks SET is_reminder_set = 0 WHERE taskid = @TaskId;";
 
             int taskId = -1;
             string title = string.Empty;
-            string description = string.Empty;
+            string descriptions = string.Empty;
             bool foundReminder = false;
 
             using (MySqlConnection conn = new MySqlConnection(DBConnctString))
@@ -98,14 +102,14 @@ CREATE TABLE IF NOT EXISTS tasks(
                         {
                             taskId = reader.GetInt32("taskid");
                             title = reader.GetString("title");
-                            description = reader.GetString("description");
+                            descriptions = reader.GetString("descriptions");
                             foundReminder = true;
                         }
                     }
 
                     if (foundReminder)
                     {
-                        MessageBox.Show($"Reminder: {title}\n\n{description}", "Task Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show($"Reminder: {title}\n\n{descriptions}", "Task Alert", MessageBoxButton.OK, MessageBoxImage.Information);
 
                         using (MySqlCommand updateCmd = new MySqlCommand(updateSql, conn))
                         {
@@ -169,7 +173,7 @@ CREATE TABLE IF NOT EXISTS tasks(
 
         public void ListMyDb(DataGrid DataGridTasks)
         {
-            string sqlQuery = "SELECT * FROM tasks";
+            string sqlQuery = "SELECT * FROM tasksFromApp";
             {
                 //1st step connection string
                 using (MySqlConnection conn = new MySqlConnection (DBConnctString))
